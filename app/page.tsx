@@ -1,19 +1,36 @@
+"use client"
+
+import * as React from "react"
 import { Button } from "@/components/ui/button"
+import TextEditor from "@/components/text-editor"
+import Navbar from "@/components/navbar"
+import GuestHome from "@/components/guest-home"
+import TemplateDashboard from "@/components/template-dashboard"
+import Sidebar from "@/components/sidebar"
+import Footer from "@/components/footer"
 
 export default function Page() {
+  const [isSidebarOpen, setIsSidebarOpen] = React.useState(false)
+
   return (
-    <div className="flex min-h-svh p-6">
-      <div className="flex max-w-md min-w-0 flex-col gap-4 text-sm leading-loose">
-        <div>
-          <h1 className="font-medium">Project ready!</h1>
-          <p>You may now add components and start building.</p>
-          <p>We&apos;ve already added the button component for you.</p>
-          <Button className="mt-2">Button</Button>
-        </div>
-        <div className="font-mono text-xs text-muted-foreground">
-          (Press <kbd>d</kbd> to toggle dark mode)
-        </div>
+    <div>
+      <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
+      <Navbar
+        isLoggedIn={true}
+        onToggleAuth={() => console.log("Toggle auth")}
+        onToggleSidebar={() => setIsSidebarOpen(true)}
+      />
+      <div>
+        <GuestHome
+          onLogin={() => console.log("Login clicked")}
+          isLoggedIn={true}
+        />
       </div>
+      {/* <div className="mx-auto max-w-[650px] py-10">
+        <TextEditor />
+      </div> */}
+      {/* <TemplateDashboard /> */}
+      <Footer />
     </div>
   )
 }
