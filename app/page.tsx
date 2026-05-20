@@ -10,20 +10,25 @@ import Sidebar from "@/components/sidebar"
 import Footer from "@/components/footer"
 
 export default function Page() {
+  const [isLoggedIn, setIsLoggedIn] = React.useState(false)
   const [isSidebarOpen, setIsSidebarOpen] = React.useState(false)
+
+  const toggleAuth = () => {
+    setIsLoggedIn(!isLoggedIn)
+  }
 
   return (
     <div>
       <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
       <Navbar
-        isLoggedIn={true}
-        onToggleAuth={() => console.log("Toggle auth")}
+        isLoggedIn={isLoggedIn}
+        onToggleAuth={toggleAuth}
         onToggleSidebar={() => setIsSidebarOpen(true)}
       />
       <div>
         <GuestHome
-          onLogin={() => console.log("Login clicked")}
-          isLoggedIn={true}
+          onLogin={() => setIsLoggedIn(true)}
+          isLoggedIn={isLoggedIn}
         />
       </div>
       {/* <div className="mx-auto max-w-[650px] py-10">
