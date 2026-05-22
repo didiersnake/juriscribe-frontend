@@ -5,6 +5,7 @@ import { motion } from "motion/react"
 import { useEffect } from "react"
 import { useRouter } from "next/navigation"
 import React from "react"
+import { SigninIcon } from "../ui/button"
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -85,20 +86,22 @@ export default function GuestHome({ onLogin }: { onLogin: () => void }) {
         {isLoggedIn ? (
           <button
             onClick={() => router.push("/documents")}
+            // className="flex items-center justify-center gap-3 rounded-lg bg-blue-50 px-8 py-3.5 text-lg font-medium text-blue-700 shadow-sm transition-all hover:bg-blue-100 active:scale-95"
             className="flex items-center justify-center gap-2 rounded-lg bg-blue-600 px-8 py-3.5 text-lg font-medium text-white shadow-sm transition-all hover:bg-blue-700 hover:shadow-lg hover:shadow-blue-200/50 active:scale-95"
           >
-            Explore template Library <ArrowRight size={20} />
+            Explore Template Library <ArrowRight size={20} />
           </button>
         ) : (
           <button
             onClick={onLogin}
-            className="flex items-center justify-center gap-2 rounded-lg bg-blue-600 px-8 py-3.5 text-lg font-medium text-white shadow-sm transition-all hover:bg-blue-700 hover:shadow-lg hover:shadow-blue-200/50 active:scale-95"
+            className="flex items-center justify-center gap-3 rounded-lg border border-slate-200 bg-white px-8 py-3.5 text-lg font-medium text-slate-700 shadow-sm transition-all hover:bg-slate-50 hover:shadow-md active:scale-95"
           >
-            Create an Account <ArrowRight size={20} />
+            {SigninIcon}
+            Sign in
           </button>
         )}
         {isLoggedIn ? null : (
-          <button className="rounded-lg border border-slate-200 bg-white px-8 py-3.5 text-lg font-medium text-slate-700 shadow-sm transition-all hover:bg-slate-50 active:scale-95">
+          <button className="rounded-lg bg-blue-50 px-8 py-3.5 text-lg font-medium text-blue-700 shadow-sm transition-all hover:bg-blue-100 active:scale-95">
             Explore Public Library
           </button>
         )}

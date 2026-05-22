@@ -28,6 +28,13 @@ export interface Document {
   updatedAt: string
 }
 
+export interface DocumentFileType {
+  id: number
+  name: string
+  description: string
+  // createdAt: string
+}
+
 // API Response wrapper
 export interface ApiResponse<T> {
   success: boolean

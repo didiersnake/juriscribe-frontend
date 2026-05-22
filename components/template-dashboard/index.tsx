@@ -1,5 +1,18 @@
-import { Plus, Upload, MoreVertical, FileText, Clock } from "lucide-react"
-import { motion } from "motion/react"
+import { apiClient } from "@/lib/services/api"
+import { DocumentFileType } from "@/lib/types"
+import {
+  Plus,
+  Upload,
+  MoreVertical,
+  FileText,
+  Clock,
+  ChevronDown,
+  Check,
+} from "lucide-react"
+import { AnimatePresence, motion } from "motion/react"
+import React from "react"
+import { DropdownMenuBasic } from "./document-type-dropdown"
+import { log } from "node:console"
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -25,6 +38,28 @@ interface TemplateDashboardProps {
 export default function TemplateDashboard({
   onNavigate,
 }: TemplateDashboardProps) {
+  const [isloading, setIsLoading] = React.useState<boolean>(true)
+  const [documentType, setDocumentType] = React.useState<string>()
+  const [isOwnerDropdownOpen, setIsOwnerDropdownOpen] = React.useState(false)
+  const [documentTypeList, setDocumentTypeList] = React.useState<
+    Array<DocumentFileType>
+  >([])
+
+  React.useEffect(() => {
+    // Fetch document types from the backend API
+    apiClient
+      .get<DocumentFileType[]>("/api/document-types")
+      .then((documentTypes: Array<DocumentFileType>) => {
+        console.log("Fetched document types:", documentTypes)
+        setDocumentTypeList(documentTypes)
+        setDocumentType(documentTypes[0]?.name)
+        setIsLoading(false)
+      })
+      .catch((error) => {
+        console.error("Failed to fetch document types:", error)
+      })
+  }, [])
+
   const recentTemplates = [
     {
       title: "Employment Agreement (Executive)",
@@ -149,13 +184,61 @@ export default function TemplateDashboard({
         <h2 className="text-base font-medium text-slate-800">Your Templates</h2>
 
         <div className="flex items-center gap-4 text-sm font-medium text-slate-600">
-          <span className="hidden cursor-pointer transition-colors hover:text-slate-900 sm:inline">
-            Owned by Me
-          </span>
+          <div className="relative z-20">
+            {isloading ? (
+              <></>
+            ) : (
+              <button
+                onClick={() => setIsOwnerDropdownOpen(!isOwnerDropdownOpen)}
+                className="group hidden cursor-pointer items-center gap-1 transition-colors hover:text-slate-900 sm:flex"
+              >
+                {documentType}
+                <ChevronDown
+                  size={14}
+                  className={`mt-0.5 transition-transform duration-200 ${isOwnerDropdownOpen ? "rotate-180" : "group-hover:translate-y-0.5"}`}
+                />
+              </button>
+            )}
+
+            <AnimatePresence>
+              {isOwnerDropdownOpen && (
+                <>
+                  <div
+                    className="fixed inset-0 z-10"
+                    onClick={() => setIsOwnerDropdownOpen(false)}
+                  ></div>
+                  <motion.div
+                    initial={{ opacity: 0, y: -5, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: -5, scale: 0.95 }}
+                    transition={{ duration: 0.15 }}
+                    className="absolute top-full right-0 z-50 mt-2 w-48 origin-top-right rounded-lg border border-slate-200 bg-white py-1.5 whitespace-nowrap shadow-lg"
+                  >
+                    {documentTypeList.map((option) => (
+                      <button
+                        key={option?.id}
+                        onClick={() => {
+                          setDocumentType(option?.name)
+                          setIsOwnerDropdownOpen(false)
+                        }}
+                        className="flex w-full items-center justify-between px-4 py-2 text-left text-sm text-slate-700 transition-colors hover:bg-slate-50 hover:text-blue-600"
+                      >
+                        {option?.name}
+                        {documentType === option?.name && (
+                          <Check size={16} className="text-blue-600" />
+                        )}
+                      </button>
+                    ))}
+                  </motion.div>
+                </>
+              )}
+            </AnimatePresence>
+          </div>
+
           <span className="hidden text-slate-300 sm:inline">|</span>
-          <span className="flex cursor-pointer items-center gap-2 rounded p-1.5 transition-colors hover:bg-slate-100">
+          <button className="flex cursor-pointer items-center gap-2 rounded p-1.5 transition-colors hover:bg-slate-100">
             <Clock size={16} /> Last opened
-          </span>
+          </button>
         </div>
       </motion.div>
 
