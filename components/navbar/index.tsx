@@ -1,5 +1,4 @@
 "use client"
-import React, { use } from "react"
 import { Menu, Search, Settings, HelpCircle, User, LogOut } from "lucide-react"
 import { useAuth } from "@/lib/authContext"
 

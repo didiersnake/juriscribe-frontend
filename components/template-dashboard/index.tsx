@@ -11,8 +11,6 @@ import {
 } from "lucide-react"
 import { AnimatePresence, motion } from "motion/react"
 import React from "react"
-import { DropdownMenuBasic } from "./document-type-dropdown"
-import { log } from "node:console"
 
 const containerVariants = {
   hidden: { opacity: 0 },

@@ -4,7 +4,6 @@ import { FileText, Shield, ArrowRight, BookOpen, Layers } from "lucide-react"
 import { motion } from "motion/react"
 import { useEffect } from "react"
 import { useRouter } from "next/navigation"
-import React from "react"
 import { SigninIcon } from "../ui/button"
 
 const containerVariants = {
@@ -101,7 +100,7 @@ export default function GuestHome({ onLogin }: { onLogin: () => void }) {
           </button>
         )}
         {isLoggedIn ? null : (
-          <button className="rounded-lg bg-blue-50 px-8 py-3.5 text-lg font-medium text-blue-700 shadow-sm transition-all hover:bg-blue-100 active:scale-95">
+          <button className="rounded-lg bg-blue-600 px-8 py-3.5 text-lg font-medium text-white shadow-sm transition-all hover:bg-blue-700 hover:shadow-md active:scale-95">
             Explore Public Library
           </button>
         )}
