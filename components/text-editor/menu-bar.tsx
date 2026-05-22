@@ -91,7 +91,7 @@ export default function MenuBar({ editor }: { editor: Editor | null }) {
     },
   ]
   return (
-    <div className="z-50 mb-1 space-x-2 rounded-md border p-1">
+    <div className="z-50 mb-1 space-x-2 rounded-md border bg-slate-50 p-1">
       {Options.map((option, index) => (
         <Toggle
           pressed={option.pressed}
