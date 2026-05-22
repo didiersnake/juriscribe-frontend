@@ -1,19 +1,23 @@
 "use client"
 import React from "react"
-import Image from "next/image"
-import logo from "../../app/assets/images/juriscribe_logo.png"
 import { Menu, Search, Settings, HelpCircle, User } from "lucide-react"
-import { on } from "node:cluster"
+import { useAuth } from "@/lib/authContext"
 
 export default function Navbar({
-  isLoggedIn,
-  onToggleAuth,
   onToggleSidebar,
+  onNavigate,
 }: {
-  isLoggedIn: boolean
-  onToggleAuth: () => void
   onToggleSidebar: () => void
+  onNavigate: (route: string) => void
 }) {
+  const { toggleAuth, isLoggedIn, user } = useAuth()
+
+  const handleLogout = () => {}
+
+  const handleLogin = () => {
+    window.location.href = "http://localhost:8888/oauth2/authorization/google"
+  }
+
   const leftNav = (
     <div className="relative flex shrink-0 items-center gap-2 sm:gap-4">
       <button
@@ -23,7 +27,10 @@ export default function Navbar({
         <Menu size={24} />
       </button>
 
-      <div className="group flex cursor-pointer items-center gap-3">
+      <div
+        className="group flex cursor-pointer items-center gap-3"
+        onClick={() => onNavigate("/")}
+      >
         <svg
           viewBox="0 0 48 48"
           fill="none"
@@ -70,7 +77,7 @@ export default function Navbar({
     </div>
   )
 
-  const RightNav = (isLoggedIn: boolean, onToggleAuth: () => void) => {
+  const RightNav = (isLoggedIn: boolean) => {
     return (
       <div className="flex shrink-0 items-center gap-1 sm:gap-3">
         {isLoggedIn && (
@@ -99,15 +106,19 @@ export default function Navbar({
         <div className="pl-2">
           {isLoggedIn ? (
             <button
-              onClick={onToggleAuth}
+              onClick={toggleAuth}
               className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-indigo-600 text-sm font-medium text-white shadow-sm transition-all hover:ring-4 hover:ring-indigo-100 active:scale-95 sm:h-10 sm:w-10 sm:text-base"
               title="Log out"
             >
-              D
+              {user?.name ? (
+                user.name.charAt(0).toUpperCase()
+              ) : (
+                <User size={18} />
+              )}
             </button>
           ) : (
             <button
-              onClick={onToggleAuth}
+              onClick={handleLogin}
               className="flex items-center gap-2 rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm transition-all duration-300 hover:bg-blue-700 hover:shadow-md active:scale-95 sm:px-6 sm:py-2.5 sm:text-base"
             >
               <User size={18} />
@@ -123,7 +134,7 @@ export default function Navbar({
     <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-slate-200 bg-white px-4">
       {leftNav}
       {middleNav}
-      {RightNav(isLoggedIn, onToggleAuth)}
+      {RightNav(isLoggedIn)}
     </header>
   )
 }

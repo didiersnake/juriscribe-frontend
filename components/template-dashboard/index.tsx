@@ -18,7 +18,13 @@ const itemVariants = {
   },
 } as const
 
-export default function TemplateDashboard() {
+interface TemplateDashboardProps {
+  onNavigate: (route: string) => void
+}
+
+export default function TemplateDashboard({
+  onNavigate,
+}: TemplateDashboardProps) {
   const recentTemplates = [
     {
       title: "Employment Agreement (Executive)",
@@ -67,6 +73,7 @@ export default function TemplateDashboard() {
             variants={itemVariants}
             whileHover={{ y: -4 }}
             className="group flex w-32 cursor-pointer flex-col gap-2 sm:w-40"
+            onClick={() => onNavigate("/editor")}
           >
             <div className="flex aspect-[3/4] items-center justify-center rounded border border-slate-200 bg-white transition-all duration-300 hover:border-blue-500 hover:shadow-lg">
               <Plus

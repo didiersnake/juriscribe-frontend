@@ -1,5 +1,10 @@
+import { useAuth } from "@/lib/authContext"
+import { apiClient } from "@/lib/services/api"
 import { FileText, Shield, ArrowRight, BookOpen, Layers } from "lucide-react"
 import { motion } from "motion/react"
+import { useEffect } from "react"
+import { useRouter } from "next/navigation"
+import React from "react"
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -17,13 +22,27 @@ const itemVariants = {
     transition: { type: "spring" as const, stiffness: 300, damping: 24 },
   },
 } as const
-export default function GuestHome({
-  onLogin,
-  isLoggedIn,
-}: {
-  onLogin: () => void
-  isLoggedIn: boolean
-}) {
+export default function GuestHome({ onLogin }: { onLogin: () => void }) {
+  const { isLoggedIn, setIsLoggedIn, setUser } = useAuth()
+  const router = useRouter()
+
+  useEffect(() => {
+    // Check if user is already logged in (e.g., by checking localStorage)
+
+    if (isLoggedIn === false) {
+      apiClient
+        .get("/api/users/user")
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        .then((data: any) => {
+          setUser(data)
+          setIsLoggedIn(true)
+        })
+        .catch((error) => {
+          console.error("Failed to fetch user:", error)
+        })
+    }
+  }, [])
+
   const heroSection = (
     <section className="mx-auto flex max-w-7xl flex-col items-center px-6 py-16 text-center md:py-24">
       <motion.div
@@ -65,7 +84,7 @@ export default function GuestHome({
       >
         {isLoggedIn ? (
           <button
-            onClick={onLogin}
+            onClick={() => router.push("/documents")}
             className="flex items-center justify-center gap-2 rounded-lg bg-blue-600 px-8 py-3.5 text-lg font-medium text-white shadow-sm transition-all hover:bg-blue-700 hover:shadow-lg hover:shadow-blue-200/50 active:scale-95"
           >
             Explore template Library <ArrowRight size={20} />
