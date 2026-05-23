@@ -23,25 +23,25 @@ const itemVariants = {
   },
 } as const
 export default function GuestHome({ onLogin }: { onLogin: () => void }) {
-  const { isLoggedIn, setIsLoggedIn, setUser } = useAuth()
+  const { isLoggedIn } = useAuth()
   const router = useRouter()
 
-  useEffect(() => {
-    // Check if user is already logged in (e.g., by checking localStorage)
+  // useEffect(() => {
+  //   // Check if user is already logged in (e.g., by checking localStorage)
 
-    if (isLoggedIn === false) {
-      apiClient
-        .get("/api/users/user")
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        .then((data: any) => {
-          setUser(data)
-          setIsLoggedIn(true)
-        })
-        .catch((error) => {
-          console.error("Failed to fetch user:", error)
-        })
-    }
-  }, [])
+  //   if (isLoggedIn === false) {
+  //     apiClient
+  //       .get("/api/users/user")
+  //       // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  //       .then((data: any) => {
+  //         setUser(data)
+  //         setIsLoggedIn(true)
+  //       })
+  //       .catch((error) => {
+  //         console.error("Failed to fetch user:", error)
+  //       })
+  //   }
+  // }, [])
 
   const heroSection = (
     <section className="mx-auto flex max-w-7xl flex-col items-center px-6 py-16 text-center md:py-24">

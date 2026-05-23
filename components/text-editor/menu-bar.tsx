@@ -24,79 +24,80 @@ export default function MenuBar({ editor }: { editor: Editor | null }) {
 
   const Options = [
     {
-      icon: <Heading1 className="size-4" />,
+      icon: <Heading1 className="size-5" />,
       onClick: () => editor.chain().focus().toggleHeading({ level: 1 }).run(),
       pressed: editor.isActive("heading", { level: 1 }),
     },
     {
-      icon: <Heading2 className="size-4" />,
+      icon: <Heading2 className="size-5" />,
       onClick: () => editor.chain().focus().toggleHeading({ level: 2 }).run(),
       pressed: editor.isActive("heading", { level: 2 }),
     },
     {
-      icon: <Heading3 className="size-4" />,
+      icon: <Heading3 className="size-5" />,
       onClick: () => editor.chain().focus().toggleHeading({ level: 3 }).run(),
       pressed: editor.isActive("heading", { level: 3 }),
     },
     {
-      icon: <Bold className="size-4" />,
+      icon: <Bold className="size-5" />,
       onClick: () => editor.chain().focus().toggleBold().run(),
       pressed: editor.isActive("bold"),
     },
     {
-      icon: <Italic className="size-4" />,
+      icon: <Italic className="size-5" />,
       onClick: () => editor.chain().focus().toggleItalic().run(),
       pressed: editor.isActive("italic"),
     },
     {
-      icon: <Underline className="size-4" />,
+      icon: <Underline className="size-5" />,
       onClick: () => editor.chain().focus().toggleUnderline().run(),
       pressed: editor.isActive("underline"),
     },
     {
-      icon: <Strikethrough className="size-4" />,
+      icon: <Strikethrough className="size-5" />,
       onClick: () => editor.chain().focus().toggleStrike().run(),
       pressed: editor.isActive("strike"),
     },
     {
-      icon: <AlignLeft className="size-4" />,
+      icon: <AlignLeft className="size-5" />,
       onClick: () => editor.chain().focus().setTextAlign("left").run(),
       pressed: editor.isActive({ textAlign: "left" }),
     },
     {
-      icon: <AlignCenter className="size-4" />,
+      icon: <AlignCenter className="size-5" />,
       onClick: () => editor.chain().focus().setTextAlign("center").run(),
       pressed: editor.isActive({ textAlign: "center" }),
     },
     {
-      icon: <AlignRight className="size-4" />,
+      icon: <AlignRight className="size-5" />,
       onClick: () => editor.chain().focus().setTextAlign("right").run(),
       pressed: editor.isActive({ textAlign: "right" }),
     },
 
     {
-      icon: <List className="size-4" />,
+      icon: <List className="size-5" />,
       onClick: () => editor.chain().focus().toggleBulletList().run(),
       pressed: editor.isActive("bulletList"),
     },
     {
-      icon: <ListOrdered className="size-4" />,
+      icon: <ListOrdered className="size-5" />,
       onClick: () => editor.chain().focus().toggleOrderedList().run(),
       pressed: editor.isActive("orderedList"),
     },
     {
-      icon: <Highlighter className="size-4" />,
+      icon: <Highlighter className="size-5" />,
       onClick: () => editor.chain().focus().toggleHighlight().run(),
       pressed: editor.isActive("highlight"),
     },
   ]
   return (
-    <div className="z-50 mb-1 space-x-2 rounded-md border bg-slate-50 p-1">
+    <div className="scrollbar-hide flex justify-center gap-1 overflow-x-auto bg-white p-1.5">
       {Options.map((option, index) => (
         <Toggle
           pressed={option.pressed}
           key={index}
           onPressedChange={option.onClick}
+          className="text-slate-500 hover:text-slate-900"
         >
           {option.icon}
         </Toggle>

@@ -11,6 +11,7 @@ import {
 } from "lucide-react"
 import { AnimatePresence, motion } from "motion/react"
 import React from "react"
+import { useAuth } from "@/lib/authContext"
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -36,6 +37,7 @@ interface TemplateDashboardProps {
 export default function TemplateDashboard({
   onNavigate,
 }: TemplateDashboardProps) {
+  const { setIsLoggedIn } = useAuth()
   const [isloading, setIsLoading] = React.useState<boolean>(true)
   const [documentType, setDocumentType] = React.useState<string>()
   const [isOwnerDropdownOpen, setIsOwnerDropdownOpen] = React.useState(false)
@@ -55,6 +57,8 @@ export default function TemplateDashboard({
       })
       .catch((error) => {
         console.error("Failed to fetch document types:", error)
+        setIsLoggedIn(false)
+        onNavigate("/")
       })
   }, [])
 

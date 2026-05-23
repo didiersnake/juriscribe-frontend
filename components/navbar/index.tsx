@@ -1,6 +1,9 @@
 "use client"
 import { Menu, Search, Settings, HelpCircle, User, LogOut } from "lucide-react"
 import { useAuth } from "@/lib/authContext"
+import React from "react"
+import { apiClient } from "@/lib/services/api"
+import { useEffect } from "react"
 
 export default function Navbar({
   onToggleSidebar,
@@ -9,7 +12,26 @@ export default function Navbar({
   onToggleSidebar: () => void
   onNavigate: (route: string) => void
 }) {
-  const { toggleAuth, isLoggedIn, user } = useAuth()
+  const [loading, setIsLoading] = React.useState(true)
+  const { isLoggedIn, setIsLoggedIn, setUser, user, toggleAuth } = useAuth()
+
+  useEffect(() => {
+    // Check if user is already logged in (e.g., by checking localStorage)
+
+    if (isLoggedIn === false) {
+      apiClient
+        .get("/api/users/user")
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        .then((data: any) => {
+          setUser(data)
+          setIsLoggedIn(true)
+          setIsLoading(false)
+        })
+        .catch((error) => {
+          console.error("Failed to fetch user:", error)
+        })
+    }
+  }, [])
 
   // const handleLogout = () => {}
 
@@ -133,12 +155,6 @@ export default function Navbar({
             >
               <Settings size={22} />
             </button>
-            {/* <button
-              className="hidden rounded-full p-2 text-slate-600 transition-colors hover:bg-slate-100 active:scale-95 sm:block"
-              title="Google Apps"
-            >
-              <Grid size={22} />
-            </button> */}
           </>
         )}
       </div>
@@ -149,7 +165,7 @@ export default function Navbar({
     <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-slate-200 bg-white px-4">
       {leftNav}
       {middleNav}
-      {RightNav(isLoggedIn)}
+      {loading ? <></> : RightNav(isLoggedIn)}
     </header>
   )
 }
