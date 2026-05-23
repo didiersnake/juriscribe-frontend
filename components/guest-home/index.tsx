@@ -4,7 +4,7 @@ import { FileText, Shield, ArrowRight, BookOpen, Layers } from "lucide-react"
 import { motion } from "motion/react"
 import { useEffect } from "react"
 import { useRouter } from "next/navigation"
-import React from "react"
+import { SigninIcon } from "../ui/button"
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -23,25 +23,25 @@ const itemVariants = {
   },
 } as const
 export default function GuestHome({ onLogin }: { onLogin: () => void }) {
-  const { isLoggedIn, setIsLoggedIn, setUser } = useAuth()
+  const { isLoggedIn, loading } = useAuth()
   const router = useRouter()
 
-  useEffect(() => {
-    // Check if user is already logged in (e.g., by checking localStorage)
+  // useEffect(() => {
+  //   // Check if user is already logged in (e.g., by checking localStorage)
 
-    if (isLoggedIn === false) {
-      apiClient
-        .get("/api/users/user")
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        .then((data: any) => {
-          setUser(data)
-          setIsLoggedIn(true)
-        })
-        .catch((error) => {
-          console.error("Failed to fetch user:", error)
-        })
-    }
-  }, [])
+  //   if (isLoggedIn === false) {
+  //     apiClient
+  //       .get("/api/users/user")
+  //       // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  //       .then((data: any) => {
+  //         setUser(data)
+  //         setIsLoggedIn(true)
+  //       })
+  //       .catch((error) => {
+  //         console.error("Failed to fetch user:", error)
+  //       })
+  //   }
+  // }, [])
 
   const heroSection = (
     <section className="mx-auto flex max-w-7xl flex-col items-center px-6 py-16 text-center md:py-24">
@@ -85,20 +85,22 @@ export default function GuestHome({ onLogin }: { onLogin: () => void }) {
         {isLoggedIn ? (
           <button
             onClick={() => router.push("/documents")}
+            // className="flex items-center justify-center gap-3 rounded-lg bg-blue-50 px-8 py-3.5 text-lg font-medium text-blue-700 shadow-sm transition-all hover:bg-blue-100 active:scale-95"
             className="flex items-center justify-center gap-2 rounded-lg bg-blue-600 px-8 py-3.5 text-lg font-medium text-white shadow-sm transition-all hover:bg-blue-700 hover:shadow-lg hover:shadow-blue-200/50 active:scale-95"
           >
-            Explore template Library <ArrowRight size={20} />
+            Explore Template Library <ArrowRight size={20} />
           </button>
         ) : (
           <button
             onClick={onLogin}
-            className="flex items-center justify-center gap-2 rounded-lg bg-blue-600 px-8 py-3.5 text-lg font-medium text-white shadow-sm transition-all hover:bg-blue-700 hover:shadow-lg hover:shadow-blue-200/50 active:scale-95"
+            className="flex items-center justify-center gap-3 rounded-lg border border-slate-200 bg-white px-8 py-3.5 text-lg font-medium text-slate-700 shadow-sm transition-all hover:bg-slate-50 hover:shadow-md active:scale-95"
           >
-            Create an Account <ArrowRight size={20} />
+            {SigninIcon}
+            Sign in
           </button>
         )}
         {isLoggedIn ? null : (
-          <button className="rounded-lg border border-slate-200 bg-white px-8 py-3.5 text-lg font-medium text-slate-700 shadow-sm transition-all hover:bg-slate-50 active:scale-95">
+          <button className="rounded-lg bg-blue-600 px-8 py-3.5 text-lg font-medium text-white shadow-sm transition-all hover:bg-blue-700 hover:shadow-md active:scale-95">
             Explore Public Library
           </button>
         )}
@@ -238,11 +240,13 @@ export default function GuestHome({ onLogin }: { onLogin: () => void }) {
 
   return (
     <>
-      <div className="flex min-h-screen flex-col bg-white">
-        {heroSection}
-        {valueProps}
-        {publicTemplateList}
-      </div>
+      {loading ? null : (
+        <div className="flex min-h-screen flex-col bg-white">
+          {heroSection}
+          {valueProps}
+          {publicTemplateList}
+        </div>
+      )}
     </>
   )
 }

@@ -8,8 +8,10 @@ import {
   Scale,
   Send,
 } from "lucide-react"
+import { useAuth } from "@/lib/authContext"
 export default function Footer() {
-  return (
+  const { loading } = useAuth()
+  return loading ? null : (
     <footer className="mt-auto border-t border-slate-800 bg-slate-900 px-6 pt-16 pb-8 text-slate-400">
       <div className="mx-auto grid max-w-7xl grid-cols-1 gap-8 md:grid-cols-12 md:gap-12">
         <div className="md:col-span-4 lg:col-span-5">

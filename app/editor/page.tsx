@@ -2,6 +2,7 @@
 
 import TextEditor from "@/components/text-editor"
 import { motion } from "motion/react"
+import { useRouter } from "next/navigation"
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -23,22 +24,19 @@ const itemVariants = {
 }
 
 export default function EditorPage() {
+  const router = useRouter()
+  const onBack = () => {
+    router.push("/documents")
+  }
   return (
-    // <div className="mx-auto max-w-[650px] py-4">
-    //   <TextEditor />
-    // </div>
     <motion.div
       variants={containerVariants}
       initial="hidden"
       animate="show"
-      className="mx-auto max-w-[650px] py-5"
+      className="mx-auto bg-slate-100 py-5"
     >
-      {/* <motion.div variants={itemVariants}>
-        <h4 className="mb-6 text-3xl font-bold">Document Editor</h4>
-      </motion.div> */}
-
       <motion.div variants={itemVariants}>
-        <TextEditor />
+        <TextEditor onBack={onBack} />
       </motion.div>
     </motion.div>
   )

@@ -1,7 +1,9 @@
 "use client"
-import React from "react"
-import { Menu, Search, Settings, HelpCircle, User } from "lucide-react"
+import { Menu, Search, Settings, HelpCircle, User, LogOut } from "lucide-react"
 import { useAuth } from "@/lib/authContext"
+import React from "react"
+import { apiClient } from "@/lib/services/api"
+import { useEffect } from "react"
 
 export default function Navbar({
   onToggleSidebar,
@@ -10,9 +12,35 @@ export default function Navbar({
   onToggleSidebar: () => void
   onNavigate: (route: string) => void
 }) {
-  const { toggleAuth, isLoggedIn, user } = useAuth()
+  const {
+    isLoggedIn,
+    setIsLoggedIn,
+    setUser,
+    user,
+    toggleAuth,
+    setLoading,
+    loading,
+  } = useAuth()
 
-  const handleLogout = () => {}
+  useEffect(() => {
+    // Check if user is already logged in (e.g., by checking localStorage)
+
+    if (isLoggedIn === false) {
+      apiClient
+        .get("/api/users/user")
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        .then((data: any) => {
+          setUser(data)
+          setIsLoggedIn(true)
+          setLoading(false)
+        })
+        .catch((error) => {
+          console.error("Failed to fetch user:", error)
+        })
+    }
+  }, [])
+
+  // const handleLogout = () => {}
 
   const handleLogin = () => {
     window.location.href = "http://localhost:8888/oauth2/authorization/google"
@@ -80,6 +108,46 @@ export default function Navbar({
   const RightNav = (isLoggedIn: boolean) => {
     return (
       <div className="flex shrink-0 items-center gap-1 sm:gap-3">
+        <div className="pl-2">
+          {isLoggedIn ? (
+            <div className="group relative">
+              <button className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-indigo-600 text-sm font-medium text-white shadow-sm transition-all active:scale-95 sm:h-10 sm:w-10 sm:text-base">
+                {user?.name ? (
+                  user.name.charAt(0).toUpperCase()
+                ) : (
+                  <User size={18} />
+                )}
+              </button>
+              <div className="invisible absolute top-full right-0 z-50 origin-top-right translate-y-1 transform pt-2 opacity-0 transition-all duration-200 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100">
+                <div className="w-48 rounded-lg border border-slate-200 bg-white py-1 shadow-lg">
+                  <div className="mb-1 border-b border-slate-100 px-4 py-2">
+                    <p className="text-sm font-medium text-slate-800">
+                      {user?.name}
+                    </p>
+                    <p className="truncate text-xs text-slate-500">
+                      {user?.email}
+                    </p>
+                  </div>
+                  <button
+                    onClick={toggleAuth}
+                    className="flex w-full items-center gap-2 px-4 py-2 text-left text-sm text-red-600 transition-colors hover:bg-red-50"
+                  >
+                    <LogOut size={16} /> Log out
+                  </button>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <button
+              onClick={handleLogin}
+              className="flex items-center gap-2 rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm transition-all duration-300 hover:bg-blue-700 hover:shadow-md active:scale-95 sm:px-6 sm:py-2.5 sm:text-base"
+            >
+              <User size={18} />
+              <span className="hidden sm:inline">Sign In</span>
+            </button>
+          )}
+        </div>
+
         {isLoggedIn && (
           <>
             <button
@@ -94,38 +162,8 @@ export default function Navbar({
             >
               <Settings size={22} />
             </button>
-            {/* <button
-              className="hidden rounded-full p-2 text-slate-600 transition-colors hover:bg-slate-100 active:scale-95 sm:block"
-              title="Google Apps"
-            >
-              <Grid size={22} />
-            </button> */}
           </>
         )}
-
-        <div className="pl-2">
-          {isLoggedIn ? (
-            <button
-              onClick={toggleAuth}
-              className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-indigo-600 text-sm font-medium text-white shadow-sm transition-all hover:ring-4 hover:ring-indigo-100 active:scale-95 sm:h-10 sm:w-10 sm:text-base"
-              title="Log out"
-            >
-              {user?.name ? (
-                user.name.charAt(0).toUpperCase()
-              ) : (
-                <User size={18} />
-              )}
-            </button>
-          ) : (
-            <button
-              onClick={handleLogin}
-              className="flex items-center gap-2 rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm transition-all duration-300 hover:bg-blue-700 hover:shadow-md active:scale-95 sm:px-6 sm:py-2.5 sm:text-base"
-            >
-              <User size={18} />
-              <span className="hidden sm:inline">Sign In</span>
-            </button>
-          )}
-        </div>
       </div>
     )
   }
@@ -134,7 +172,7 @@ export default function Navbar({
     <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-slate-200 bg-white px-4">
       {leftNav}
       {middleNav}
-      {RightNav(isLoggedIn)}
+      {loading ? <></> : RightNav(isLoggedIn)}
     </header>
   )
 }

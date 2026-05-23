@@ -1,5 +1,17 @@
-import { Plus, Upload, MoreVertical, FileText, Clock } from "lucide-react"
-import { motion } from "motion/react"
+import { apiClient } from "@/lib/services/api"
+import { DocumentFileType } from "@/lib/types"
+import {
+  Plus,
+  Upload,
+  MoreVertical,
+  FileText,
+  Clock,
+  ChevronDown,
+  Check,
+} from "lucide-react"
+import { AnimatePresence, motion } from "motion/react"
+import React from "react"
+import { useAuth } from "@/lib/authContext"
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -25,6 +37,49 @@ interface TemplateDashboardProps {
 export default function TemplateDashboard({
   onNavigate,
 }: TemplateDashboardProps) {
+  const { setIsLoggedIn, loading, setLoading } = useAuth()
+  const [documentType, setDocumentType] = React.useState<string>()
+  const [isOwnerDropdownOpen, setIsOwnerDropdownOpen] = React.useState(false)
+  const [documentTypeList, setDocumentTypeList] = React.useState<
+    Array<DocumentFileType>
+  >([])
+
+  // Create a ref for the hidden input
+  const fileInputRef = React.useRef<HTMLInputElement>(null)
+
+  // Trigger file input click
+  const handleUpload = () => {
+    fileInputRef.current?.click()
+  }
+
+  // Handle file selection
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const handleFileChange = (e: any) => {
+    const selectedFile = e.target.files[0]
+    if (selectedFile) {
+      console.log("File selected:", selectedFile)
+      // Add your upload logic here
+      // handleUpload()
+    }
+  }
+
+  React.useEffect(() => {
+    // Fetch document types from the backend API
+    apiClient
+      .get<DocumentFileType[]>("/api/document-types")
+      .then((documentTypes: Array<DocumentFileType>) => {
+        console.log("Fetched document types:", documentTypes)
+        setDocumentTypeList(documentTypes)
+        setDocumentType(documentTypes[0]?.name)
+        setLoading(false)
+      })
+      .catch((error) => {
+        console.error("Failed to fetch document types:", error)
+        setIsLoggedIn(false)
+        onNavigate("/")
+      })
+  }, [])
+
   const recentTemplates = [
     {
       title: "Employment Agreement (Executive)",
@@ -40,7 +95,7 @@ export default function TemplateDashboard({
     { title: "Client Retainer Contract", date: "Opened Sep 02", owner: "Me" },
   ]
 
-  const handleUpload = () => {
+  const handleUpload2 = () => {
     alert(
       "Simulating file upload. In production, this opens a file picker to parse .docx or .pdf into the JuriScribe engine."
     )
@@ -88,26 +143,35 @@ export default function TemplateDashboard({
           </motion.div>
 
           {/* Upload Button */}
-          <motion.div
-            variants={itemVariants}
-            whileHover={{ y: -4 }}
-            className="group flex w-32 cursor-pointer flex-col gap-2 sm:w-40"
-            onClick={handleUpload}
-          >
-            <div className="flex aspect-[3/4] flex-col items-center justify-center gap-3 rounded border border-slate-200 bg-white transition-all duration-300 hover:border-blue-500 hover:shadow-lg">
-              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-blue-50 text-blue-600 transition-colors duration-300 group-hover:bg-blue-600 group-hover:text-white">
-                <Upload size={24} />
+          <>
+            <input
+              type="file"
+              ref={fileInputRef}
+              onChange={handleFileChange}
+              accept=".docx,.pdf"
+              style={{ display: "none" }}
+            />
+            <motion.div
+              variants={itemVariants}
+              whileHover={{ y: -4 }}
+              className="group flex w-32 cursor-pointer flex-col gap-2 sm:w-40"
+              onClick={handleUpload}
+            >
+              <div className="flex aspect-[3/4] flex-col items-center justify-center gap-3 rounded border border-slate-200 bg-white transition-all duration-300 hover:border-blue-500 hover:shadow-lg">
+                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-blue-50 text-blue-600 transition-colors duration-300 group-hover:bg-blue-600 group-hover:text-white">
+                  <Upload size={24} />
+                </div>
+                <span className="px-4 text-center text-xs font-medium text-slate-500">
+                  Upload File
+                  <br />
+                  (.docx, .pdf)
+                </span>
               </div>
-              <span className="px-4 text-center text-xs font-medium text-slate-500">
-                Upload File
-                <br />
-                (.docx, .pdf)
+              <span className="text-center text-sm font-medium text-slate-800 transition-colors group-hover:text-blue-600">
+                Upload Template
               </span>
-            </div>
-            <span className="text-center text-sm font-medium text-slate-800 transition-colors group-hover:text-blue-600">
-              Upload Template
-            </span>
-          </motion.div>
+            </motion.div>
+          </>
 
           {/* Sample Templates */}
           {/* {[
@@ -149,13 +213,61 @@ export default function TemplateDashboard({
         <h2 className="text-base font-medium text-slate-800">Your Templates</h2>
 
         <div className="flex items-center gap-4 text-sm font-medium text-slate-600">
-          <span className="hidden cursor-pointer transition-colors hover:text-slate-900 sm:inline">
-            Owned by Me
-          </span>
+          <div className="relative z-20">
+            {loading ? (
+              <></>
+            ) : (
+              <button
+                onClick={() => setIsOwnerDropdownOpen(!isOwnerDropdownOpen)}
+                className="group hidden cursor-pointer items-center gap-1 transition-colors hover:text-slate-900 sm:flex"
+              >
+                {documentType}
+                <ChevronDown
+                  size={14}
+                  className={`mt-0.5 transition-transform duration-200 ${isOwnerDropdownOpen ? "rotate-180" : "group-hover:translate-y-0.5"}`}
+                />
+              </button>
+            )}
+
+            <AnimatePresence>
+              {isOwnerDropdownOpen && (
+                <>
+                  <div
+                    className="fixed inset-0 z-10"
+                    onClick={() => setIsOwnerDropdownOpen(false)}
+                  ></div>
+                  <motion.div
+                    initial={{ opacity: 0, y: -5, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: -5, scale: 0.95 }}
+                    transition={{ duration: 0.15 }}
+                    className="absolute top-full right-0 z-50 mt-2 w-48 origin-top-right rounded-lg border border-slate-200 bg-white py-1.5 whitespace-nowrap shadow-lg"
+                  >
+                    {documentTypeList.map((option) => (
+                      <button
+                        key={option?.id}
+                        onClick={() => {
+                          setDocumentType(option?.name)
+                          setIsOwnerDropdownOpen(false)
+                        }}
+                        className="flex w-full items-center justify-between px-4 py-2 text-left text-sm text-slate-700 transition-colors hover:bg-slate-50 hover:text-blue-600"
+                      >
+                        {option?.name}
+                        {documentType === option?.name && (
+                          <Check size={16} className="text-blue-600" />
+                        )}
+                      </button>
+                    ))}
+                  </motion.div>
+                </>
+              )}
+            </AnimatePresence>
+          </div>
+
           <span className="hidden text-slate-300 sm:inline">|</span>
-          <span className="flex cursor-pointer items-center gap-2 rounded p-1.5 transition-colors hover:bg-slate-100">
+          <button className="flex cursor-pointer items-center gap-2 rounded p-1.5 transition-colors hover:bg-slate-100">
             <Clock size={16} /> Last opened
-          </span>
+          </button>
         </div>
       </motion.div>
 
