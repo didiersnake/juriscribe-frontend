@@ -12,8 +12,15 @@ export default function Navbar({
   onToggleSidebar: () => void
   onNavigate: (route: string) => void
 }) {
-  const [loading, setIsLoading] = React.useState(true)
-  const { isLoggedIn, setIsLoggedIn, setUser, user, toggleAuth } = useAuth()
+  const {
+    isLoggedIn,
+    setIsLoggedIn,
+    setUser,
+    user,
+    toggleAuth,
+    setLoading,
+    loading,
+  } = useAuth()
 
   useEffect(() => {
     // Check if user is already logged in (e.g., by checking localStorage)
@@ -25,7 +32,7 @@ export default function Navbar({
         .then((data: any) => {
           setUser(data)
           setIsLoggedIn(true)
-          setIsLoading(false)
+          setLoading(false)
         })
         .catch((error) => {
           console.error("Failed to fetch user:", error)

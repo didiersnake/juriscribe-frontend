@@ -23,7 +23,7 @@ const itemVariants = {
   },
 } as const
 export default function GuestHome({ onLogin }: { onLogin: () => void }) {
-  const { isLoggedIn } = useAuth()
+  const { isLoggedIn, loading } = useAuth()
   const router = useRouter()
 
   // useEffect(() => {
@@ -240,11 +240,13 @@ export default function GuestHome({ onLogin }: { onLogin: () => void }) {
 
   return (
     <>
-      <div className="flex min-h-screen flex-col bg-white">
-        {heroSection}
-        {valueProps}
-        {publicTemplateList}
-      </div>
+      {loading ? null : (
+        <div className="flex min-h-screen flex-col bg-white">
+          {heroSection}
+          {valueProps}
+          {publicTemplateList}
+        </div>
+      )}
     </>
   )
 }

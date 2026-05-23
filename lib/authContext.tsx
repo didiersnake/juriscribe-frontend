@@ -6,6 +6,8 @@ const AuthContext = React.createContext<{
   toggleAuth: () => void
   setIsLoggedIn: (value: boolean) => void
   logout: () => void
+  loading: boolean
+  setLoading: (value: boolean) => void
 }>({
   isLoggedIn: false,
   user: null,
@@ -13,6 +15,8 @@ const AuthContext = React.createContext<{
   setIsLoggedIn: () => {},
   logout: () => {},
   setUser: () => {},
+  loading: false,
+  setLoading: () => {},
 })
 export const useAuth = () => React.useContext(AuthContext)
 import React from "react"
@@ -20,6 +24,7 @@ import { User } from "./types"
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [isLoggedIn, setIsLoggedIn] = React.useState(false)
+  const [loading, setLoading] = React.useState(true)
   const [user, setUser] = React.useState(null)
 
   const toggleAuth = () => setIsLoggedIn(!isLoggedIn)
@@ -27,7 +32,16 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <AuthContext.Provider
-      value={{ isLoggedIn, user, toggleAuth, setIsLoggedIn, logout, setUser }}
+      value={{
+        isLoggedIn,
+        user,
+        toggleAuth,
+        setIsLoggedIn,
+        logout,
+        setUser,
+        loading,
+        setLoading,
+      }}
     >
       {children}
     </AuthContext.Provider>

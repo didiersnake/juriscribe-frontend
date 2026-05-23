@@ -37,13 +37,31 @@ interface TemplateDashboardProps {
 export default function TemplateDashboard({
   onNavigate,
 }: TemplateDashboardProps) {
-  const { setIsLoggedIn } = useAuth()
-  const [isloading, setIsLoading] = React.useState<boolean>(true)
+  const { setIsLoggedIn, loading, setLoading } = useAuth()
   const [documentType, setDocumentType] = React.useState<string>()
   const [isOwnerDropdownOpen, setIsOwnerDropdownOpen] = React.useState(false)
   const [documentTypeList, setDocumentTypeList] = React.useState<
     Array<DocumentFileType>
   >([])
+
+  // Create a ref for the hidden input
+  const fileInputRef = React.useRef<HTMLInputElement>(null)
+
+  // Trigger file input click
+  const handleUpload = () => {
+    fileInputRef.current?.click()
+  }
+
+  // Handle file selection
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const handleFileChange = (e: any) => {
+    const selectedFile = e.target.files[0]
+    if (selectedFile) {
+      console.log("File selected:", selectedFile)
+      // Add your upload logic here
+      // handleUpload()
+    }
+  }
 
   React.useEffect(() => {
     // Fetch document types from the backend API
@@ -53,7 +71,7 @@ export default function TemplateDashboard({
         console.log("Fetched document types:", documentTypes)
         setDocumentTypeList(documentTypes)
         setDocumentType(documentTypes[0]?.name)
-        setIsLoading(false)
+        setLoading(false)
       })
       .catch((error) => {
         console.error("Failed to fetch document types:", error)
@@ -77,7 +95,7 @@ export default function TemplateDashboard({
     { title: "Client Retainer Contract", date: "Opened Sep 02", owner: "Me" },
   ]
 
-  const handleUpload = () => {
+  const handleUpload2 = () => {
     alert(
       "Simulating file upload. In production, this opens a file picker to parse .docx or .pdf into the JuriScribe engine."
     )
@@ -125,26 +143,35 @@ export default function TemplateDashboard({
           </motion.div>
 
           {/* Upload Button */}
-          <motion.div
-            variants={itemVariants}
-            whileHover={{ y: -4 }}
-            className="group flex w-32 cursor-pointer flex-col gap-2 sm:w-40"
-            onClick={handleUpload}
-          >
-            <div className="flex aspect-[3/4] flex-col items-center justify-center gap-3 rounded border border-slate-200 bg-white transition-all duration-300 hover:border-blue-500 hover:shadow-lg">
-              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-blue-50 text-blue-600 transition-colors duration-300 group-hover:bg-blue-600 group-hover:text-white">
-                <Upload size={24} />
+          <>
+            <input
+              type="file"
+              ref={fileInputRef}
+              onChange={handleFileChange}
+              accept=".docx,.pdf"
+              style={{ display: "none" }}
+            />
+            <motion.div
+              variants={itemVariants}
+              whileHover={{ y: -4 }}
+              className="group flex w-32 cursor-pointer flex-col gap-2 sm:w-40"
+              onClick={handleUpload}
+            >
+              <div className="flex aspect-[3/4] flex-col items-center justify-center gap-3 rounded border border-slate-200 bg-white transition-all duration-300 hover:border-blue-500 hover:shadow-lg">
+                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-blue-50 text-blue-600 transition-colors duration-300 group-hover:bg-blue-600 group-hover:text-white">
+                  <Upload size={24} />
+                </div>
+                <span className="px-4 text-center text-xs font-medium text-slate-500">
+                  Upload File
+                  <br />
+                  (.docx, .pdf)
+                </span>
               </div>
-              <span className="px-4 text-center text-xs font-medium text-slate-500">
-                Upload File
-                <br />
-                (.docx, .pdf)
+              <span className="text-center text-sm font-medium text-slate-800 transition-colors group-hover:text-blue-600">
+                Upload Template
               </span>
-            </div>
-            <span className="text-center text-sm font-medium text-slate-800 transition-colors group-hover:text-blue-600">
-              Upload Template
-            </span>
-          </motion.div>
+            </motion.div>
+          </>
 
           {/* Sample Templates */}
           {/* {[
@@ -187,7 +214,7 @@ export default function TemplateDashboard({
 
         <div className="flex items-center gap-4 text-sm font-medium text-slate-600">
           <div className="relative z-20">
-            {isloading ? (
+            {loading ? (
               <></>
             ) : (
               <button
