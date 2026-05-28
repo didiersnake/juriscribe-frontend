@@ -4,10 +4,8 @@ import { DocumentFileType } from "@/lib/types"
 import {
   X,
   FileText,
-  Shield,
   FileOutput,
   FileSearch,
-  Sparkles,
   Check,
   CloudUpload,
 } from "lucide-react"
@@ -27,9 +25,16 @@ export default function UploadDialog({
   lawDomainList: Array<DocumentFileType>
   jurisdictionList: Array<DocumentFileType>
 }) {
-  const [docType, setDocType] = useState("")
-  const [jurisdiction, setJurisdiction] = useState("")
-  const [lawDomain, setLawDomain] = useState("")
+  const [docType, setDocType] = useState(documentTypeList[0]?.name || "")
+  const [jurisdiction, setJurisdiction] = useState(
+    jurisdictionList[1]?.name || ""
+  )
+  const [lawDomain, setLawDomain] = useState(lawDomainList[1]?.name || "")
+  const [docTypeId, setDocTypeId] = useState(documentTypeList[0]?.id || 0)
+  const [jurisdictionId, setJurisdictionId] = useState(
+    jurisdictionList[1]?.id || 0
+  )
+  const [lawDomainId, setLawDomainId] = useState(lawDomainList[1]?.id || 0)
 
   const handleClose = () => {
     onClose()
@@ -38,7 +43,7 @@ export default function UploadDialog({
   return (
     <AnimatePresence>
       {isOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6">
+        <div className="fixed inset-0 z-50 flex items-center justify-center rounded-lg p-4 sm:p-6">
           {/* Overlay */}
           <motion.div
             initial={{ opacity: 0 }}
@@ -55,7 +60,7 @@ export default function UploadDialog({
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 10 }}
             transition={{ type: "spring", stiffness: 300, damping: 25 }}
-            className="relative flex max-h-[90vh] w-full max-w-4xl flex-col overflow-hidden rounded-2xl bg-white shadow-2xl"
+            className="relative flex max-h-[90vh] w-full max-w-6xl flex-col overflow-hidden rounded-2xl bg-white shadow-2xl"
           >
             {/* Header */}
             <div className="sticky top-0 z-10 flex items-center justify-between border-b border-slate-100 bg-white px-6 py-5">
@@ -82,7 +87,7 @@ export default function UploadDialog({
 
             {/* Content Body */}
             <div className="flex-1 overflow-y-auto bg-slate-50 px-6 py-8">
-              <div className="grid grid-cols-1 gap-8 md:grid-cols-2 md:gap-12">
+              <div className="grid grid-cols-1 gap-8 md:grid-cols-3 md:gap-6">
                 {/* Topic 1 */}
                 <div>
                   <div className="mb-4">
@@ -100,7 +105,10 @@ export default function UploadDialog({
                       return (
                         <div
                           key={type.id}
-                          onClick={() => setDocType(type?.name)}
+                          onClick={() => {
+                            setDocType(type?.name)
+                            setDocTypeId(type?.id)
+                          }}
                           className="group relative flex cursor-pointer items-center gap-4 rounded-xl border-2 p-4 transition-all duration-200"
                           style={{
                             borderColor: isSelected ? "#2563eb" : "#e2e8f0",
@@ -113,7 +121,7 @@ export default function UploadDialog({
                             if (!isSelected) {
                               ;(
                                 e.currentTarget as HTMLDivElement
-                              ).style.borderColor = "#2563eb"
+                              ).style.borderColor = "#cbd5e1"
                               ;(
                                 e.currentTarget as HTMLDivElement
                               ).style.backgroundColor = "#f8fafc"
@@ -199,7 +207,10 @@ export default function UploadDialog({
                       return (
                         <div
                           key={mode.id}
-                          onClick={() => setJurisdiction(mode.name)}
+                          onClick={() => {
+                            setJurisdiction(mode.name)
+                            setJurisdictionId(mode.id)
+                          }}
                           className="group relative flex cursor-pointer items-center gap-4 rounded-xl border-2 p-4 transition-all duration-200"
                           style={{
                             borderColor: isSelected ? "#4f46e5" : "#e2e8f0",
@@ -212,7 +223,7 @@ export default function UploadDialog({
                             if (!isSelected) {
                               ;(
                                 e.currentTarget as HTMLDivElement
-                              ).style.borderColor = "#4f46e5"
+                              ).style.borderColor = "#cbd5e1"
                               ;(
                                 e.currentTarget as HTMLDivElement
                               ).style.backgroundColor = "#f8fafc"
@@ -298,7 +309,10 @@ export default function UploadDialog({
                       return (
                         <div
                           key={type.id}
-                          onClick={() => setLawDomain(type?.name)}
+                          onClick={() => {
+                            setLawDomain(type?.name)
+                            setLawDomainId(type?.id)
+                          }}
                           className="group relative flex cursor-pointer items-center gap-4 rounded-xl border-2 p-4 transition-all duration-200"
                           style={{
                             borderColor: isSelected ? "#2563eb" : "#e2e8f0",
@@ -311,7 +325,7 @@ export default function UploadDialog({
                             if (!isSelected) {
                               ;(
                                 e.currentTarget as HTMLDivElement
-                              ).style.borderColor = "#2563eb"
+                              ).style.borderColor = "#cbd5e1"
                               ;(
                                 e.currentTarget as HTMLDivElement
                               ).style.backgroundColor = "#f8fafc"
@@ -393,8 +407,12 @@ export default function UploadDialog({
                 </button>
                 <button
                   onClick={() => {
-                    onSubmit({ docType, jurisdiction, lawDomain })
-                    handleClose()
+                    onSubmit({
+                      docType: docTypeId,
+                      jurisdiction: jurisdictionId,
+                      lawDomain: lawDomainId,
+                    })
+                    // handleClose()
                   }}
                   className="flex items-center gap-2 rounded-full bg-blue-600 px-6 py-2 text-sm font-medium text-white shadow-sm transition-all hover:bg-blue-700 active:scale-95"
                 >

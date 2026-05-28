@@ -139,3 +139,38 @@
     @apply text-lg font-bold;
   }
 }
+
+/* Selectable card border states — overrides the global * { border-color } rule */
+.selectable-card {
+  border-color: #e2e8f0;
+  background-color: #ffffff;
+}
+.selectable-card:hover {
+  border-color: #2563eb;
+  background-color: #f8fafc;
+}
+.selectable-card[data-selected="true"] {
+  border-color: #2563eb;
+  background-color: #eff6ff;
+  box-shadow: 0 2px 8px 0 rgba(37, 99, 235, 0.1);
+}
+.selectable-card[data-selected="true"]:hover {
+  border-color: #2563eb;
+  background-color: #eff6ff;
+}
+.selectable-card[data-accent="indigo"] {
+  border-color: #e2e8f0;
+}
+.selectable-card[data-accent="indigo"]:hover {
+  border-color: #4f46e5;
+  background-color: #f8fafc;
+}
+.selectable-card[data-accent="indigo"][data-selected="true"] {
+  border-color: #4f46e5;
+  background-color: #eef2ff;
+  box-shadow: 0 2px 8px 0 rgba(79, 70, 229, 0.1);
+}
+.selectable-card[data-accent="indigo"][data-selected="true"]:hover {
+  border-color: #4f46e5;
+  background-color: #eef2ff;
+}

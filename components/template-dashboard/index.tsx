@@ -57,6 +57,7 @@ export default function TemplateDashboard({
     Array<DocumentFileType>
   >(documentTypes || [])
   const [isUploadDrawerOpen, setIsUploadDrawerOpen] = React.useState(false)
+  const [selectedFile, setSelectedFile] = React.useState<File>()
 
   // Create a ref for the hidden input
   const fileInputRef = React.useRef<HTMLInputElement>(null)
@@ -79,9 +80,9 @@ export default function TemplateDashboard({
 
     const document: DocumentRequest = {
       file: selectedFile,
-      documentTypeId: documentTypeId || 1,
-      lawDomainId: lawDomainId || 2,
-      jurisdictionId: jurisdictionId || 2,
+      documentTypeId: documentTypeId || 0,
+      lawDomainId: lawDomainId || 0,
+      jurisdictionId: jurisdictionId || 0,
     }
 
     const formData = new FormData()
@@ -101,9 +102,7 @@ export default function TemplateDashboard({
     const selectedFile = e.target.files[0]
     if (selectedFile) {
       console.log("File selected:", selectedFile)
-      // Add your upload logic here
-      // handleUpload()
-      // await saveUploadedFile(selectedFile)
+      setSelectedFile(selectedFile)
       setIsUploadDrawerOpen(true)
     }
   }
@@ -219,31 +218,6 @@ export default function TemplateDashboard({
               </span>
             </motion.div>
           </>
-
-          {/* Sample Templates */}
-          {/* {[
-              { title: "Service Agreement" },
-              { title: "Bylaws Framework" },
-            ].map((t, i) => (
-              <motion.div
-                variants={itemVariants}
-                whileHover={{ y: -4 }}
-                key={i}
-                className="group flex hidden w-32 cursor-pointer flex-col gap-2 sm:w-40 md:flex"
-              >
-                <div className="relative aspect-[3/4] overflow-hidden rounded border border-slate-200 bg-white p-3 transition-all duration-300 hover:border-blue-500 hover:shadow-lg">
-                  <div className="mb-4 h-2 w-1/2 rounded bg-slate-200 transition-colors group-hover:bg-blue-100"></div>
-                  <div className="mb-2 h-1 w-full rounded bg-slate-100"></div>
-                  <div className="mb-2 h-1 w-full rounded bg-slate-100"></div>
-                  <div className="mb-2 h-1 w-3/4 rounded bg-slate-100"></div>
-                  <div className="mb-2 h-1 w-full rounded bg-slate-100"></div>
-                  <div className="mb-2 h-1 w-5/6 rounded bg-slate-100"></div>
-                </div>
-                <span className="truncate px-1 text-center text-sm font-medium text-slate-800 transition-colors group-hover:text-blue-600">
-                  {t.title}
-                </span>
-              </motion.div>
-            ))} */}
         </motion.div>
       </div>
     </section>
@@ -395,8 +369,20 @@ export default function TemplateDashboard({
         jurisdictionList={jurisdictions}
         isOpen={isUploadDrawerOpen}
         onClose={() => setIsUploadDrawerOpen(false)}
-        onSubmit={(data: object) => {
-          console.log("Upload Config:", data)
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        onSubmit={async (data: any) => {
+          console.log("upload config ", data)
+
+          if (selectedFile && data) {
+            await saveUploadedFile(
+              selectedFile,
+              data?.docType,
+              data?.lawDomain,
+              data?.jurisdiction
+            )
+          }
+
+          setIsUploadDrawerOpen(false)
         }}
       />
     </div>

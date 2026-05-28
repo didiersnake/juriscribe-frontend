@@ -50,6 +50,12 @@ axiosInstance.interceptors.response.use(
       }
     }
 
+    if (error.response === undefined) {
+      window.location.href = "http://localhost:8888/oauth2/authorization/google"
+      // window.location.href = "/"
+      console.log("Redirecting to login")
+    }
+
     return Promise.reject(error)
   }
 )
