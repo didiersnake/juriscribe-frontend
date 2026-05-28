@@ -12,6 +12,9 @@ import {
 import { AnimatePresence, motion } from "motion/react"
 import React from "react"
 import { useAuth } from "@/lib/authContext"
+import { DocumentRequest } from "@/lib/types"
+import { documentService } from "@/lib/services/documentService"
+import UploadDrawer from "./upload-drawer"
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -37,12 +40,23 @@ interface TemplateDashboardProps {
 export default function TemplateDashboard({
   onNavigate,
 }: TemplateDashboardProps) {
-  const { setIsLoggedIn, loading, setLoading } = useAuth()
-  const [documentType, setDocumentType] = React.useState<string>()
+  const {
+    setIsLoggedIn,
+    loading,
+    setLoading,
+    documentTypes,
+    jurisdictions,
+    lawDomains,
+  } = useAuth()
+
+  const [documentType, setDocumentType] = React.useState<string>(
+    documentTypes[0]?.name || ""
+  )
   const [isOwnerDropdownOpen, setIsOwnerDropdownOpen] = React.useState(false)
   const [documentTypeList, setDocumentTypeList] = React.useState<
     Array<DocumentFileType>
-  >([])
+  >(documentTypes || [])
+  const [isUploadDrawerOpen, setIsUploadDrawerOpen] = React.useState(false)
 
   // Create a ref for the hidden input
   const fileInputRef = React.useRef<HTMLInputElement>(null)
@@ -52,32 +66,65 @@ export default function TemplateDashboard({
     fileInputRef.current?.click()
   }
 
+  const saveUploadedFile = async (
+    selectedFile: File,
+    documentTypeId?: number,
+    lawDomainId?: number,
+    jurisdictionId?: number
+  ) => {
+    if (!selectedFile) {
+      console.error("No file selected")
+      return
+    }
+
+    const document: DocumentRequest = {
+      file: selectedFile,
+      documentTypeId: documentTypeId || 1,
+      lawDomainId: lawDomainId || 2,
+      jurisdictionId: jurisdictionId || 2,
+    }
+
+    const formData = new FormData()
+    formData.append("file", selectedFile)
+    formData.append("documentTypeId", document.documentTypeId.toString())
+    formData.append("lawDomainId", document.lawDomainId.toString())
+    formData.append("jurisdictionId", document.jurisdictionId.toString())
+
+    console.log("Document request:", document)
+    const response = await documentService.create(formData)
+    console.log("Document created:", response)
+  }
+
   // Handle file selection
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const handleFileChange = (e: any) => {
+  const handleFileChange = async (e: any) => {
     const selectedFile = e.target.files[0]
     if (selectedFile) {
       console.log("File selected:", selectedFile)
       // Add your upload logic here
       // handleUpload()
+      // await saveUploadedFile(selectedFile)
+      setIsUploadDrawerOpen(true)
     }
   }
 
   React.useEffect(() => {
     // Fetch document types from the backend API
-    apiClient
-      .get<DocumentFileType[]>("/api/document-types")
-      .then((documentTypes: Array<DocumentFileType>) => {
-        console.log("Fetched document types:", documentTypes)
-        setDocumentTypeList(documentTypes)
-        setDocumentType(documentTypes[0]?.name)
-        setLoading(false)
-      })
-      .catch((error) => {
-        console.error("Failed to fetch document types:", error)
-        setIsLoggedIn(false)
-        onNavigate("/")
-      })
+    if (documentTypes.length === 0) {
+      apiClient
+        .get<DocumentFileType[]>("/api/document-types")
+        .then((documentTypes: Array<DocumentFileType>) => {
+          console.log("Fetched document types:", documentTypes)
+          setDocumentTypeList(documentTypes)
+          setDocumentType(documentTypes[0]?.name)
+          setLoading(false)
+        })
+        .catch((error) => {
+          console.error("Failed to fetch document types:", error)
+          setIsLoggedIn(false)
+          onNavigate("/")
+        })
+    }
   }, [])
 
   const recentTemplates = [
@@ -342,6 +389,16 @@ export default function TemplateDashboard({
     <div className="flex min-h-[calc(100vh-64px)] flex-col overflow-x-hidden bg-white pb-20">
       {newDocument}
       {recentTemplatesSection}
+      <UploadDrawer
+        documentTypeList={documentTypeList}
+        lawDomainList={lawDomains}
+        jurisdictionList={jurisdictions}
+        isOpen={isUploadDrawerOpen}
+        onClose={() => setIsUploadDrawerOpen(false)}
+        onSubmit={(data: object) => {
+          console.log("Upload Config:", data)
+        }}
+      />
     </div>
   )
 }

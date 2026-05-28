@@ -1,8 +1,17 @@
+import { DocumentFileType } from "./types"
+import { User } from "./types"
+
 const AuthContext = React.createContext<{
   isLoggedIn: boolean
   user: User | null
+  documentTypes: Array<DocumentFileType>
+  lawDomains: Array<DocumentFileType>
+  jurisdictions: Array<DocumentFileType>
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   setUser: (user: any) => void
+  setJurisdictions: (jurisdictions: Array<DocumentFileType>) => void
+  setLawDomains: (lawDomains: Array<DocumentFileType>) => void
+  setDocumentTypes: (documentTypes: Array<DocumentFileType>) => void
   toggleAuth: () => void
   setIsLoggedIn: (value: boolean) => void
   logout: () => void
@@ -17,15 +26,29 @@ const AuthContext = React.createContext<{
   setUser: () => {},
   loading: false,
   setLoading: () => {},
+  documentTypes: [],
+  lawDomains: [],
+  jurisdictions: [],
+  setJurisdictions: () => {},
+  setLawDomains: () => {},
+  setDocumentTypes: () => {},
 })
 export const useAuth = () => React.useContext(AuthContext)
 import React from "react"
-import { User } from "./types"
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [isLoggedIn, setIsLoggedIn] = React.useState(false)
   const [loading, setLoading] = React.useState(true)
   const [user, setUser] = React.useState(null)
+  const [lawDomains, setLawDomains] = React.useState<Array<DocumentFileType>>(
+    []
+  )
+  const [jurisdictions, setJurisdictions] = React.useState<
+    Array<DocumentFileType>
+  >([])
+  const [documentTypes, setDocumentTypes] = React.useState<
+    Array<DocumentFileType>
+  >([])
 
   const toggleAuth = () => setIsLoggedIn(!isLoggedIn)
   const logout = () => setIsLoggedIn(false)
@@ -41,6 +64,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         setUser,
         loading,
         setLoading,
+        documentTypes,
+        lawDomains,
+        jurisdictions,
+        setJurisdictions,
+        setLawDomains,
+        setDocumentTypes,
       }}
     >
       {children}

@@ -10,9 +10,9 @@ export const API_BASE_URL = "http://localhost:8888"
 // Create axios instance
 const axiosInstance: AxiosInstance = axios.create({
   baseURL: API_BASE_URL,
-  headers: {
-    "Content-Type": "application/json",
-  },
+  // headers: {
+  //   // "Content-Type": "multipart/form-data",
+  // },
   withCredentials: true,
 })
 
@@ -23,6 +23,11 @@ axiosInstance.interceptors.request.use(
 
     if (token) {
       config.headers.Authorization = `Bearer ${token}`
+    }
+
+    // Only set Content-Type if the data is NOT FormData
+    if (!(config.data instanceof FormData)) {
+      config.headers["Content-Type"] = "application/json"
     }
 
     return config
