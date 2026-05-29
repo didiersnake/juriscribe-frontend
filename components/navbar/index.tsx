@@ -151,6 +151,23 @@ export default function Navbar({
   const RightNav = (isLoggedIn: boolean) => {
     return (
       <div className="flex shrink-0 items-center gap-1 sm:gap-3">
+        {isLoggedIn && (
+          <>
+            <button
+              className="hidden rounded-full p-2 text-slate-600 transition-colors hover:bg-slate-100 active:scale-95 md:block"
+              title="Help"
+            >
+              <HelpCircle size={22} />
+            </button>
+            <button
+              className="hidden rounded-full p-2 text-slate-600 transition-colors hover:bg-slate-100 active:scale-95 md:block"
+              title="Settings"
+            >
+              <Settings size={22} />
+            </button>
+          </>
+        )}
+
         <div className="pl-2">
           {isLoggedIn ? (
             <div className="group relative">
@@ -190,23 +207,6 @@ export default function Navbar({
             </button>
           )}
         </div>
-
-        {isLoggedIn && (
-          <>
-            <button
-              className="hidden rounded-full p-2 text-slate-600 transition-colors hover:bg-slate-100 active:scale-95 md:block"
-              title="Help"
-            >
-              <HelpCircle size={22} />
-            </button>
-            <button
-              className="hidden rounded-full p-2 text-slate-600 transition-colors hover:bg-slate-100 active:scale-95 md:block"
-              title="Settings"
-            >
-              <Settings size={22} />
-            </button>
-          </>
-        )}
       </div>
     )
   }

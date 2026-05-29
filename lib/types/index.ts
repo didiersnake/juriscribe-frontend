@@ -20,13 +20,14 @@ export interface Template {
 // Document
 export interface Document {
   id: string
-  file: File
-  documentTypeId: number
-  lawDomainId: number
-  jurisdictionId: number
-  content: string
-  userId: string
-  // createdAt: string
+  filePath: string
+  fileName: string
+  documentType: number
+  lawDomain: number
+  jurisdiction: number
+  last_opened: string
+  user_id: string
+  createdAt: string
   // updatedAt: string
 }
 
