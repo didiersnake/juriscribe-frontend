@@ -5,9 +5,8 @@ export const documentService = {
   // Get all user documents (SECURED)
   async getAll(): Promise<Document[]> {
     try {
-      const response =
-        await apiClient.get<ApiResponse<Document[]>>("/documents")
-      return response.data
+      const response = await apiClient.get<Document[]>("/documents")
+      return response
     } catch (error) {
       console.error("Failed to fetch documents:", error)
       throw error
@@ -17,10 +16,8 @@ export const documentService = {
   // Get single document (SECURED)
   async getById(id: string): Promise<Document> {
     try {
-      const response = await apiClient.get<ApiResponse<Document>>(
-        `/documents/${id}`
-      )
-      return response.data
+      const response = await apiClient.get<Document>(`/documents/${id}`)
+      return response
     } catch (error) {
       console.error(`Failed to fetch document ${id}:`, error)
       throw error
@@ -33,11 +30,9 @@ export const documentService = {
   async create(data: FormData): Promise<any> {
     try {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const response = await apiClient.post<ApiResponse<any>>(
-        "/api/documents",
-        data
-      )
-      return response.data
+      const response = await apiClient.post<any>("/api/documents", data)
+
+      return response
     } catch (error) {
       console.error("Failed to create document:", error)
       throw error
@@ -47,11 +42,8 @@ export const documentService = {
   // Update document (SECURED)
   async update(id: string, data: Partial<Document>): Promise<Document> {
     try {
-      const response = await apiClient.put<ApiResponse<Document>>(
-        `/documents/${id}`,
-        data
-      )
-      return response.data
+      const response = await apiClient.put<Document>(`/documents/${id}`, data)
+      return response
     } catch (error) {
       console.error(`Failed to update document ${id}:`, error)
       throw error
@@ -61,11 +53,10 @@ export const documentService = {
   // Save document content (SECURED)
   async saveContent(id: string, content: string): Promise<Document> {
     try {
-      const response = await apiClient.put<ApiResponse<Document>>(
-        `/documents/${id}`,
-        { content }
-      )
-      return response.data
+      const response = await apiClient.put<Document>(`/documents/${id}`, {
+        content,
+      })
+      return response
     } catch (error) {
       console.error(`Failed to save document ${id}:`, error)
       throw error

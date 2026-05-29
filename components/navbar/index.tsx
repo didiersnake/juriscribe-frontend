@@ -30,23 +30,6 @@ export default function Navbar({
   } = useAuth()
 
   useEffect(() => {
-    // Check if user is already logged in (e.g., by checking localStorage)
-    if (isLoggedIn === false) {
-      apiClient
-        .get("/api/users/user")
-        .then((data: any) => {
-          setUser(data)
-          setIsLoggedIn(true)
-          setLoading(false)
-        })
-        .catch((error) => {
-          setIsLoggedIn(false)
-          onNavigate("/")
-          setLoading(false)
-          console.error("Failed to fetch user:", error)
-        })
-    }
-
     if (documentTypes.length === 0) {
       console.log("Fetching document types")
       apiClient
@@ -79,6 +62,27 @@ export default function Navbar({
         })
         .catch((error) => {
           console.error("Failed to fetch law domains:", error)
+        })
+    }
+  }, [isLoggedIn])
+
+  useEffect(() => {
+    // Check if user is already logged in (e.g., by checking localStorage)
+    if (isLoggedIn === false) {
+      apiClient
+        .get("/api/users/user")
+        .then((data: any) => {
+          setUser(data)
+          setLoading(false)
+          setIsLoggedIn(true)
+        })
+        .catch((error) => {
+          // setIsLoggedIn(false)
+          setLoading(false)
+          if (error.response === undefined) {
+            onNavigate("/")
+          }
+          console.error("Failed to fetch user:", error)
         })
     }
   }, [])
@@ -169,7 +173,7 @@ export default function Navbar({
         )}
 
         <div className="pl-2">
-          {isLoggedIn ? (
+          {isLoggedIn && loading === false ? (
             <div className="group relative">
               <button className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-indigo-600 text-sm font-medium text-white shadow-sm transition-all active:scale-95 sm:h-10 sm:w-10 sm:text-base">
                 {user?.name ? (
@@ -215,7 +219,7 @@ export default function Navbar({
     <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-slate-200 bg-white px-4">
       {leftNav}
       {middleNav}
-      {loading ? <></> : RightNav(isLoggedIn)}
+      {RightNav(isLoggedIn)}
     </header>
   )
 }

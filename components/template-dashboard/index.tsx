@@ -16,6 +16,8 @@ import { useAuth } from "@/lib/authContext"
 import { documentService } from "@/lib/services/documentService"
 import UploadDrawer from "./upload-drawer"
 import { useRouter } from "next/navigation"
+import EdgeLoader from "../ui/edgeLoader"
+import Toast from "../ui/toast"
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -54,6 +56,8 @@ export default function TemplateDashboard({
     documentTypes[0] || { id: 0, name: "", description: "", createdAt: "" }
   )
   const [docTypeLoading, setDocTypeLoading] = React.useState(true)
+  const [edgeLoaderOpen, setEdgeLoaderOpen] = React.useState(true)
+  const [toastOpen, setToastOpen] = React.useState(false)
 
   const [isOwnerDropdownOpen, setIsOwnerDropdownOpen] = React.useState(false)
   const [documentTypeList, setDocumentTypeList] = React.useState<
@@ -63,6 +67,8 @@ export default function TemplateDashboard({
   const [selectedFile, setSelectedFile] = React.useState<File>()
 
   const [loadedDocuments, setLoadedDocuments] = React.useState<Document[]>([])
+  const [toastType, setToastType] = React.useState("")
+  const [toastMessage, setToastMessage] = React.useState("")
 
   // Create a ref for the hidden input
   const fileInputRef = React.useRef<HTMLInputElement>(null)
@@ -98,7 +104,11 @@ export default function TemplateDashboard({
 
     console.log("Document request:", document)
     const response = await documentService.create(formData)
-    console.log("Document created:", response)
+    if (response) {
+      console.log("Document created:", response)
+      setEdgeLoaderOpen(false)
+      displayToast("success", "Document created successfully")
+    }
   }
 
   // Handle file selection
@@ -120,6 +130,7 @@ export default function TemplateDashboard({
         .then((documents) => {
           setLoadedDocuments(documents)
           setDocTypeLoading(false)
+          setEdgeLoaderOpen(false)
           console.log(" Loaded documents", documents)
         })
         .catch((error) => {
@@ -152,6 +163,11 @@ export default function TemplateDashboard({
   }, [])
 
   const router = useRouter()
+  const displayToast = (type: string, message: string) => {
+    setToastType(type)
+    setToastMessage(message)
+    setToastOpen(true)
+  }
   const recentTemplates = [
     {
       title: "Employment Agreement (Executive)",
@@ -474,20 +490,41 @@ export default function TemplateDashboard({
         onClose={() => setIsUploadDrawerOpen(false)}
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         onSubmit={async (data: any) => {
-          console.log("upload config ", data)
+          // console.log("upload config ", data)
+          const { docType, jurisdiction, lawDomain } = data
 
-          if (selectedFile && data) {
-            await saveUploadedFile(
-              selectedFile,
-              data?.docType,
-              data?.lawDomain,
-              data?.jurisdiction
-            )
+          if (
+            !docType ||
+            !jurisdiction ||
+            !lawDomain ||
+            docType === 0 ||
+            jurisdiction === 0 ||
+            lawDomain === 0
+          ) {
+            displayToast("error", "Please select document category details")
+            return
           }
 
-          setIsUploadDrawerOpen(false)
+          if (selectedFile && data) {
+            setEdgeLoaderOpen(true)
+            setIsUploadDrawerOpen(false)
+
+            await saveUploadedFile(
+              selectedFile,
+              docType,
+              lawDomain,
+              jurisdiction
+            )
+          }
         }}
       />
+      <EdgeLoader isLoading={edgeLoaderOpen} />
+      {/* <Toast
+        isOpen={toastOpen}
+        type={toastType}
+        message={toastMessage}
+        onClose={() => setToastOpen(false)}
+      /> */}
     </div>
   )
 }
