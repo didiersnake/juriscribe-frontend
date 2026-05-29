@@ -8,7 +8,7 @@ import TextAlign from "@tiptap/extension-text-align"
 import Highlight from "@tiptap/extension-highlight"
 import { ChevronLeft, Download, Save } from "lucide-react"
 export default function TextEditor({ onBack }: { onBack: () => void }) {
-  const [fileName, setFileName] = React.useState("Untitled Document")
+  const [fileName, setFileName] = React.useState("Didier Djakoua")
 
   const debounceTimer = React.useRef<ReturnType<typeof setTimeout> | null>(null)
   const isSaving = React.useRef(false)
@@ -17,7 +17,7 @@ export default function TextEditor({ onBack }: { onBack: () => void }) {
   const DEBOUNCE_DELAY = 1000 // ms — waits 1s after user stops typing
 
   function getSavedContent(): string {
-    if (typeof window === "undefined") return "<p>Hello World!2</p>" // SSR guard
+    if (typeof window === "undefined") return "<p>Hello World!</p>" // SSR guard
     return localStorage.getItem(STORAGE_KEY) ?? "<p>Hello World!!!!!!!!!!!!</p>"
   }
 
