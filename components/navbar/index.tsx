@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client"
 import { Menu, Search, Settings, HelpCircle, User, LogOut } from "lucide-react"
 import { useAuth } from "@/lib/authContext"
@@ -20,22 +21,64 @@ export default function Navbar({
     toggleAuth,
     setLoading,
     loading,
+    documentTypes,
+    lawDomains,
+    jurisdictions,
+    setJurisdictions,
+    setLawDomains,
+    setDocumentTypes,
   } = useAuth()
 
   useEffect(() => {
     // Check if user is already logged in (e.g., by checking localStorage)
-
     if (isLoggedIn === false) {
       apiClient
         .get("/api/users/user")
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         .then((data: any) => {
           setUser(data)
           setIsLoggedIn(true)
           setLoading(false)
         })
         .catch((error) => {
+          setIsLoggedIn(false)
+          onNavigate("/")
+          setLoading(false)
           console.error("Failed to fetch user:", error)
+        })
+    }
+
+    if (documentTypes.length === 0) {
+      console.log("Fetching document types")
+      apiClient
+        .get("/api/document-types")
+        .then((data: any) => {
+          setDocumentTypes(data)
+        })
+        .catch((error) => {
+          console.error("Failed to fetch document types:", error)
+        })
+    }
+
+    if (jurisdictions.length === 0) {
+      console.log("Fetching jurisdictions")
+      apiClient
+        .get("/api/jurisdictions")
+        .then((data: any) => {
+          setJurisdictions(data)
+        })
+        .catch((error) => {
+          console.error("Failed to fetch jurisdictions:", error)
+        })
+    }
+
+    if (lawDomains.length === 0) {
+      apiClient
+        .get("/api/law-domains")
+        .then((data: any) => {
+          setLawDomains(data)
+        })
+        .catch((error) => {
+          console.error("Failed to fetch law domains:", error)
         })
     }
   }, [])
@@ -108,6 +151,23 @@ export default function Navbar({
   const RightNav = (isLoggedIn: boolean) => {
     return (
       <div className="flex shrink-0 items-center gap-1 sm:gap-3">
+        {isLoggedIn && (
+          <>
+            <button
+              className="hidden rounded-full p-2 text-slate-600 transition-colors hover:bg-slate-100 active:scale-95 md:block"
+              title="Help"
+            >
+              <HelpCircle size={22} />
+            </button>
+            <button
+              className="hidden rounded-full p-2 text-slate-600 transition-colors hover:bg-slate-100 active:scale-95 md:block"
+              title="Settings"
+            >
+              <Settings size={22} />
+            </button>
+          </>
+        )}
+
         <div className="pl-2">
           {isLoggedIn ? (
             <div className="group relative">
@@ -147,23 +207,6 @@ export default function Navbar({
             </button>
           )}
         </div>
-
-        {isLoggedIn && (
-          <>
-            <button
-              className="hidden rounded-full p-2 text-slate-600 transition-colors hover:bg-slate-100 active:scale-95 md:block"
-              title="Help"
-            >
-              <HelpCircle size={22} />
-            </button>
-            <button
-              className="hidden rounded-full p-2 text-slate-600 transition-colors hover:bg-slate-100 active:scale-95 md:block"
-              title="Settings"
-            >
-              <Settings size={22} />
-            </button>
-          </>
-        )}
       </div>
     )
   }

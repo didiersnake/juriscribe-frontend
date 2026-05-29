@@ -1,8 +1,6 @@
 import { useAuth } from "@/lib/authContext"
-import { apiClient } from "@/lib/services/api"
 import { FileText, Shield, ArrowRight, BookOpen, Layers } from "lucide-react"
 import { motion } from "motion/react"
-import { useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { SigninIcon } from "../ui/button"
 

@@ -20,19 +20,29 @@ export interface Template {
 // Document
 export interface Document {
   id: string
-  title: string
-  templateId: string
-  content: string
-  userId: string
+  filePath: string
+  fileName: string
+  documentType: number
+  lawDomain: number
+  jurisdiction: number
+  last_opened: string
+  user_id: string
   createdAt: string
-  updatedAt: string
+  // updatedAt: string
+}
+
+export interface DocumentRequest {
+  file: File
+  documentTypeId: number
+  lawDomainId: number
+  jurisdictionId: number
 }
 
 export interface DocumentFileType {
   id: number
   name: string
   description: string
-  // createdAt: string
+  createdAt: string
 }
 
 // API Response wrapper

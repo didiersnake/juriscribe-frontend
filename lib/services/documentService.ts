@@ -28,12 +28,13 @@ export const documentService = {
   },
 
   // Create new document from template (SECURED)
-  async create(
-    data: Omit<Document, "id" | "userId" | "createdAt" | "updatedAt">
-  ): Promise<Document> {
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  async create(data: FormData): Promise<any> {
     try {
-      const response = await apiClient.post<ApiResponse<Document>>(
-        "/documents",
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const response = await apiClient.post<ApiResponse<any>>(
+        "/api/documents",
         data
       )
       return response.data
