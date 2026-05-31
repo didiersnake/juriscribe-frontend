@@ -16,6 +16,8 @@ const AuthContext = React.createContext<{
   setIsLoggedIn: (value: boolean) => void
   logout: () => void
   loading: boolean
+  documentId: number
+  setDocumentId: (id: number) => void
   setLoading: (value: boolean) => void
 }>({
   isLoggedIn: false,
@@ -32,6 +34,8 @@ const AuthContext = React.createContext<{
   setJurisdictions: () => {},
   setLawDomains: () => {},
   setDocumentTypes: () => {},
+  documentId: 0,
+  setDocumentId: () => {},
 })
 export const useAuth = () => React.useContext(AuthContext)
 import React from "react"
@@ -49,6 +53,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [documentTypes, setDocumentTypes] = React.useState<
     Array<DocumentFileType>
   >([])
+  const [documentId, setDocumentId] = React.useState(0)
 
   const toggleAuth = () => setIsLoggedIn(!isLoggedIn)
   const logout = () => setIsLoggedIn(false)
@@ -56,6 +61,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   return (
     <AuthContext.Provider
       value={{
+        documentId,
+        setDocumentId,
         isLoggedIn,
         user,
         toggleAuth,

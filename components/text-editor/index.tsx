@@ -7,39 +7,34 @@ import MenuBar from "./menu-bar"
 import TextAlign from "@tiptap/extension-text-align"
 import Highlight from "@tiptap/extension-highlight"
 import { ChevronLeft, Download, Save } from "lucide-react"
-export default function TextEditor({ onBack }: { onBack: () => void }) {
-  const [fileName, setFileName] = React.useState("Didier Djakoua")
+import { useAuth } from "@/lib/authContext"
 
+export default function TextEditor({
+  onBack,
+  content,
+  name,
+}: {
+  onBack: () => void
+  content: string
+  name: string
+}) {
+  const [fileName, setFileName] = React.useState(name)
+  const { documentId, setDocumentId } = useAuth()
   const debounceTimer = React.useRef<ReturnType<typeof setTimeout> | null>(null)
   const isSaving = React.useRef(false)
 
   const STORAGE_KEY = "editor_draft"
   const DEBOUNCE_DELAY = 1000 // ms — waits 1s after user stops typing
 
-  function getSavedContent(): string {
+  function getSavedContent(content: string): string {
     if (typeof window === "undefined") return "<p>Hello World!</p>" // SSR guard
-    return localStorage.getItem(STORAGE_KEY) ?? "<p>Hello World!!!!!!!!!!!!</p>"
+    const saved = localStorage.getItem(STORAGE_KEY)
+    if (documentId !== 0) {
+      return content
+    }
+    setDocumentId(0) // Reset after loading to prevent re-fetching on every editor mount
+    return "<p>Hello World!!!!</p>"
   }
-
-  // Stable save function — doesn't change between renders
-  const saveToStorage = React.useCallback((html: string) => {
-    isSaving.current = true
-    localStorage.setItem(STORAGE_KEY, html)
-    isSaving.current = false
-  }, [])
-
-  // Debounced version — resets the timer on every keystroke
-  const debouncedSave = React.useCallback(
-    (html: string) => {
-      if (debounceTimer.current) {
-        clearTimeout(debounceTimer.current)
-      }
-      debounceTimer.current = setTimeout(() => {
-        saveToStorage(html)
-      }, DEBOUNCE_DELAY)
-    },
-    [saveToStorage]
-  )
 
   const editor = useEditor({
     extensions: [
@@ -60,7 +55,7 @@ export default function TextEditor({ onBack }: { onBack: () => void }) {
       }),
       Highlight,
     ],
-    content: getSavedContent(),
+    content: getSavedContent(content),
     immediatelyRender: false,
     editorProps: {
       attributes: {
@@ -72,6 +67,26 @@ export default function TextEditor({ onBack }: { onBack: () => void }) {
       debouncedSave(editor.getHTML())
     },
   })
+
+  // Stable save function — doesn't change between renders
+  const saveToStorage = React.useCallback((html: string) => {
+    isSaving.current = true
+    localStorage.setItem(STORAGE_KEY, html)
+    isSaving.current = false
+  }, [])
+
+  // Debounced version — resets the timer on every keystroke
+  const debouncedSave = React.useCallback(
+    (html: string) => {
+      if (debounceTimer.current) {
+        clearTimeout(debounceTimer.current)
+      }
+      debounceTimer.current = setTimeout(() => {
+        saveToStorage(html)
+      }, DEBOUNCE_DELAY)
+    },
+    [saveToStorage]
+  )
 
   // ── Cleanup: flush any pending save when component unmounts
   React.useEffect(() => {
