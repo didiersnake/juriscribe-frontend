@@ -14,6 +14,7 @@ import { useAuth } from "@/lib/authContext"
 import React from "react"
 import { apiClient } from "@/lib/services/api"
 import { useEffect } from "react"
+import { getCookie } from "@/lib/utils"
 
 export default function Navbar({
   onToggleSidebar,
@@ -36,6 +37,7 @@ export default function Navbar({
     setJurisdictions,
     setLawDomains,
     setDocumentTypes,
+    changeLocale,
   } = useAuth()
 
   useEffect(() => {
@@ -99,12 +101,11 @@ export default function Navbar({
   // const handleLogout = () => {}
 
   const [isLanguageOpen, setIsLanguageOpen] = React.useState(false)
-  const { setLocale, locale } = useAuth()
-
   const languages = [
     { code: "en", label: "English" },
     { code: "fr", label: "Français" },
   ]
+  const locale = getCookie("locale") || "fr"
 
   const handleLogin = () => {
     window.location.href = "http://localhost:8888/oauth2/authorization/google"
@@ -181,7 +182,9 @@ export default function Navbar({
           >
             <Globe size={20} />
             <span className="text-sm font-medium">
-              {locale.substring(0, 2).toUpperCase()}
+              {languages
+                .find((lang) => lang.code === locale)
+                ?.code.toUpperCase() || "FR"}
             </span>
           </button>
 
@@ -196,13 +199,13 @@ export default function Navbar({
                   <button
                     key={lang.code}
                     onClick={() => {
-                      setLocale(lang.label)
+                      changeLocale(lang.code)
                       setIsLanguageOpen(false)
                     }}
-                    className={`flex w-full items-center justify-between px-4 py-2 text-left text-sm transition-colors ${locale === lang.label ? "bg-blue-50 font-medium text-blue-700" : "text-slate-700 hover:bg-slate-50"}`}
+                    className={`flex w-full items-center justify-between px-4 py-2 text-left text-sm transition-colors ${locale === lang.code ? "bg-blue-50 font-medium text-blue-700" : "text-slate-700 hover:bg-slate-50"}`}
                   >
                     <span>{lang.label}</span>
-                    {locale === lang.label && <Check size={16} />}
+                    {locale === lang.code && <Check size={16} />}
                   </button>
                 ))}
               </div>

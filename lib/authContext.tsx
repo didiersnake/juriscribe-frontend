@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { DocumentFileType } from "./types"
 import { User } from "./types"
 
@@ -7,7 +8,6 @@ const AuthContext = React.createContext<{
   documentTypes: Array<DocumentFileType>
   lawDomains: Array<DocumentFileType>
   jurisdictions: Array<DocumentFileType>
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   setUser: (user: any) => void
   setJurisdictions: (jurisdictions: Array<DocumentFileType>) => void
   setLawDomains: (lawDomains: Array<DocumentFileType>) => void
@@ -15,12 +15,13 @@ const AuthContext = React.createContext<{
   toggleAuth: () => void
   setIsLoggedIn: (value: boolean) => void
   logout: () => void
+  changeLocale: (locale: string) => void
   loading: boolean
   documentId: number
   setDocumentId: (id: number) => void
   setLoading: (value: boolean) => void
-  locale: string
-  setLocale: (locale: string) => void
+  locale: any
+  setLocale: ({ label, code }: { label: string; code: string }) => void
 }>({
   isLoggedIn: false,
   user: null,
@@ -38,8 +39,9 @@ const AuthContext = React.createContext<{
   setDocumentTypes: () => {},
   documentId: 0,
   setDocumentId: () => {},
-  locale: "",
+  locale: {},
   setLocale: () => {},
+  changeLocale: () => {},
 })
 export const useAuth = () => React.useContext(AuthContext)
 import React from "react"
@@ -58,12 +60,16 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     Array<DocumentFileType>
   >([])
 
-  const [locale, setLocale] = React.useState("en")
+  const [locale, setLocale] = React.useState({ label: "Français", code: "fr" })
   const [documentId, setDocumentId] = React.useState(0)
 
   const toggleAuth = () => setIsLoggedIn(!isLoggedIn)
   const logout = () => setIsLoggedIn(false)
 
+  const changeLocale = (code: string) => {
+    document.cookie = `locale=${code}; path=/; max-age=31536000` // 1 year
+    window.location.reload()
+  }
   return (
     <AuthContext.Provider
       value={{
@@ -71,6 +77,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         setLocale,
         documentId,
         setDocumentId,
+        changeLocale,
         isLoggedIn,
         user,
         toggleAuth,
