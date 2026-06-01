@@ -1,5 +1,5 @@
 import { apiClient } from "./api"
-import { Document, ApiResponse, DocumentContentResponse } from "@/lib/types"
+import { Document, DocumentContentResponse } from "@/lib/types"
 
 export const documentService = {
   // Get all user documents (SECURED)

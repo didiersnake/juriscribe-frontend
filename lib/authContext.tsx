@@ -19,6 +19,8 @@ const AuthContext = React.createContext<{
   documentId: number
   setDocumentId: (id: number) => void
   setLoading: (value: boolean) => void
+  locale: string
+  setLocale: (locale: string) => void
 }>({
   isLoggedIn: false,
   user: null,
@@ -36,6 +38,8 @@ const AuthContext = React.createContext<{
   setDocumentTypes: () => {},
   documentId: 0,
   setDocumentId: () => {},
+  locale: "",
+  setLocale: () => {},
 })
 export const useAuth = () => React.useContext(AuthContext)
 import React from "react"
@@ -53,6 +57,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [documentTypes, setDocumentTypes] = React.useState<
     Array<DocumentFileType>
   >([])
+
+  const [locale, setLocale] = React.useState("en")
   const [documentId, setDocumentId] = React.useState(0)
 
   const toggleAuth = () => setIsLoggedIn(!isLoggedIn)
@@ -61,6 +67,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   return (
     <AuthContext.Provider
       value={{
+        locale,
+        setLocale,
         documentId,
         setDocumentId,
         isLoggedIn,
