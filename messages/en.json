@@ -1,0 +1,92 @@
+{
+  "Homepage": {
+    "hero": {
+      "badge": "The new standard for legal templates",
+      "title": "Draft legal documents with",
+      "titleHighlight": "confidence and speed",
+      "description": "JuriScribe provides a powerful, robust template engine for legal professionals. Sign in to access premium templates, upload your own frameworks, and generate flawless PDFs in seconds.",
+      "cta": {
+        "exploreLibrary": "Explore Template Library",
+        "signIn": "Sign in",
+        "explorePublicLibrary": "Explore Public Library"
+      }
+    },
+    "insights": {
+      "googleDocs": {
+        "title": "Google Docs Interface",
+        "description": "Enjoy a familiar, sleek editing experience. No learning curve required. Format, edit, and export just like you always have."
+      },
+      "bankPrivacy": {
+        "title": "Bank-Grade Privacy",
+        "description": "Your templates and client data belong to you. We employ rigorous encryption protocols to keep confidential documents secure."
+      },
+      "customTemplates": {
+        "title": "Custom Templates",
+        "description": "Upload your custom boilerplate agreements. Share them across your organization or keep them private to your account."
+      }
+    },
+    "howItWorks": {
+      "heading": "How JuriScribe Works",
+      "subheading": "From template to finalized document in three simple steps.",
+      "steps": [
+        {
+          "step": "01",
+          "title": "Upload or Select",
+          "desc": "Choose from our expertly crafted public library or securely upload your own firm's proprietary DOCX templates."
+        },
+        {
+          "step": "02",
+          "title": "Edit & Customize with Juris AI",
+          "desc": "Use our intuitive editor to fill in client details, modify clauses, and tailor the document to your specific case needs. All this powered by our robust AI engine that ensures your edits maintain legal integrity."
+        },
+        {
+          "step": "03",
+          "title": "Export & Sign",
+          "desc": "Generate a perfectly formatted document ready for electronic signature or printing, saving hours of manual work."
+        }
+      ]
+    },
+    "templates": {
+      "title": "Featured Public Templates",
+      "desc": "A small sample of what is available inside JuriScribe.",
+      "viewAll": "View all"
+    },
+    "features": {
+      "heading": "Everything you need to practice efficiently",
+      "subheading": "Discover the powerful capabilities built directly into JuriScribe to help your legal team work faster and smarter.",
+      "items": {
+        "cloudSynchronization": {
+          "title": "Cloud Synchronization",
+          "desc": "Access your firm's templates securely from any device, anywhere."
+        },
+        "oneClickExport": {
+          "title": "One-click Export",
+          "desc": "Generate perfectly formatted, print-ready PDFs instantly."
+        },
+        "versionControl": {
+          "title": "Version Control",
+          "desc": "Never lose a draft. Track changes and revert to previous template versions."
+        },
+        "editablePdfDocx": {
+          "title": "Editable PDF & DOCX",
+          "desc": "Easily modify templates in our built-in editor or upload your own DOCX & PDF files."
+        }
+      }
+    }
+  },
+
+  "Navbar": {
+    "help": "Help",
+    "settings": "Settings",
+    "logout": "Log out",
+    "signIn": "Sign In"
+  },
+
+  "Footer": {
+    "brandName": "JuriScribe",
+    "copyright": "© {{year}} All rights reserved.",
+    "privacyPolicy": "Privacy Policy",
+    "termsOfService": "Terms of Service",
+    "contact": "Contact"
+  }
+}

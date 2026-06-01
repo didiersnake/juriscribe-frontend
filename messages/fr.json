@@ -1,0 +1,92 @@
+{
+  "Homepage": {
+    "hero": {
+      "badge": "La nouvelle référence pour vos modèles d'actes juridiques",
+      "title": "Rédigez vos documents juridiques en toute",
+      "titleHighlight": "confiance et rapidité",
+      "description": "JuriScribe met un moteur de modèles puissant et robuste au service des professionnels du droit. Connectez-vous pour accéder à nos modèles premium, importez vos propres trames et générez des PDF impeccables en quelques secondes.",
+      "cta": {
+        "exploreLibrary": "Explorer la bibliothèque de modèles",
+        "signIn": "Se connecter",
+        "explorePublicLibrary": "Explorer la bibliothèque publique"
+      }
+    },
+    "insights": {
+      "googleDocs": {
+        "title": "Interface type Google Docs",
+        "description": "Profitez d'une expérience d'édition fluide et familière. Aucune formation requise. Mettez en page, modifiez et exportez comme vous l'avez toujours fait."
+      },
+      "bankPrivacy": {
+        "title": "Confidentialité de niveau bancaire",
+        "description": "Vos modèles et les données de vos clients vous appartiennent. Nous utilisons des protocoles de chiffrement rigoureux pour garantir la sécurité de vos documents confidentiels."
+      },
+      "customTemplates": {
+        "title": "Modèles personnalisés",
+        "description": "Importez vos propres modèles de contrats types. Partagez-les avec l'ensemble de votre cabinet ou gardez-les privés sur votre compte."
+      }
+    },
+    "howItWorks": {
+      "heading": "Comment fonctionne JuriScribe",
+      "subheading": "Passez du modèle au document finalisé en trois étapes simples.",
+      "steps": [
+        {
+          "step": "01",
+          "title": "Importez ou sélectionnez",
+          "desc": "Choisissez un document parmi notre bibliothèque publique conçue par des experts, ou importez en toute sécurité les modèles DOCX exclusifs de votre cabinet."
+        },
+        {
+          "step": "02",
+          "title": "Modifiez et personnalisez avec Juris AI",
+          "desc": "Utilisez notre éditeur intuitif pour renseigner les informations du client, modifier les clauses et adapter le document aux spécificités de votre dossier. Le tout est propulsé par notre puissant moteur IA qui garantit la conformité juridique de vos modifications."
+        },
+        {
+          "step": "03",
+          "title": "Exportez et signez",
+          "desc": "Générez un document parfaitement mis en page, prêt pour la signature électronique ou l'impression, vous épargnant ainsi des heures de travail manuel."
+        }
+      ]
+    },
+    "templates": {
+      "title": "Modèles publics à la une",
+      "desc": "Un simple aperçu de ce qui vous attend sur JuriScribe.",
+      "viewAll": "Tout afficher"
+    },
+    "features": {
+      "heading": "Tout ce dont vous avez besoin pour exercer efficacement",
+      "subheading": "Découvrez les fonctionnalités puissantes intégrées à JuriScribe pour aider votre équipe juridique à travailler plus vite et plus intelligemment.",
+      "items": {
+        "cloudSynchronization": {
+          "title": "Synchronisation cloud",
+          "desc": "Accédez aux modèles de votre cabinet en toute sécurité, depuis n'importe quel appareil et où que vous soyez."
+        },
+        "oneClickExport": {
+          "title": "Export en un clic",
+          "desc": "Générez instantanément des PDF parfaitement mis en page et prêts à imprimer."
+        },
+        "versionControl": {
+          "title": "Suivi des versions",
+          "desc": "Ne perdez plus jamais un brouillon. Suivez les modifications et restaurez les versions antérieures de vos modèles."
+        },
+        "editablePdfDocx": {
+          "title": "PDF & DOCX modifiables",
+          "desc": "Modifiez facilement vos modèles dans notre éditeur intégré ou importez vos propres fichiers DOCX et PDF."
+        }
+      }
+    }
+  },
+
+  "Navbar": {
+    "help": "Aide",
+    "settings": "Paramètres",
+    "logout": "Se déconnecter",
+    "signIn": "Se connecter"
+  },
+
+  "Footer": {
+    "brandName": "JuriScribe",
+    "copyright": "© {{year}} Tous droits réservés.",
+    "privacyPolicy": "Politique de confidentialité",
+    "termsOfService": "Conditions générales d'utilisation",
+    "contact": "Contact"
+  }
+}

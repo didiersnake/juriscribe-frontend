@@ -1,8 +1,22 @@
 import { useAuth } from "@/lib/authContext"
-import { FileText, Shield, ArrowRight, BookOpen, Layers } from "lucide-react"
+import {
+  FileText,
+  Shield,
+  ArrowRight,
+  BookOpen,
+  Layers,
+  Zap,
+  Cloud,
+  Download,
+  CheckCircle2,
+  Lock,
+  Upload,
+  Edit3,
+} from "lucide-react"
 import { motion } from "motion/react"
 import { useRouter } from "next/navigation"
 import { SigninIcon } from "../ui/button"
+import { useTranslations } from "next-intl"
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -23,23 +37,7 @@ const itemVariants = {
 export default function GuestHome({ onLogin }: { onLogin: () => void }) {
   const { isLoggedIn, loading } = useAuth()
   const router = useRouter()
-
-  // useEffect(() => {
-  //   // Check if user is already logged in (e.g., by checking localStorage)
-
-  //   if (isLoggedIn === false) {
-  //     apiClient
-  //       .get("/api/users/user")
-  //       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  //       .then((data: any) => {
-  //         setUser(data)
-  //         setIsLoggedIn(true)
-  //       })
-  //       .catch((error) => {
-  //         console.error("Failed to fetch user:", error)
-  //       })
-  //   }
-  // }, [])
+  const t = useTranslations("Homepage")
 
   const heroSection = (
     <section className="mx-auto flex max-w-7xl flex-col items-center px-6 py-16 text-center md:py-24">
@@ -50,7 +48,7 @@ export default function GuestHome({ onLogin }: { onLogin: () => void }) {
         className="mb-8 inline-flex items-center gap-2 rounded-full bg-blue-50 px-3 py-1.5 text-sm font-medium text-blue-700"
       >
         <span className="h-2 w-2 animate-pulse rounded-full bg-blue-600"></span>
-        The new standard for legal templates
+        {t("hero.badge")}
       </motion.div>
 
       <motion.h1
@@ -59,8 +57,8 @@ export default function GuestHome({ onLogin }: { onLogin: () => void }) {
         transition={{ duration: 0.5, delay: 0.1 }}
         className="mb-6 max-w-4xl text-4xl font-bold tracking-tight text-slate-900 md:text-6xl"
       >
-        Draft legal documents with{" "}
-        <span className="text-blue-600">confidence and speed</span>
+        {t("hero.title")}{" "}
+        <span className="text-blue-600">{t("hero.titleHighlight")}</span>
       </motion.h1>
 
       <motion.p
@@ -69,9 +67,7 @@ export default function GuestHome({ onLogin }: { onLogin: () => void }) {
         transition={{ duration: 0.5, delay: 0.2 }}
         className="mb-10 max-w-2xl text-lg leading-relaxed text-slate-600 md:text-xl"
       >
-        JuriScribe provides a powerful, robust template engine for legal
-        professionals. Sign in to access premium templates, upload your own
-        frameworks, and generate flawless PDFs in seconds.
+        {t("hero.description")}
       </motion.p>
 
       <motion.div
@@ -86,7 +82,7 @@ export default function GuestHome({ onLogin }: { onLogin: () => void }) {
             // className="flex items-center justify-center gap-3 rounded-lg bg-blue-50 px-8 py-3.5 text-lg font-medium text-blue-700 shadow-sm transition-all hover:bg-blue-100 active:scale-95"
             className="flex items-center justify-center gap-2 rounded-lg bg-blue-600 px-8 py-3.5 text-lg font-medium text-white shadow-sm transition-all hover:bg-blue-700 hover:shadow-lg hover:shadow-blue-200/50 active:scale-95"
           >
-            Explore Template Library <ArrowRight size={20} />
+            {t("hero.cta.exploreLibrary")} <ArrowRight size={20} />
           </button>
         ) : (
           <button
@@ -94,12 +90,12 @@ export default function GuestHome({ onLogin }: { onLogin: () => void }) {
             className="flex items-center justify-center gap-3 rounded-lg border border-slate-200 bg-white px-8 py-3.5 text-lg font-medium text-slate-700 shadow-sm transition-all hover:bg-slate-50 hover:shadow-md active:scale-95"
           >
             {SigninIcon}
-            Sign in
+            {t("hero.cta.signIn")}
           </button>
         )}
         {isLoggedIn ? null : (
-          <button className="rounded-lg bg-blue-600 px-8 py-3.5 text-lg font-medium text-white shadow-sm transition-all hover:bg-blue-700 hover:shadow-md active:scale-95">
-            Explore Public Library
+          <button className="flex items-center justify-center gap-3 rounded-lg bg-blue-50 px-8 py-3.5 text-lg font-medium text-blue-700 shadow-sm transition-all hover:bg-blue-100 active:scale-95">
+            {t("hero.cta.explorePublicLibrary")} <ArrowRight size={20} />
           </button>
         )}
       </motion.div>
@@ -107,7 +103,7 @@ export default function GuestHome({ onLogin }: { onLogin: () => void }) {
   )
 
   const valueProps = (
-    <section className="overflow-hidden border-t border-slate-200 bg-slate-50 px-6 py-20">
+    <section className="overflow-hidden border-t border-slate-100 bg-slate-50 px-6 py-20">
       <div className="mx-auto max-w-7xl">
         <motion.div
           variants={containerVariants}
@@ -124,11 +120,10 @@ export default function GuestHome({ onLogin }: { onLogin: () => void }) {
               <FileText size={28} />
             </div>
             <h3 className="mb-3 text-xl font-semibold text-slate-800">
-              Google Docs Interface
+              {t("insights.googleDocs.title")}
             </h3>
             <p className="leading-relaxed text-slate-600">
-              Enjoy a familiar, sleek editing experience. No learning curve
-              required. Format, edit, and export just like you always have.
+              {t("insights.googleDocs.description")}
             </p>
           </motion.div>
 
@@ -140,11 +135,10 @@ export default function GuestHome({ onLogin }: { onLogin: () => void }) {
               <Shield size={28} />
             </div>
             <h3 className="mb-3 text-xl font-semibold text-slate-800">
-              Bank-Grade Privacy
+              {t("insights.bankPrivacy.title")}
             </h3>
             <p className="leading-relaxed text-slate-600">
-              Your templates and client data belong to you. We employ rigorous
-              encryption protocols to keep confidential documents secure.
+              {t("insights.bankPrivacy.description")}
             </p>
           </motion.div>
 
@@ -156,11 +150,10 @@ export default function GuestHome({ onLogin }: { onLogin: () => void }) {
               <Layers size={28} />
             </div>
             <h3 className="mb-3 text-xl font-semibold text-slate-800">
-              Custom Templates
+              {t("insights.customTemplates.title")}
             </h3>
             <p className="leading-relaxed text-slate-600">
-              Upload your custom boilerplate agreements. Share them across your
-              organization or keep them private to your account.
+              {t("insights.customTemplates.description")}
             </p>
           </motion.div>
         </motion.div>
@@ -168,8 +161,154 @@ export default function GuestHome({ onLogin }: { onLogin: () => void }) {
     </section>
   )
 
+  const featureSection = (
+    <section className="border-t border-slate-100 bg-white px-6 py-24">
+      <div className="mx-auto max-w-7xl">
+        <div className="mb-16 text-center">
+          <h2 className="mb-4 text-3xl font-bold text-slate-900 md:text-4xl">
+            {t("features.heading")}
+          </h2>
+          <p className="mx-auto max-w-2xl text-lg text-slate-600">
+            {t("features.subheading")}
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+          {[
+            // {
+            //   icon: Zap,
+            //   title: "Smart Auto-fill",
+            //   desc: "Instantly populate documents with pre-saved client data and case details.",
+            // },
+            {
+              icon: Cloud,
+              title: t("features.items.cloudSynchronization.title"),
+              desc: t("features.items.cloudSynchronization.desc"),
+            },
+            // {
+            //   icon: Lock,
+            //   title: "Role-based Access",
+            //   desc: "Control who can view, edit, or publish templates within your organization.",
+            // },
+            {
+              icon: Download,
+              title: t("features.items.oneClickExport.title"),
+              desc: t("features.items.oneClickExport.desc"),
+            },
+            {
+              icon: CheckCircle2,
+              title: t("features.items.versionControl.title"),
+              desc: t("features.items.versionControl.desc"),
+            },
+            {
+              icon: Layers,
+              title: t("features.items.editablePdfDocx.title"),
+              desc: t("features.items.editablePdfDocx.desc"),
+            },
+          ].map((feature, i) => {
+            const Icon = feature.icon
+            return (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1 }}
+                className="group rounded-2xl border border-slate-100 bg-slate-50 p-6 transition-all duration-300 hover:border-blue-100 hover:shadow-lg"
+              >
+                <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-xl border border-slate-200 bg-white text-blue-600 shadow-sm transition-transform group-hover:scale-110">
+                  <Icon size={24} />
+                </div>
+                <h3 className="mb-2 text-xl font-semibold text-slate-800">
+                  {feature.title}
+                </h3>
+                <p className="leading-relaxed text-slate-600">{feature.desc}</p>
+              </motion.div>
+            )
+          })}
+        </div>
+      </div>
+    </section>
+  )
+
+  const howItWorksSection = (
+    <section className="relative overflow-hidden bg-slate-900 px-6 py-24 text-white">
+      <div className="pointer-events-none absolute top-0 right-0 h-[800px] w-[800px] translate-x-1/3 -translate-y-1/2 rounded-full bg-blue-600/10 blur-3xl"></div>
+      <div className="relative z-10 mx-auto max-w-7xl">
+        <div className="mb-20 text-center">
+          <h2 className="mb-4 text-3xl font-bold md:text-4xl">
+            {t("howItWorks.heading")}
+          </h2>
+          <p className="mx-auto max-w-2xl text-lg text-slate-400">
+            {t("howItWorks.subheading")}
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 gap-12 md:grid-cols-3 lg:gap-8">
+          {[
+            {
+              step: "01",
+              title: t(`howItWorks.steps.${0}.title`),
+              desc: t(`howItWorks.steps.${0}.desc`),
+              icon: Upload,
+            },
+            {
+              step: "02",
+              title: t(`howItWorks.steps.${1}.title`),
+              desc: t(`howItWorks.steps.${1}.desc`),
+              icon: Edit3,
+            },
+            {
+              step: "03",
+              title: t(`howItWorks.steps.${2}.title`),
+              desc: t(`howItWorks.steps.${2}.desc`),
+              icon: Download,
+            },
+          ].map((item, i) => {
+            const Icon = item.icon
+            return (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.2 }}
+                className="group relative flex flex-col items-center text-center"
+              >
+                {/* Connector Line (visible on desktop) */}
+                {i !== 2 && (
+                  <div className="absolute top-12 left-[60%] hidden h-[2px] w-full bg-gradient-to-r from-blue-500/30 to-transparent md:block"></div>
+                )}
+
+                <div className="relative mb-8 h-24 w-24">
+                  <div className="absolute inset-0 animate-pulse rounded-full bg-blue-600/20 transition-colors group-hover:bg-blue-600/30"></div>
+                  <div className="absolute inset-2 z-10 flex items-center justify-center rounded-full border border-slate-700 bg-slate-800 transition-colors group-hover:border-blue-500">
+                    <Icon
+                      size={32}
+                      className="text-blue-400 transition-colors group-hover:text-blue-300"
+                    />
+                  </div>
+                  <div className="absolute -top-1 -right-1 z-20 flex h-8 w-8 items-center justify-center rounded-full border-4 border-slate-900 bg-blue-600 text-sm font-bold text-white shadow-sm">
+                    {item.step}
+                  </div>
+                </div>
+
+                <h3 className="mb-3 text-xl font-bold text-white">
+                  {item.title}
+                </h3>
+                <p className="mx-auto max-w-xs leading-relaxed text-slate-400">
+                  {item.desc}
+                </p>
+              </motion.div>
+            )
+          })}
+        </div>
+      </div>
+    </section>
+  )
+
   const publicTemplateList = (
-    <section className="mx-auto w-full max-w-7xl px-6 py-20">
+    <section className="mx-auto w-full max-w-7xl bg-slate-50 px-6 py-20">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -178,14 +317,12 @@ export default function GuestHome({ onLogin }: { onLogin: () => void }) {
       >
         <div>
           <h2 className="text-3xl font-bold text-slate-900">
-            Featured Public Templates
+            {t("templates.title")}
           </h2>
-          <p className="mt-2 text-slate-500">
-            A small sample of what is available inside JuriScribe.
-          </p>
+          <p className="mt-2 text-slate-500">{t("templates.desc")}</p>
         </div>
         <button className="group hidden items-center gap-1 font-medium text-blue-600 hover:text-blue-700 sm:flex">
-          View all{" "}
+          {t("templates.viewAll")}{" "}
           <ArrowRight
             size={16}
             className="transition-transform group-hover:translate-x-1"
@@ -239,9 +376,11 @@ export default function GuestHome({ onLogin }: { onLogin: () => void }) {
   return (
     <>
       {loading ? null : (
-        <div className="flex min-h-screen flex-col bg-white">
+        <div className="flex min-h-screen flex-col bg-white font-sans">
           {heroSection}
           {valueProps}
+          {howItWorksSection}
+          {featureSection}
           {publicTemplateList}
         </div>
       )}

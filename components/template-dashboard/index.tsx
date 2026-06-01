@@ -50,6 +50,7 @@ export default function TemplateDashboard({
     documentTypes,
     jurisdictions,
     lawDomains,
+    setDocumentId,
   } = useAuth()
 
   const [documentType, setDocumentType] = React.useState<DocumentFileType>(
@@ -139,6 +140,7 @@ export default function TemplateDashboard({
             error
           )
           setIsLoggedIn(false)
+          onNavigate("/")
         })
     }
   }, [documentType])
@@ -464,7 +466,11 @@ export default function TemplateDashboard({
                 </div>
                 <div className="mt-auto mb-3.5">
                   <button
-                    onClick={() => router.push("/editor")}
+                    onClick={() => {
+                      setDocumentId(file.id)
+                      setLoading(true)
+                      router.push("/editor")
+                    }}
                     className="w-max rounded-lg bg-blue-50 px-4 py-2 text-sm font-medium text-blue-600 transition-colors hover:bg-blue-100 hover:text-blue-700"
                   >
                     Use Template
@@ -519,12 +525,12 @@ export default function TemplateDashboard({
         }}
       />
       <EdgeLoader isLoading={edgeLoaderOpen} />
-      {/* <Toast
+      <Toast
         isOpen={toastOpen}
-        type={toastType}
+        type={toastType as "success" | "error"}
         message={toastMessage}
         onClose={() => setToastOpen(false)}
-      /> */}
+      />
     </div>
   )
 }

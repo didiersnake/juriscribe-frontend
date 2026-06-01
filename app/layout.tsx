@@ -1,34 +1,23 @@
-"use client"
-import { Geist, Geist_Mono, Inter } from "next/font/google"
-
+// app/layout.tsx  ← no "use client"
+import { Geist_Mono, Inter } from "next/font/google"
 import "./globals.css"
-// import { ThemeProvider } from "@/components/theme-provider"
 import { cn } from "@/lib/utils"
-import React from "react"
-import Sidebar from "@/components/sidebar"
-import Navbar from "@/components/navbar"
-import Footer from "@/components/footer"
-import { useRouter } from "next/navigation"
-import { AuthProvider } from "@/lib/authContext"
+import { NextIntlClientProvider } from "next-intl"
+import { getLocale, getMessages } from "next-intl/server"
+import ClientLayout from "./client-layout"
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" })
+const fontMono = Geist_Mono({ subsets: ["latin"], variable: "--font-mono" })
 
-const fontMono = Geist_Mono({
-  subsets: ["latin"],
-  variable: "--font-mono",
-})
-
-export default function RootLayout({
+export default async function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode
-}>) {
-  const [isSidebarOpen, setIsSidebarOpen] = React.useState(false)
-  const route = useRouter()
+}: Readonly<{ children: React.ReactNode }>) {
+  const locale = await getLocale()
+  const messages = await getMessages()
 
   return (
     <html
-      lang="en"
+      lang={locale}
       suppressHydrationWarning
       className={cn(
         "antialiased",
@@ -38,20 +27,9 @@ export default function RootLayout({
       )}
     >
       <body>
-        <AuthProvider>
-          <Sidebar
-            isOpen={isSidebarOpen}
-            onClose={() => setIsSidebarOpen(false)}
-          />
-          <Navbar
-            onNavigate={() => route.push("/")}
-            onToggleSidebar={() => setIsSidebarOpen(true)}
-          />
-          {/* <ThemeProvider>{children}</ThemeProvider>
-           */}
-          {children}
-          <Footer />
-        </AuthProvider>
+        <NextIntlClientProvider locale={locale} messages={messages}>
+          <ClientLayout>{children}</ClientLayout>
+        </NextIntlClientProvider>
       </body>
     </html>
   )

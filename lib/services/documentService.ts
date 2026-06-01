@@ -1,5 +1,5 @@
 import { apiClient } from "./api"
-import { Document, ApiResponse } from "@/lib/types"
+import { Document, DocumentContentResponse } from "@/lib/types"
 
 export const documentService = {
   // Get all user documents (SECURED)
@@ -14,9 +14,11 @@ export const documentService = {
   },
 
   // Get single document (SECURED)
-  async getById(id: string): Promise<Document> {
+  async getById(id: number): Promise<DocumentContentResponse> {
     try {
-      const response = await apiClient.get<Document>(`/documents/${id}`)
+      const response = await apiClient.get<DocumentContentResponse>(
+        `/api/documents/${id}`
+      )
       return response
     } catch (error) {
       console.error(`Failed to fetch document ${id}:`, error)
@@ -25,7 +27,6 @@ export const documentService = {
   },
 
   // Create new document from template (SECURED)
-
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   async create(data: FormData): Promise<any> {
     try {

@@ -19,7 +19,7 @@ export interface Template {
 
 // Document
 export interface Document {
-  id: string
+  id: number
   filePath: string
   fileName: string
   documentType: number
@@ -36,6 +36,12 @@ export interface DocumentRequest {
   documentTypeId: number
   lawDomainId: number
   jurisdictionId: number
+}
+
+export interface DocumentContentResponse {
+  fileName: string
+  id: number
+  content: string
 }
 
 export interface DocumentFileType {

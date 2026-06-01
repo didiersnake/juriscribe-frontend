@@ -1,6 +1,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client"
-import { Menu, Search, Settings, HelpCircle, User, LogOut } from "lucide-react"
+import {
+  Menu,
+  Search,
+  Settings,
+  HelpCircle,
+  User,
+  LogOut,
+  Check,
+  Globe,
+} from "lucide-react"
 import { useAuth } from "@/lib/authContext"
 import React from "react"
 import { apiClient } from "@/lib/services/api"
@@ -89,6 +98,14 @@ export default function Navbar({
 
   // const handleLogout = () => {}
 
+  const [isLanguageOpen, setIsLanguageOpen] = React.useState(false)
+  const { setLocale, locale } = useAuth()
+
+  const languages = [
+    { code: "en", label: "English" },
+    { code: "fr", label: "Français" },
+  ]
+
   const handleLogin = () => {
     window.location.href = "http://localhost:8888/oauth2/authorization/google"
   }
@@ -155,6 +172,44 @@ export default function Navbar({
   const RightNav = (isLoggedIn: boolean) => {
     return (
       <div className="flex shrink-0 items-center gap-1 sm:gap-3">
+        {/* Language Selector */}
+        <div className="relative hidden sm:block">
+          <button
+            onClick={() => setIsLanguageOpen(!isLanguageOpen)}
+            className="flex items-center gap-1 rounded-md p-2 text-slate-600 transition-colors hover:bg-slate-100 active:scale-95"
+            title="Language"
+          >
+            <Globe size={20} />
+            <span className="text-sm font-medium">
+              {locale.substring(0, 2).toUpperCase()}
+            </span>
+          </button>
+
+          {isLanguageOpen && (
+            <>
+              <div
+                className="fixed inset-0 z-40"
+                onClick={() => setIsLanguageOpen(false)}
+              ></div>
+              <div className="absolute top-full right-0 z-50 mt-2 w-40 origin-top-right transform rounded-lg border border-slate-200 bg-white py-1 shadow-lg transition-all">
+                {languages.map((lang) => (
+                  <button
+                    key={lang.code}
+                    onClick={() => {
+                      setLocale(lang.label)
+                      setIsLanguageOpen(false)
+                    }}
+                    className={`flex w-full items-center justify-between px-4 py-2 text-left text-sm transition-colors ${locale === lang.label ? "bg-blue-50 font-medium text-blue-700" : "text-slate-700 hover:bg-slate-50"}`}
+                  >
+                    <span>{lang.label}</span>
+                    {locale === lang.label && <Check size={16} />}
+                  </button>
+                ))}
+              </div>
+            </>
+          )}
+        </div>
+
         {isLoggedIn && (
           <>
             <button
