@@ -8,7 +8,7 @@ import TextAlign from "@tiptap/extension-text-align"
 import Highlight from "@tiptap/extension-highlight"
 import { ChevronLeft, Download, Save } from "lucide-react"
 import { useAuth } from "@/lib/authContext"
-
+import { axiosInstance } from "@/lib/services/api"
 export default function TextEditor({
   onBack,
   content,
@@ -18,7 +18,7 @@ export default function TextEditor({
   content: string
   name: string
 }) {
-  const [fileName, setFileName] = React.useState(name)
+  const [fileName, setFileName] = React.useState(name.split(".")[0])
   const { documentId, setDocumentId } = useAuth()
   const debounceTimer = React.useRef<ReturnType<typeof setTimeout> | null>(null)
   const isSaving = React.useRef(false)
@@ -34,6 +34,27 @@ export default function TextEditor({
     }
     setDocumentId(0) // Reset after loading to prevent re-fetching on every editor mount
     return "<p>Hello World!!!!</p>"
+  }
+
+  const handleExportPDF = async () => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const response: any = await axiosInstance.post(
+      "/api/documents/export-pdf",
+      JSON.stringify(editor?.getHTML()),
+      {
+        responseType: "blob", // Important for handling binary data
+      }
+    )
+    if (response) {
+      console.log("Export response:", response)
+    }
+    const blob = response.data
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement("a")
+    a.href = url
+    a.download = `${fileName}.pdf`
+    a.click()
+    URL.revokeObjectURL(url)
   }
 
   const editor = useEditor({
@@ -155,7 +176,7 @@ export default function TextEditor({
           </button>
           <button
             onClick={() => {
-              alert("Exporting " + fileName + "...")
+              handleExportPDF()
             }}
             className="flex items-center justify-center gap-2 rounded-md bg-blue-600 px-4 py-2.5 text-sm font-medium text-white shadow-sm transition-all hover:bg-blue-700 hover:shadow-md active:scale-95"
           >
