@@ -18,10 +18,10 @@ const AuthContext = React.createContext<{
   changeLocale: (locale: string) => void
   loading: boolean
   documentId: number
+  selectedDocumentType: DocumentFileType
   setDocumentId: (id: number) => void
   setLoading: (value: boolean) => void
-  locale: any
-  setLocale: ({ label, code }: { label: string; code: string }) => void
+  setSelectedDocumentType: (documentType: DocumentFileType) => void
 }>({
   isLoggedIn: false,
   user: null,
@@ -39,9 +39,9 @@ const AuthContext = React.createContext<{
   setDocumentTypes: () => {},
   documentId: 0,
   setDocumentId: () => {},
-  locale: {},
-  setLocale: () => {},
   changeLocale: () => {},
+  selectedDocumentType: {} as DocumentFileType,
+  setSelectedDocumentType: () => {},
 })
 export const useAuth = () => React.useContext(AuthContext)
 import React from "react"
@@ -60,8 +60,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     Array<DocumentFileType>
   >([])
 
-  const [locale, setLocale] = React.useState({ label: "Français", code: "fr" })
   const [documentId, setDocumentId] = React.useState(0)
+  const [selectedDocumentType, setSelectedDocumentType] =
+    React.useState<DocumentFileType>({} as DocumentFileType)
 
   const toggleAuth = () => setIsLoggedIn(!isLoggedIn)
   const logout = () => setIsLoggedIn(false)
@@ -73,9 +74,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   return (
     <AuthContext.Provider
       value={{
-        locale,
-        setLocale,
         documentId,
+        selectedDocumentType,
+        setSelectedDocumentType,
         setDocumentId,
         changeLocale,
         isLoggedIn,

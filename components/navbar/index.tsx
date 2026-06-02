@@ -18,10 +18,12 @@ import { getCookie } from "@/lib/utils"
 
 export default function Navbar({
   onToggleSidebar,
+  locale,
   onNavigate,
 }: {
   onToggleSidebar: () => void
   onNavigate: (route: string) => void
+  locale: string
 }) {
   const {
     isLoggedIn,
@@ -38,6 +40,7 @@ export default function Navbar({
     setLawDomains,
     setDocumentTypes,
     changeLocale,
+    setSelectedDocumentType,
   } = useAuth()
 
   useEffect(() => {
@@ -47,6 +50,7 @@ export default function Navbar({
         .get("/api/document-types")
         .then((data: any) => {
           setDocumentTypes(data)
+          setSelectedDocumentType(data[0])
         })
         .catch((error) => {
           console.error("Failed to fetch document types:", error)
@@ -105,7 +109,6 @@ export default function Navbar({
     { code: "en", label: "English" },
     { code: "fr", label: "Français" },
   ]
-  const locale = getCookie("locale") || "fr"
 
   const handleLogin = () => {
     window.location.href = "http://localhost:8888/oauth2/authorization/google"
@@ -113,12 +116,12 @@ export default function Navbar({
 
   const leftNav = (
     <div className="relative flex shrink-0 items-center gap-2 sm:gap-4">
-      <button
+      {/* <button
         onClick={onToggleSidebar}
         className="block rounded-full p-2 text-slate-600 transition-colors hover:bg-slate-100 active:scale-95 sm:p-3"
       >
         <Menu size={24} />
-      </button>
+      </button> */}
 
       <div
         className="group flex cursor-pointer items-center gap-3"
@@ -276,7 +279,7 @@ export default function Navbar({
   return (
     <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-slate-200 bg-white px-4">
       {leftNav}
-      {middleNav}
+      {/* {middleNav} */}
       {RightNav(isLoggedIn)}
     </header>
   )
