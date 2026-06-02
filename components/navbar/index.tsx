@@ -14,13 +14,16 @@ import { useAuth } from "@/lib/authContext"
 import React from "react"
 import { apiClient } from "@/lib/services/api"
 import { useEffect } from "react"
+import { getCookie } from "@/lib/utils"
 
 export default function Navbar({
   onToggleSidebar,
+  locale,
   onNavigate,
 }: {
   onToggleSidebar: () => void
   onNavigate: (route: string) => void
+  locale: string
 }) {
   const {
     isLoggedIn,
@@ -36,6 +39,8 @@ export default function Navbar({
     setJurisdictions,
     setLawDomains,
     setDocumentTypes,
+    changeLocale,
+    setSelectedDocumentType,
   } = useAuth()
 
   useEffect(() => {
@@ -45,6 +50,7 @@ export default function Navbar({
         .get("/api/document-types")
         .then((data: any) => {
           setDocumentTypes(data)
+          setSelectedDocumentType(data[0])
         })
         .catch((error) => {
           console.error("Failed to fetch document types:", error)
@@ -99,8 +105,6 @@ export default function Navbar({
   // const handleLogout = () => {}
 
   const [isLanguageOpen, setIsLanguageOpen] = React.useState(false)
-  const { setLocale, locale } = useAuth()
-
   const languages = [
     { code: "en", label: "English" },
     { code: "fr", label: "Français" },
@@ -112,12 +116,12 @@ export default function Navbar({
 
   const leftNav = (
     <div className="relative flex shrink-0 items-center gap-2 sm:gap-4">
-      <button
+      {/* <button
         onClick={onToggleSidebar}
         className="block rounded-full p-2 text-slate-600 transition-colors hover:bg-slate-100 active:scale-95 sm:p-3"
       >
         <Menu size={24} />
-      </button>
+      </button> */}
 
       <div
         className="group flex cursor-pointer items-center gap-3"
@@ -181,7 +185,9 @@ export default function Navbar({
           >
             <Globe size={20} />
             <span className="text-sm font-medium">
-              {locale.substring(0, 2).toUpperCase()}
+              {languages
+                .find((lang) => lang.code === locale)
+                ?.code.toUpperCase() || "FR"}
             </span>
           </button>
 
@@ -196,13 +202,13 @@ export default function Navbar({
                   <button
                     key={lang.code}
                     onClick={() => {
-                      setLocale(lang.label)
+                      changeLocale(lang.code)
                       setIsLanguageOpen(false)
                     }}
-                    className={`flex w-full items-center justify-between px-4 py-2 text-left text-sm transition-colors ${locale === lang.label ? "bg-blue-50 font-medium text-blue-700" : "text-slate-700 hover:bg-slate-50"}`}
+                    className={`flex w-full items-center justify-between px-4 py-2 text-left text-sm transition-colors ${locale === lang.code ? "bg-blue-50 font-medium text-blue-700" : "text-slate-700 hover:bg-slate-50"}`}
                   >
                     <span>{lang.label}</span>
-                    {locale === lang.label && <Check size={16} />}
+                    {locale === lang.code && <Check size={16} />}
                   </button>
                 ))}
               </div>
@@ -273,7 +279,7 @@ export default function Navbar({
   return (
     <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-slate-200 bg-white px-4">
       {leftNav}
-      {middleNav}
+      {/* {middleNav} */}
       {RightNav(isLoggedIn)}
     </header>
   )

@@ -51,19 +51,15 @@ export default function TemplateDashboard({
     jurisdictions,
     lawDomains,
     setDocumentId,
+    setDocumentTypes,
+    selectedDocumentType,
+    setSelectedDocumentType,
   } = useAuth()
 
-  const [documentType, setDocumentType] = React.useState<DocumentFileType>(
-    documentTypes[0] || { id: 0, name: "", description: "", createdAt: "" }
-  )
-  const [docTypeLoading, setDocTypeLoading] = React.useState(true)
   const [edgeLoaderOpen, setEdgeLoaderOpen] = React.useState(true)
   const [toastOpen, setToastOpen] = React.useState(false)
-
   const [isOwnerDropdownOpen, setIsOwnerDropdownOpen] = React.useState(false)
-  const [documentTypeList, setDocumentTypeList] = React.useState<
-    Array<DocumentFileType>
-  >(documentTypes || [])
+
   const [isUploadDrawerOpen, setIsUploadDrawerOpen] = React.useState(false)
   const [selectedFile, setSelectedFile] = React.useState<File>()
 
@@ -124,13 +120,14 @@ export default function TemplateDashboard({
   }
 
   React.useEffect(() => {
-    if (documentType?.id !== 0) {
-      const documentTypeId = Number(documentType?.id)
+    // Fetch documents for the selected document type
+    if (selectedDocumentType && selectedDocumentType.id) {
+      const documentTypeId = selectedDocumentType.id
+      console.log("documentTypeId", selectedDocumentType)
       apiClient
         .get<Document[]>("/api/documents/type/" + documentTypeId)
         .then((documents) => {
           setLoadedDocuments(documents)
-          setDocTypeLoading(false)
           setEdgeLoaderOpen(false)
           console.log(" Loaded documents", documents)
         })
@@ -143,26 +140,7 @@ export default function TemplateDashboard({
           onNavigate("/")
         })
     }
-  }, [documentType])
-
-  React.useEffect(() => {
-    // Fetch document types from the backend API
-    if (documentTypes.length === 0) {
-      apiClient
-        .get<DocumentFileType[]>("/api/document-types")
-        .then((documentTypes) => {
-          console.log("Fetched document types:", documentTypes)
-          setDocumentTypeList(documentTypes)
-          setDocumentType(documentTypes[0])
-          setLoading(false)
-        })
-        .catch((error) => {
-          console.error("Failed to fetch document types:", error)
-          setIsLoggedIn(false)
-          onNavigate("/")
-        })
-    }
-  }, [])
+  }, [selectedDocumentType])
 
   const router = useRouter()
   const displayToast = (type: string, message: string) => {
@@ -277,10 +255,12 @@ export default function TemplateDashboard({
               <></>
             ) : (
               <button
-                onClick={() => setIsOwnerDropdownOpen(!isOwnerDropdownOpen)}
+                onClick={() => {
+                  setIsOwnerDropdownOpen(!isOwnerDropdownOpen)
+                }}
                 className="group hidden cursor-pointer items-center gap-1 transition-colors hover:text-slate-900 sm:flex"
               >
-                {documentType?.name}
+                {selectedDocumentType?.name?.toUpperCase()}
                 <ChevronDown
                   size={14}
                   className={`mt-0.5 transition-transform duration-200 ${isOwnerDropdownOpen ? "rotate-180" : "group-hover:translate-y-0.5"}`}
@@ -302,18 +282,18 @@ export default function TemplateDashboard({
                     transition={{ duration: 0.15 }}
                     className="absolute top-full right-0 z-50 mt-2 w-48 origin-top-right rounded-lg border border-slate-200 bg-white py-1.5 whitespace-nowrap shadow-lg"
                   >
-                    {documentTypeList.map((option) => (
+                    {documentTypes.map((option) => (
                       <button
                         key={option?.id}
                         onClick={() => {
-                          setDocumentType(option)
+                          setSelectedDocumentType(option)
                           setIsOwnerDropdownOpen(false)
-                          setDocTypeLoading(true)
+                          setEdgeLoaderOpen(true)
                         }}
                         className="flex w-full items-center justify-between px-4 py-2 text-left text-sm text-slate-700 transition-colors hover:bg-slate-50 hover:text-blue-600"
                       >
                         {option?.name}
-                        {documentType.name === option?.name && (
+                        {selectedDocumentType?.name === option?.name && (
                           <Check size={16} className="text-blue-600" />
                         )}
                       </button>
@@ -333,7 +313,7 @@ export default function TemplateDashboard({
 
       {/* Grid View for User Templates */}
 
-      {docTypeLoading ? (
+      {edgeLoaderOpen ? (
         <motion.div
           variants={containerVariants}
           initial="hidden"
@@ -489,7 +469,7 @@ export default function TemplateDashboard({
       {newDocument}
       {recentTemplatesSection}
       <UploadDrawer
-        documentTypeList={documentTypeList}
+        documentTypeList={documentTypes}
         lawDomainList={lawDomains}
         jurisdictionList={jurisdictions}
         isOpen={isUploadDrawerOpen}

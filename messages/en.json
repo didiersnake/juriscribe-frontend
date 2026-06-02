@@ -68,8 +68,8 @@
           "desc": "Never lose a draft. Track changes and revert to previous template versions."
         },
         "editablePdfDocx": {
-          "title": "Editable PDF & DOCX",
-          "desc": "Easily modify templates in our built-in editor or upload your own DOCX & PDF files."
+          "title": "Editable PDF & WORD",
+          "desc": "Easily modify templates in our built-in editor or upload your own WORD & PDF files."
         }
       }
     }
