@@ -1,4 +1,6 @@
+import { useTranslations } from "next-intl"
 export default function Footer() {
+  const t = useTranslations("Footer")
   return (
     <footer className="relative mt-auto overflow-hidden border-t border-slate-800 bg-slate-900 px-6 py-8 text-white">
       {/* Cool ambient glow matching the How It Works section */}
@@ -8,10 +10,10 @@ export default function Footer() {
       <div className="relative z-10 mx-auto flex max-w-7xl flex-col items-center justify-between gap-6 md:flex-row">
         <div className="flex items-center gap-4">
           <span className="text-lg font-bold tracking-tight text-white drop-shadow-sm">
-            JuriScribe
+            {t("brandName")}
           </span>
           <span className="hidden text-sm text-slate-400 sm:inline-block">
-            &copy; {new Date().getFullYear()} All rights reserved.
+            &copy; {new Date().getFullYear()} {t("copyright")}
           </span>
         </div>
 
@@ -20,24 +22,24 @@ export default function Footer() {
             href="#"
             className="text-slate-300 transition-colors hover:text-blue-400"
           >
-            Privacy Policy
+            {t("privacyPolicy")}
           </a>
           <a
             href="#"
             className="text-slate-300 transition-colors hover:text-blue-400"
           >
-            Terms of Service
+            {t("termsOfService")}
           </a>
           <a
             href="#"
             className="text-slate-300 transition-colors hover:text-blue-400"
           >
-            Contact
+            {t("contact")}
           </a>
         </div>
 
         <span className="block text-center text-sm text-slate-400 sm:hidden">
-          &copy; {new Date().getFullYear()} All rights reserved.
+          &copy; {new Date().getFullYear()} {t("copyright")}
         </span>
       </div>
     </footer>

@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation"
 import React from "react"
 import { useAuth } from "../../lib/authContext"
 import { documentService } from "../../lib/services/documentService"
+import { useTranslations } from "next-intl"
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -28,8 +29,9 @@ const itemVariants = {
 
 export default function EditorPage() {
   const { documentId, loading, setLoading } = useAuth()
+  const t = useTranslations("text_editor")
   const [content, setContent] = React.useState<string>("Hello World!!!")
-  const [name, setName] = React.useState<string>("Untitled Document")
+  const [name, setName] = React.useState<string>(t("new"))
   const router = useRouter()
   const onBack = () => {
     router.push("/documents")

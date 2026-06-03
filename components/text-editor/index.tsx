@@ -9,6 +9,7 @@ import Highlight from "@tiptap/extension-highlight"
 import { ChevronLeft, Download, Save } from "lucide-react"
 import { useAuth } from "@/lib/authContext"
 import { axiosInstance } from "@/lib/services/api"
+import { useTranslations } from "next-intl"
 export default function TextEditor({
   onBack,
   content,
@@ -23,6 +24,7 @@ export default function TextEditor({
   const debounceTimer = React.useRef<ReturnType<typeof setTimeout> | null>(null)
   const isSaving = React.useRef(false)
 
+  const t = useTranslations("text_editor")
   const STORAGE_KEY = "editor_draft"
   const DEBOUNCE_DELAY = 1000 // ms — waits 1s after user stops typing
 
@@ -35,6 +37,26 @@ export default function TextEditor({
     setDocumentId(0) // Reset after loading to prevent re-fetching on every editor mount
     return "<p>Hello World!!!!</p>"
   }
+
+  // Stable save function — doesn't change between renders
+  const saveToStorage = React.useCallback((html: string) => {
+    isSaving.current = true
+    localStorage.setItem(STORAGE_KEY, html)
+    isSaving.current = false
+  }, [])
+
+  // Debounced version — resets the timer on every keystroke
+  const debouncedSave = React.useCallback(
+    (html: string) => {
+      if (debounceTimer.current) {
+        clearTimeout(debounceTimer.current)
+      }
+      debounceTimer.current = setTimeout(() => {
+        saveToStorage(html)
+      }, DEBOUNCE_DELAY)
+    },
+    [saveToStorage]
+  )
 
   const handleExportPDF = async () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -89,26 +111,6 @@ export default function TextEditor({
     },
   })
 
-  // Stable save function — doesn't change between renders
-  const saveToStorage = React.useCallback((html: string) => {
-    isSaving.current = true
-    localStorage.setItem(STORAGE_KEY, html)
-    isSaving.current = false
-  }, [])
-
-  // Debounced version — resets the timer on every keystroke
-  const debouncedSave = React.useCallback(
-    (html: string) => {
-      if (debounceTimer.current) {
-        clearTimeout(debounceTimer.current)
-      }
-      debounceTimer.current = setTimeout(() => {
-        saveToStorage(html)
-      }, DEBOUNCE_DELAY)
-    },
-    [saveToStorage]
-  )
-
   // ── Cleanup: flush any pending save when component unmounts
   React.useEffect(() => {
     return () => {
@@ -160,7 +162,7 @@ export default function TextEditor({
             />
             <div className="mt-0.5 flex items-center gap-1.5 px-0.5 text-xs text-slate-500">
               <Save size={12} className="text-emerald-500" />
-              <span>Saved to cloud</span>
+              <span>{t("save")}</span>
             </div>
           </div>
         </div>
@@ -172,7 +174,7 @@ export default function TextEditor({
             }}
             className="hidden items-center justify-center gap-2 rounded-md bg-transparent px-4 py-2.5 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-200 sm:flex"
           >
-            Share
+            {t("share")}
           </button>
           <button
             onClick={() => {
@@ -181,7 +183,7 @@ export default function TextEditor({
             className="flex items-center justify-center gap-2 rounded-md bg-blue-600 px-4 py-2.5 text-sm font-medium text-white shadow-sm transition-all hover:bg-blue-700 hover:shadow-md active:scale-95"
           >
             <Download size={16} />{" "}
-            <span className="hidden sm:inline">Export PDF</span>
+            <span className="hidden sm:inline">{t("export_pdf")}</span>
           </button>
         </div>
       </div>

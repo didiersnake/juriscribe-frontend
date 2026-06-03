@@ -75,16 +75,75 @@
     }
   },
 
+  "TemplateDashboard": {
+    "placeholder": "Search documentst emplates...",
+    "new_document_section": {
+      "heading": "Start a new document",
+      "template_gallery_btn": "Template Gallery",
+      "blank_template_label": "Blank",
+      "upload_file_subtext": "Upload File",
+      "upload_template_label": "Upload Template"
+    },
+    "recent_templates_section": {
+      "heading": "Your Templates",
+      "last_opened_btn": "Last opened",
+      "open_document_overlay": "Open Document",
+      "opened_prefix": "Opened ",
+      "owner_me": "Me",
+      "use_template_btn": "Use Template"
+    },
+    "select_category": "Please select document category details"
+  },
+
+  "Banner": {
+    "status": "Coming Soon",
+    "title": "Meet Juris AI",
+    "description": "Your intelligent legal assistant is in training. Prepare for AI-powered drafting, fast clause search, generation, and intelligent reviewing in our next major release."
+  },
+
   "Navbar": {
     "help": "Help",
     "settings": "Settings",
     "logout": "Log out",
-    "signIn": "Sign In"
+    "signIn": "Sign In",
+    "links": {
+      "features": "Features",
+      "howItWorks": "How it works",
+      "library": "Library"
+    }
+  },
+
+  "upload_dialog": {
+    "header": {
+      "title": "Upload New Template",
+      "subtitle": "Configure document processing options"
+    },
+    "document_category": {
+      "step": "1",
+      "title": "Document Category"
+    },
+    "jurisdiction": {
+      "step": "2",
+      "title": "Jurisdiction"
+    },
+    "law_domain": {
+      "step": "3",
+      "title": "Law Domain"
+    },
+    "cancel": "Cancel",
+    "confirm_upload": "Confirm & Upload"
+  },
+
+  "text_editor": {
+    "new": "Untitled Document",
+    "export_pdf": "Export PDF",
+    "share": "Share",
+    "save": "Auto-saving..."
   },
 
   "Footer": {
     "brandName": "JuriScribe",
-    "copyright": "© {{year}} All rights reserved.",
+    "copyright": "All rights reserved.",
     "privacyPolicy": "Privacy Policy",
     "termsOfService": "Terms of Service",
     "contact": "Contact"

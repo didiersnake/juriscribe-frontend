@@ -3,6 +3,8 @@ import { DocumentFileType } from "./types"
 import { User } from "./types"
 
 const AuthContext = React.createContext<{
+  bannerVisible: boolean
+  setBannerVisible: (value: boolean) => void
   isLoggedIn: boolean
   user: User | null
   documentTypes: Array<DocumentFileType>
@@ -42,6 +44,8 @@ const AuthContext = React.createContext<{
   changeLocale: () => {},
   selectedDocumentType: {} as DocumentFileType,
   setSelectedDocumentType: () => {},
+  bannerVisible: true,
+  setBannerVisible: () => {},
 })
 export const useAuth = () => React.useContext(AuthContext)
 import React from "react"
@@ -60,6 +64,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     Array<DocumentFileType>
   >([])
 
+  const [bannerVisible, setBannerVisible] = React.useState(true)
   const [documentId, setDocumentId] = React.useState(0)
   const [selectedDocumentType, setSelectedDocumentType] =
     React.useState<DocumentFileType>({} as DocumentFileType)
@@ -74,6 +79,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   return (
     <AuthContext.Provider
       value={{
+        bannerVisible,
+        setBannerVisible,
         documentId,
         selectedDocumentType,
         setSelectedDocumentType,

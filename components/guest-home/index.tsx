@@ -162,7 +162,10 @@ export default function GuestHome({ onLogin }: { onLogin: () => void }) {
   )
 
   const featureSection = (
-    <section className="border-t border-slate-100 bg-white px-6 py-24">
+    <section
+      id="features"
+      className="border-t border-slate-100 bg-white px-6 py-24"
+    >
       <div className="mx-auto max-w-7xl">
         <div className="mb-16 text-center">
           <h2 className="mb-4 text-3xl font-bold text-slate-900 md:text-4xl">
@@ -232,7 +235,10 @@ export default function GuestHome({ onLogin }: { onLogin: () => void }) {
   )
 
   const howItWorksSection = (
-    <section className="relative overflow-hidden bg-slate-900 px-6 py-24 text-white">
+    <section
+      id="how-it-works"
+      className="relative overflow-hidden bg-slate-900 px-6 py-24 text-white"
+    >
       <div className="pointer-events-none absolute top-0 right-0 h-[800px] w-[800px] translate-x-1/3 -translate-y-1/2 rounded-full bg-blue-600/10 blur-3xl"></div>
       <div className="relative z-10 mx-auto max-w-7xl">
         <div className="mb-20 text-center">
@@ -308,7 +314,10 @@ export default function GuestHome({ onLogin }: { onLogin: () => void }) {
   )
 
   const publicTemplateList = (
-    <section className="mx-auto w-full max-w-7xl bg-slate-50 px-6 py-20">
+    <section
+      id="library"
+      className="mx-auto w-full max-w-7xl bg-slate-50 px-6 py-20"
+    >
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -375,7 +384,11 @@ export default function GuestHome({ onLogin }: { onLogin: () => void }) {
 
   return (
     <>
-      {loading ? null : (
+      {loading ? (
+        <div className="flex h-[calc(100vh-64px)] items-center justify-center">
+          <div className="h-16 w-16 animate-spin rounded-full border-t-4 border-blue-500"></div>
+        </div>
+      ) : (
         <div className="flex min-h-screen flex-col bg-white font-sans">
           {heroSection}
           {valueProps}
