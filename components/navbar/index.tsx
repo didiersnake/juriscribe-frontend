@@ -44,40 +44,42 @@ export default function Navbar({
   } = useAuth()
 
   useEffect(() => {
-    if (documentTypes.length === 0) {
-      console.log("Fetching document types")
-      apiClient
-        .get("/api/document-types")
-        .then((data: any) => {
-          setDocumentTypes(data)
-          setSelectedDocumentType(data[0])
-        })
-        .catch((error) => {
-          console.error("Failed to fetch document types:", error)
-        })
-    }
+    if (isLoggedIn) {
+      if (documentTypes.length === 0) {
+        console.log("Fetching document types")
+        apiClient
+          .get("/api/document-types")
+          .then((data: any) => {
+            setDocumentTypes(data)
+            setSelectedDocumentType(data[0])
+          })
+          .catch((error) => {
+            console.error("Failed to fetch document types:", error)
+          })
+      }
 
-    if (jurisdictions.length === 0) {
-      console.log("Fetching jurisdictions")
-      apiClient
-        .get("/api/jurisdictions")
-        .then((data: any) => {
-          setJurisdictions(data)
-        })
-        .catch((error) => {
-          console.error("Failed to fetch jurisdictions:", error)
-        })
-    }
+      if (jurisdictions.length === 0) {
+        console.log("Fetching jurisdictions")
+        apiClient
+          .get("/api/jurisdictions")
+          .then((data: any) => {
+            setJurisdictions(data)
+          })
+          .catch((error) => {
+            console.error("Failed to fetch jurisdictions:", error)
+          })
+      }
 
-    if (lawDomains.length === 0) {
-      apiClient
-        .get("/api/law-domains")
-        .then((data: any) => {
-          setLawDomains(data)
-        })
-        .catch((error) => {
-          console.error("Failed to fetch law domains:", error)
-        })
+      if (lawDomains.length === 0) {
+        apiClient
+          .get("/api/law-domains")
+          .then((data: any) => {
+            setLawDomains(data)
+          })
+          .catch((error) => {
+            console.error("Failed to fetch law domains:", error)
+          })
+      }
     }
   }, [isLoggedIn])
 
@@ -234,7 +236,7 @@ export default function Navbar({
         )}
 
         <div className="pl-2">
-          {isLoggedIn && loading === false ? (
+          {isLoggedIn ? (
             <div className="group relative">
               <button className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-indigo-600 text-sm font-medium text-white shadow-sm transition-all active:scale-95 sm:h-10 sm:w-10 sm:text-base">
                 {user?.name ? (

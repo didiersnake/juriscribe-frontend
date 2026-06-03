@@ -8,7 +8,7 @@ export const API_BASE_URL = "http://localhost:8888"
 //   process.env.NEXT_PUBLIC_API_BASE_URL ||
 
 // Create axios instance
-const axiosInstance: AxiosInstance = axios.create({
+export const axiosInstance: AxiosInstance = axios.create({
   baseURL: API_BASE_URL,
   // headers: {
   //   // "Content-Type": "multipart/form-data",
@@ -29,6 +29,8 @@ axiosInstance.interceptors.request.use(
     if (!(config.data instanceof FormData)) {
       config.headers["Content-Type"] = "application/json"
     }
+
+    // console.log("Request config:", config)
 
     return config
   },
