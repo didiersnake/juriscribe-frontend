@@ -45,11 +45,10 @@ axiosInstance.interceptors.response.use(
   (error: AxiosError) => {
     // Handle 401 Unauthorized - token expired
     if (error.response?.status === 401) {
-      localStorage.removeItem("authToken")
-      // Redirect to login if needed
-      if (typeof window !== "undefined") {
-        window.location.href = "/"
-      }
+      // const returnTo = encodeURIComponent(window.location.pathname)
+      // window.location.href =
+      //   "http://localhost:8888/oauth2/authorization/google?returnTo=${returnTo}"
+      // window.location.href = "http://localhost:8888/oauth2/authorization/google"
     }
 
     if (error.response === undefined) {

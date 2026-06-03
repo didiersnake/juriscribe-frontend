@@ -164,11 +164,7 @@ export default function TemplateDashboard({
     // Fetch documents for the selected document type
     if (selectedDocumentType && selectedDocumentType.id) {
       fetchDocmumentsByType(selectedDocumentType.id)
-        .then((documents) => {
-          // setLoadedDocuments(documents)
-          // setEdgeLoaderOpen(false)
-          // console.log(" Loaded documents", documents)
-        })
+        .then((documents) => {})
         .catch((error) => {
           console.error(
             "Failed to fetch documents for type :" + selectedDocumentType.id,
@@ -450,7 +446,14 @@ export default function TemplateDashboard({
 
                 {/* Overlay Action */}
                 <div className="absolute inset-0 flex items-center justify-center bg-slate-900/5 opacity-0 backdrop-blur-[1px] transition-opacity duration-300 group-hover:opacity-100">
-                  <span className="inline-flex items-center gap-2 rounded-full bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-md">
+                  <span
+                    onClick={() => {
+                      setDocumentId(file.id)
+                      setLoading(true)
+                      router.push("/editor")
+                    }}
+                    className="inline-flex items-center gap-2 rounded-full bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-md"
+                  >
                     {t("recent_templates_section.open_document_overlay")}
                   </span>
                 </div>
