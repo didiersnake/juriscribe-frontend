@@ -20,18 +20,19 @@ import { useTranslations } from "next-intl"
 export default function Navbar({
   onToggleSidebar,
   locale,
+  setLocale,
   onNavigate,
 }: {
   onToggleSidebar: () => void
   onNavigate: (route: string) => void
   locale: string
+  setLocale: (value: string) => void
 }) {
   const {
     isLoggedIn,
     setIsLoggedIn,
     setUser,
     user,
-    toggleAuth,
     setLoading,
     loading,
     documentTypes,
@@ -55,6 +56,19 @@ export default function Navbar({
 
   const handleLogin = () => {
     window.location.href = "http://localhost:8888/oauth2/authorization/google"
+  }
+
+  const handleLogout = () => {
+    apiClient
+      .post("/logout", {})
+      .then(() => {
+        setIsLoggedIn(false)
+        setUser(null)
+        route.push("/")
+      })
+      .catch((error) => {
+        console.error("Failed to logout:", error)
+      })
   }
 
   useEffect(() => {
@@ -98,23 +112,22 @@ export default function Navbar({
   }, [isLoggedIn])
 
   useEffect(() => {
-    if (isLoggedIn === false) {
-      apiClient
-        .get("/api/users/user")
-        .then((data: any) => {
-          setUser(data)
-          setLoading(false)
-          setIsLoggedIn(true)
-        })
-        .catch((error) => {
-          setLoading(false)
-          if (error.response === undefined) {
-            onNavigate("/")
-          }
-          console.error("Failed to fetch user:", error)
-        })
-    }
-  }, [])
+    console.log("Fetching user")
+    apiClient
+      .get("/api/users/user")
+      .then((data: any) => {
+        setUser(data)
+        setLoading(false)
+        setIsLoggedIn(true)
+      })
+      .catch((error) => {
+        setLoading(false)
+        // if (error.response === undefined) {
+        //   onNavigate("/")
+        // }
+        console.error("Failed to fetch user:", error)
+      })
+  }, [isLoggedIn])
 
   const leftNav = (
     <div className="relative flex shrink-0 items-center gap-2 sm:gap-4">
@@ -195,7 +208,7 @@ export default function Navbar({
             <span className="text-sm font-medium">
               {languages
                 .find((lang) => lang.code === locale)
-                ?.code.toUpperCase() || "FR"}
+                ?.code.toUpperCase()}
             </span>
           </button>
 
@@ -211,6 +224,7 @@ export default function Navbar({
                     key={lang.code}
                     onClick={() => {
                       changeLocale(lang.code)
+                      setLocale(lang.code)
                       setIsLanguageOpen(false)
                     }}
                     className={`flex w-full items-center justify-between px-4 py-2 text-left text-sm transition-colors ${locale === lang.code ? "bg-blue-50 font-medium text-blue-700" : "text-slate-700 hover:bg-slate-50"}`}
@@ -256,8 +270,8 @@ export default function Navbar({
                     </p>
                   </div>
                   <button
-                    onClick={toggleAuth}
-                    className="flex w-full items-center gap-2 px-4 py-2 text-left text-sm text-red-600 transition-colors hover:bg-red-50"
+                    onClick={handleLogout}
+                    className="flex w-full items-center gap-2 px-4 py-2 text-left text-sm text-red-600 transition-colors hover:cursor-pointer hover:bg-red-50"
                   >
                     <LogOut size={16} /> {t("logout")}
                   </button>
@@ -278,7 +292,7 @@ export default function Navbar({
     )
   }
 
-  return (
+  return loading ? null : (
     <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-slate-200 bg-white px-6">
       {leftNav}
       {middleNav}

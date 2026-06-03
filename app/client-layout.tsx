@@ -9,6 +9,7 @@ import Footer from "@/components/footer"
 import Banner from "@/components/banner"
 import { AuthProvider } from "@/lib/authContext"
 import { getCookie } from "@/lib/utils"
+import { useAuth } from "@/lib/authContext"
 
 export default function ClientLayout({
   children,
@@ -23,6 +24,8 @@ export default function ClientLayout({
     getCookie("locale").then((cookieLocale) => {
       if (cookieLocale) {
         setLocale(cookieLocale)
+      } else {
+        setLocale("fr")
       }
     })
   }, [locale])
@@ -34,6 +37,7 @@ export default function ClientLayout({
         locale={locale}
         onNavigate={() => route.push("/")}
         onToggleSidebar={() => setIsSidebarOpen(true)}
+        setLocale={(value: string) => setLocale(value)}
       />
       {children}
       <Footer />
