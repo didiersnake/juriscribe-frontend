@@ -9,6 +9,7 @@ import {
   ChevronDown,
   Check,
   User,
+  Search,
 } from "lucide-react"
 import { AnimatePresence, motion } from "motion/react"
 import React from "react"
@@ -18,6 +19,7 @@ import UploadDrawer from "./upload-drawer"
 import { useRouter } from "next/navigation"
 import EdgeLoader from "../ui/edgeLoader"
 import Toast from "../ui/toast"
+import { useTranslations } from "next-intl"
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -51,7 +53,6 @@ export default function TemplateDashboard({
     jurisdictions,
     lawDomains,
     setDocumentId,
-    setDocumentTypes,
     selectedDocumentType,
     setSelectedDocumentType,
   } = useAuth()
@@ -66,9 +67,31 @@ export default function TemplateDashboard({
   const [loadedDocuments, setLoadedDocuments] = React.useState<Document[]>([])
   const [toastType, setToastType] = React.useState("")
   const [toastMessage, setToastMessage] = React.useState("")
-
   // Create a ref for the hidden input
   const fileInputRef = React.useRef<HTMLInputElement>(null)
+
+  const recentTemplates = [
+    {
+      title: "Employment Agreement (Executive)",
+      date: "Opened Oct 24",
+      owner: "Me",
+    },
+    { title: "Standard Mutual NDA", date: "Opened Oct 22", owner: "Me" },
+    {
+      title: "Seed Round Term Sheet",
+      date: "Opened Sep 14",
+      owner: "Partner",
+    },
+    { title: "Client Retainer Contract", date: "Opened Sep 02", owner: "Me" },
+  ]
+
+  const router = useRouter()
+  const t = useTranslations("TemplateDashboard")
+  const displayToast = (type: string, message: string) => {
+    setToastType(type)
+    setToastMessage(message)
+    setToastOpen(true)
+  }
 
   // Trigger file input click
   const handleUpload = () => {
@@ -103,9 +126,17 @@ export default function TemplateDashboard({
     const response = await documentService.create(formData)
     if (response) {
       console.log("Document created:", response)
+      await relaodDocuments(document.documentTypeId)
       setEdgeLoaderOpen(false)
       displayToast("success", "Document created successfully")
     }
+  }
+
+  const relaodDocuments = async (id: number) => {
+    if (selectedDocumentType.id !== id) {
+      return
+    }
+    await fetchDocmumentsByType(id)
   }
 
   // Handle file selection
@@ -119,21 +150,28 @@ export default function TemplateDashboard({
     }
   }
 
+  const fetchDocmumentsByType = async (id: number) => {
+    const response = await apiClient.get<Document[]>(
+      "/api/documents/type/" + id
+    )
+    setLoadedDocuments(response)
+    setEdgeLoaderOpen(false)
+    console.log(" Loaded documents", response)
+    return response
+  }
+
   React.useEffect(() => {
     // Fetch documents for the selected document type
     if (selectedDocumentType && selectedDocumentType.id) {
-      const documentTypeId = selectedDocumentType.id
-      console.log("documentTypeId", selectedDocumentType)
-      apiClient
-        .get<Document[]>("/api/documents/type/" + documentTypeId)
+      fetchDocmumentsByType(selectedDocumentType.id)
         .then((documents) => {
-          setLoadedDocuments(documents)
-          setEdgeLoaderOpen(false)
-          console.log(" Loaded documents", documents)
+          // setLoadedDocuments(documents)
+          // setEdgeLoaderOpen(false)
+          // console.log(" Loaded documents", documents)
         })
         .catch((error) => {
           console.error(
-            "Failed to fetch documents for type :" + documentTypeId,
+            "Failed to fetch documents for type :" + selectedDocumentType.id,
             error
           )
           setIsLoggedIn(false)
@@ -142,26 +180,25 @@ export default function TemplateDashboard({
     }
   }, [selectedDocumentType])
 
-  const router = useRouter()
-  const displayToast = (type: string, message: string) => {
-    setToastType(type)
-    setToastMessage(message)
-    setToastOpen(true)
-  }
-  const recentTemplates = [
-    {
-      title: "Employment Agreement (Executive)",
-      date: "Opened Oct 24",
-      owner: "Me",
-    },
-    { title: "Standard Mutual NDA", date: "Opened Oct 22", owner: "Me" },
-    {
-      title: "Seed Round Term Sheet",
-      date: "Opened Sep 14",
-      owner: "Partner",
-    },
-    { title: "Client Retainer Contract", date: "Opened Sep 02", owner: "Me" },
-  ]
+  const searchBar = (
+    <motion.div
+      initial={{ opacity: 0, y: -5 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.1 }}
+      className="mb-8 px-2"
+    >
+      <div className="group relative max-w-md">
+        <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5">
+          <Search className="h-5 w-5 text-slate-400 group-focus-within:text-blue-500" />
+        </div>
+        <input
+          type="text"
+          className="block w-full rounded-xl border border-slate-200 bg-white py-3 pr-4 pl-11 text-sm text-slate-900 placeholder-slate-400 transition-all focus:border-blue-400 focus:shadow-sm focus:ring-1 focus:ring-blue-400 focus:outline-none"
+          placeholder={t("placeholder")}
+        />
+      </div>
+    </motion.div>
+  )
 
   const newDocument = (
     <section className="bg-slate-100/50 px-4 pt-8 pb-10">
@@ -172,10 +209,10 @@ export default function TemplateDashboard({
           className="mb-6 flex items-center justify-between"
         >
           <h2 className="text-base font-medium text-slate-700">
-            Start a new document
+            {t("new_document_section.heading")}
           </h2>
           <button className="text-sm font-medium text-blue-600 transition-colors hover:text-blue-700">
-            Template Gallery
+            {t("new_document_section.template_gallery_btn")}
           </button>
         </motion.div>
 
@@ -200,7 +237,7 @@ export default function TemplateDashboard({
               />
             </div>
             <span className="text-center text-sm font-medium text-slate-800 transition-colors group-hover:text-blue-600">
-              Blank
+              {t("new_document_section.blank_template_label")}
             </span>
           </motion.div>
 
@@ -224,13 +261,13 @@ export default function TemplateDashboard({
                   <Upload size={24} />
                 </div>
                 <span className="px-4 text-center text-xs font-medium text-slate-500">
-                  Upload File
+                  {t("new_document_section.upload_file_subtext")}
                   <br />
                   (.docx, .pdf)
                 </span>
               </div>
               <span className="text-center text-sm font-medium text-slate-800 transition-colors group-hover:text-blue-600">
-                Upload Template
+                {t("new_document_section.upload_template_label")}
               </span>
             </motion.div>
           </>
@@ -241,13 +278,16 @@ export default function TemplateDashboard({
 
   const recentTemplatesSection = (
     <section className="mx-auto w-full max-w-5xl flex-1 px-4 py-8">
+      {searchBar}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.2 }}
         className="mb-6 flex items-center justify-between px-2"
       >
-        <h2 className="text-base font-medium text-slate-800">Your Templates</h2>
+        <h2 className="text-base font-medium text-slate-800">
+          {t("recent_templates_section.heading")}
+        </h2>
 
         <div className="flex items-center gap-4 text-sm font-medium text-slate-600">
           <div className="relative z-20">
@@ -306,7 +346,8 @@ export default function TemplateDashboard({
 
           <span className="hidden text-slate-300 sm:inline">|</span>
           <button className="flex cursor-pointer items-center gap-2 rounded p-1.5 transition-colors hover:bg-slate-100">
-            <Clock size={16} /> Last opened
+            <Clock size={16} />
+            {t("recent_templates_section.last_opened_btn")}
           </button>
         </div>
       </motion.div>
@@ -410,7 +451,7 @@ export default function TemplateDashboard({
                 {/* Overlay Action */}
                 <div className="absolute inset-0 flex items-center justify-center bg-slate-900/5 opacity-0 backdrop-blur-[1px] transition-opacity duration-300 group-hover:opacity-100">
                   <span className="inline-flex items-center gap-2 rounded-full bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-md">
-                    Open Document
+                    {t("recent_templates_section.open_document_overlay")}
                   </span>
                 </div>
               </div>
@@ -432,7 +473,7 @@ export default function TemplateDashboard({
                 <div className="mb-4 flex flex-col items-start gap-4 text-sm text-slate-500 sm:mb-6">
                   <span className="flex items-center gap-1.5">
                     <Clock size={14} />
-                    Opened{" "}
+                    {t("recent_templates_section.opened_prefix")}{" "}
                     {file.last_opened
                       ? new Date(file?.last_opened).toDateString()
                       : new Date(file.createdAt).toDateString()}
@@ -441,7 +482,7 @@ export default function TemplateDashboard({
                     <div className="flex h-5 w-5 items-center justify-center rounded-full bg-indigo-600 text-[10px] font-bold text-white">
                       <User size={12} />
                     </div>
-                    Me
+                    {t("recent_templates_section.owner_me")}
                   </span>
                 </div>
                 <div className="mt-auto mb-3.5">
@@ -453,7 +494,7 @@ export default function TemplateDashboard({
                     }}
                     className="w-max rounded-lg bg-blue-50 px-4 py-2 text-sm font-medium text-blue-600 transition-colors hover:bg-blue-100 hover:text-blue-700"
                   >
-                    Use Template
+                    {t("recent_templates_section.use_template_btn")}
                   </button>
                 </div>
               </div>
@@ -487,7 +528,7 @@ export default function TemplateDashboard({
             jurisdiction === 0 ||
             lawDomain === 0
           ) {
-            displayToast("error", "Please select document category details")
+            displayToast("error", `${t("select_category")}`)
             return
           }
 

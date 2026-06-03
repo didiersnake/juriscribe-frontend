@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation"
 import Sidebar from "@/components/sidebar"
 import Navbar from "@/components/navbar"
 import Footer from "@/components/footer"
+import Banner from "@/components/banner"
 import { AuthProvider } from "@/lib/authContext"
 import { getCookie } from "@/lib/utils"
 
@@ -16,7 +17,6 @@ export default function ClientLayout({
 }) {
   const [isSidebarOpen, setIsSidebarOpen] = React.useState(false)
   const route = useRouter()
-  // const locale = await getCookie("locale") || "en"
   const [locale, setLocale] = React.useState("en")
 
   React.useEffect(() => {
@@ -29,7 +29,7 @@ export default function ClientLayout({
 
   return (
     <AuthProvider>
-      {/* <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} /> */}
+      <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
       <Navbar
         locale={locale}
         onNavigate={() => route.push("/")}
@@ -37,6 +37,7 @@ export default function ClientLayout({
       />
       {children}
       <Footer />
+      <Banner />
     </AuthProvider>
   )
 }

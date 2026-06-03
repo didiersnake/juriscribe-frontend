@@ -10,6 +10,8 @@ import {
   Send,
 } from "lucide-react"
 import { motion, AnimatePresence } from "motion/react"
+import { useTranslations } from "next-intl"
+import { useRouter } from "next/navigation"
 
 export default function Sidebar({
   isOpen,
@@ -18,6 +20,8 @@ export default function Sidebar({
   isOpen: boolean
   onClose: () => void
 }) {
+  const t = useTranslations("Navbar")
+  const route = useRouter()
   return (
     <AnimatePresence>
       {isOpen && (
@@ -82,86 +86,34 @@ export default function Sidebar({
             </div>
 
             <div className="flex-1 overflow-y-auto py-4">
-              <div className="mb-2 px-4 py-2 text-xs font-bold tracking-wider text-slate-400 uppercase">
-                Legal Documents
-              </div>
-              <nav className="space-y-1">
-                {/* <button
-                  onClick={onClose}
-                  className="group flex w-full items-center gap-3 px-6 py-3 text-left font-medium text-slate-700 transition-colors hover:bg-blue-50 hover:text-blue-700"
+              <nav className="flex flex-col gap-4 px-4">
+                <a
+                  onClick={() => {
+                    onClose()
+                    route.push("/#features")
+                  }}
+                  className="text-sm font-bold text-slate-600 transition-colors hover:cursor-pointer hover:text-blue-600"
                 >
-                  <FileText
-                    size={20}
-                    className="text-slate-400 transition-colors group-hover:text-blue-500"
-                  />
-                  <span>Assignation</span>
-                </button> */}
-                <button
-                  onClick={onClose}
-                  className="group flex w-full items-center gap-3 px-6 py-3 text-left font-medium text-slate-700 transition-colors hover:bg-blue-50 hover:text-blue-700"
+                  {t("links.features")}
+                </a>
+                <a
+                  onClick={() => {
+                    onClose()
+                    route.push("/#how-it-works")
+                  }}
+                  className="text-sm font-bold text-slate-600 transition-colors hover:cursor-pointer hover:text-blue-600"
                 >
-                  <Scale
-                    size={20}
-                    className="text-slate-400 transition-colors group-hover:text-blue-500"
-                  />
-                  <span>Direct Citation</span>
-                </button>
-
-                <button
-                  onClick={onClose}
-                  className="group flex w-full items-center gap-3 px-6 py-3 text-left font-medium text-slate-700 transition-colors hover:bg-blue-50 hover:text-blue-700"
+                  {t("links.howItWorks")}
+                </a>
+                <a
+                  onClick={() => {
+                    onClose()
+                    route.push("/#library")
+                  }}
+                  className="text-sm font-bold text-slate-600 transition-colors hover:cursor-pointer hover:text-blue-600"
                 >
-                  <Send
-                    size={20}
-                    className="text-slate-400 transition-colors group-hover:text-blue-500"
-                  />
-                  <span>Writ of Summons</span>
-                </button>
-
-                <div className="px-4 pt-4 pb-2 text-xs font-bold tracking-wider text-slate-400 uppercase">
-                  Complaints & Petitions
-                </div>
-
-                <button
-                  onClick={onClose}
-                  className="group flex w-full items-center gap-3 px-6 py-3 text-left font-medium text-slate-700 transition-colors hover:bg-blue-50 hover:text-blue-700"
-                >
-                  <AlertCircle
-                    size={20}
-                    className="text-slate-400 transition-colors group-hover:text-blue-500"
-                  />
-                  <span>Simple Complaint</span>
-                </button>
-                <button
-                  onClick={onClose}
-                  className="group flex w-full items-center gap-3 px-6 py-3 text-left font-medium text-slate-700 transition-colors hover:bg-blue-50 hover:text-blue-700"
-                >
-                  <Gavel
-                    size={20}
-                    className="text-slate-400 transition-colors group-hover:text-blue-500"
-                  />
-                  <span>Complaint (Civil Party)</span>
-                </button>
-                <button
-                  onClick={onClose}
-                  className="group flex w-full items-center gap-3 px-6 py-3 text-left font-medium text-slate-700 transition-colors hover:bg-blue-50 hover:text-blue-700"
-                >
-                  <FileArchive
-                    size={20}
-                    className="text-slate-400 transition-colors group-hover:text-blue-500"
-                  />
-                  <span>Motion / Petition</span>
-                </button>
-                <button
-                  onClick={onClose}
-                  className="group flex w-full items-center gap-3 px-6 py-3 text-left font-medium text-slate-700 transition-colors hover:bg-blue-50 hover:text-blue-700"
-                >
-                  <Landmark
-                    size={20}
-                    className="text-slate-400 transition-colors group-hover:text-blue-500"
-                  />
-                  <span>Administrative Petition</span>
-                </button>
+                  {t("links.library")}
+                </a>
               </nav>
             </div>
           </motion.div>

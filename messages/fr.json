@@ -75,16 +75,76 @@
     }
   },
 
+  "TemplateDashboard": {
+    "placeholder": "Rechercher des modèles...",
+    "new_document_section": {
+      "heading": "Créer un nouveau document",
+      "template_gallery_btn": "Galerie de modèles",
+      "blank_template_label": "Nouveau document",
+      "upload_file_subtext": "Importer un fichier",
+      "upload_template_label": "Importer un modèle"
+    },
+    "recent_templates_section": {
+      "heading": "Vos modèles",
+      "last_opened_btn": "Recentement ouverts",
+      "open_document_overlay": "Ouvrir le document",
+      "opened_prefix": "Ouvert le ",
+      "owner_me": "Moi",
+      "use_template_btn": "Utiliser le modèle"
+    },
+    "select_category": "Veuillez remplir les détails de la catégorie de document"
+  },
+
+  "Banner": {
+    "status": "Bientôt disponible",
+    "title": "Découvrez Juris AI",
+    "description": "Votre assistant juridique intelligent est en cours de formation. Préparez-vous à la rédaction assistée par IA, la recherche rapide de clauses, la génération de documents et la révision intelligente dans notre prochaine mise a jour majeure."
+  },
+
   "Navbar": {
     "help": "Aide",
     "settings": "Paramètres",
     "logout": "Se déconnecter",
-    "signIn": "Se connecter"
+    "signIn": "Se connecter",
+    "links": {
+      "features": "Fonctionnalités",
+      "howItWorks": "Comment ça marche",
+      "library": "Modèles"
+    }
+  },
+
+  "upload_dialog": {
+    "header": {
+      "title": "Télécharger un nouveau modèle",
+      "subtitle": "Configurer les options de traitement du document"
+    },
+    "document_category": {
+      "step": "1",
+      "title": "Catégorie de document"
+    },
+    "jurisdiction": {
+      "step": "2",
+      "title": "Juridiction"
+    },
+    "law_domain": {
+      "step": "3",
+      "title": "Domaine du droit"
+    },
+
+    "cancel": "Annuler",
+    "confirm_upload": "Confirmer et Sauvegarder"
+  },
+
+  "text_editor": {
+    "new": "Nouveau Document",
+    "export_pdf": "Telecharger PDF",
+    "share": "Partager",
+    "save": "Auto-sauvegarde"
   },
 
   "Footer": {
     "brandName": "JuriScribe",
-    "copyright": "© {{year}} Tous droits réservés.",
+    "copyright": "Tous droits réservés.",
     "privacyPolicy": "Politique de confidentialité",
     "termsOfService": "Conditions générales d'utilisation",
     "contact": "Contact"

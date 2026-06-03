@@ -14,7 +14,8 @@ import { useAuth } from "@/lib/authContext"
 import React from "react"
 import { apiClient } from "@/lib/services/api"
 import { useEffect } from "react"
-import { getCookie } from "@/lib/utils"
+import { useRouter } from "next/navigation"
+import { useTranslations } from "next-intl"
 
 export default function Navbar({
   onToggleSidebar,
@@ -42,6 +43,19 @@ export default function Navbar({
     changeLocale,
     setSelectedDocumentType,
   } = useAuth()
+
+  const route = useRouter()
+
+  const [isLanguageOpen, setIsLanguageOpen] = React.useState(false)
+  const languages = [
+    { code: "en", label: "English" },
+    { code: "fr", label: "Français" },
+  ]
+  const t = useTranslations("Navbar")
+
+  const handleLogin = () => {
+    window.location.href = "http://localhost:8888/oauth2/authorization/google"
+  }
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -84,7 +98,6 @@ export default function Navbar({
   }, [isLoggedIn])
 
   useEffect(() => {
-    // Check if user is already logged in (e.g., by checking localStorage)
     if (isLoggedIn === false) {
       apiClient
         .get("/api/users/user")
@@ -94,7 +107,6 @@ export default function Navbar({
           setIsLoggedIn(true)
         })
         .catch((error) => {
-          // setIsLoggedIn(false)
           setLoading(false)
           if (error.response === undefined) {
             onNavigate("/")
@@ -104,26 +116,15 @@ export default function Navbar({
     }
   }, [])
 
-  // const handleLogout = () => {}
-
-  const [isLanguageOpen, setIsLanguageOpen] = React.useState(false)
-  const languages = [
-    { code: "en", label: "English" },
-    { code: "fr", label: "Français" },
-  ]
-
-  const handleLogin = () => {
-    window.location.href = "http://localhost:8888/oauth2/authorization/google"
-  }
-
   const leftNav = (
     <div className="relative flex shrink-0 items-center gap-2 sm:gap-4">
-      {/* <button
+      {/* FIXED: Added block md:hidden to strictly control visibility on medium screens and up */}
+      <button
         onClick={onToggleSidebar}
-        className="block rounded-full p-2 text-slate-600 transition-colors hover:bg-slate-100 active:scale-95 sm:p-3"
+        className="block rounded-full p-2 text-slate-600 transition-colors hover:bg-slate-100 active:scale-95 sm:p-3 md:hidden"
       >
         <Menu size={24} />
-      </button> */}
+      </button>
 
       <div
         className="group flex cursor-pointer items-center gap-3"
@@ -157,21 +158,26 @@ export default function Navbar({
   )
 
   const middleNav = (
-    <div className="max-w-[720px] flex-1 px-4 md:px-8">
-      <div className="group relative">
-        <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-          <Search className="h-5 w-5 text-slate-500 group-focus-within:text-slate-700" />
-        </div>
-        <input
-          type="text"
-          className="block w-full rounded-full border-transparent bg-slate-100 py-2.5 pr-3 pl-12 text-sm text-slate-900 placeholder-slate-500 transition-all focus:bg-white focus:shadow-md focus:ring-1 focus:ring-slate-300 focus:outline-none sm:py-3 sm:text-base"
-          placeholder={
-            isLoggedIn
-              ? "Search templates and documents"
-              : "Search public legal templates..."
-          }
-        />
-      </div>
+    /* FIXED: Enforced hidden element behavior by default, switching strictly to flex on md breakpoints */
+    <div className="hidden flex-1 items-center justify-center gap-8 px-4 md:flex md:px-8">
+      <a
+        onClick={() => route.push("/#features")}
+        className="text-sm font-medium text-slate-600 transition-colors hover:cursor-pointer hover:text-blue-600"
+      >
+        {t("links.features")}
+      </a>
+      <a
+        onClick={() => route.push("/#how-it-works")}
+        className="text-sm font-medium text-slate-600 transition-colors hover:cursor-pointer hover:text-blue-600"
+      >
+        {t("links.howItWorks")}
+      </a>
+      <a
+        onClick={() => route.push("/#library")}
+        className="text-sm font-medium text-slate-600 transition-colors hover:cursor-pointer hover:text-blue-600"
+      >
+        {t("links.library")}
+      </a>
     </div>
   )
 
@@ -226,12 +232,6 @@ export default function Navbar({
             >
               <HelpCircle size={22} />
             </button>
-            <button
-              className="hidden rounded-full p-2 text-slate-600 transition-colors hover:bg-slate-100 active:scale-95 md:block"
-              title="Settings"
-            >
-              <Settings size={22} />
-            </button>
           </>
         )}
 
@@ -259,7 +259,7 @@ export default function Navbar({
                     onClick={toggleAuth}
                     className="flex w-full items-center gap-2 px-4 py-2 text-left text-sm text-red-600 transition-colors hover:bg-red-50"
                   >
-                    <LogOut size={16} /> Log out
+                    <LogOut size={16} /> {t("logout")}
                   </button>
                 </div>
               </div>
@@ -270,7 +270,7 @@ export default function Navbar({
               className="flex items-center gap-2 rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm transition-all duration-300 hover:bg-blue-700 hover:shadow-md active:scale-95 sm:px-6 sm:py-2.5 sm:text-base"
             >
               <User size={18} />
-              <span className="hidden sm:inline">Sign In</span>
+              <span className="hidden sm:inline">{t("signIn")}</span>
             </button>
           )}
         </div>
@@ -279,9 +279,9 @@ export default function Navbar({
   }
 
   return (
-    <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-slate-200 bg-white px-4">
+    <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-slate-200 bg-white px-6">
       {leftNav}
-      {/* {middleNav} */}
+      {middleNav}
       {RightNav(isLoggedIn)}
     </header>
   )

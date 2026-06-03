@@ -9,6 +9,7 @@ import {
   Check,
   CloudUpload,
 } from "lucide-react"
+import { useTranslations } from "next-intl"
 
 export default function UploadDialog({
   isOpen,
@@ -35,6 +36,7 @@ export default function UploadDialog({
     jurisdictionList[1]?.id || 0
   )
   const [lawDomainId, setLawDomainId] = useState(lawDomainList[1]?.id || 0)
+  const t = useTranslations("upload_dialog")
 
   const handleClose = () => {
     onClose()
@@ -70,10 +72,10 @@ export default function UploadDialog({
                 </div>
                 <div>
                   <h2 className="text-xl font-bold text-slate-800">
-                    Upload New Template
+                    {t("header.title")}
                   </h2>
                   <p className="hidden text-sm text-slate-500 sm:block">
-                    Configure document processing options
+                    {t("header.subtitle")}
                   </p>
                 </div>
               </div>
@@ -95,7 +97,7 @@ export default function UploadDialog({
                       <span className="flex h-6 w-6 items-center justify-center rounded-md bg-blue-100 font-mono text-xs font-bold text-blue-700">
                         1
                       </span>
-                      Document Category
+                      {t("document_category.title")}
                     </h3>
                   </div>
                   <div className="flex flex-col gap-3">
@@ -197,7 +199,7 @@ export default function UploadDialog({
                       <span className="flex h-6 w-6 items-center justify-center rounded-md bg-indigo-100 font-mono text-xs font-bold text-indigo-700">
                         2
                       </span>
-                      Jurisdiction
+                      {t("jurisdiction.title")}
                     </h3>
                   </div>
                   <div className="flex flex-col gap-3">
@@ -299,7 +301,7 @@ export default function UploadDialog({
                       <span className="flex h-6 w-6 items-center justify-center rounded-md bg-blue-100 font-mono text-xs font-bold text-blue-700">
                         3
                       </span>
-                      Law Domain
+                      {t("law_domain.title")}
                     </h3>
                   </div>
                   <div className="flex flex-col gap-3">
@@ -403,7 +405,7 @@ export default function UploadDialog({
                   onClick={handleClose}
                   className="rounded-full px-6 py-2 text-sm font-medium text-slate-600 transition-colors hover:bg-slate-100 active:scale-95"
                 >
-                  Cancel
+                  {t("cancel")}
                 </button>
                 <button
                   onClick={() => {
@@ -412,11 +414,10 @@ export default function UploadDialog({
                       jurisdiction: jurisdictionId,
                       lawDomain: lawDomainId,
                     })
-                    // handleClose()
                   }}
                   className="flex items-center gap-2 rounded-full bg-blue-600 px-6 py-2 text-sm font-medium text-white shadow-sm transition-all hover:bg-blue-700 active:scale-95"
                 >
-                  Confirm & Upload
+                  {t("confirm_upload")}
                 </button>
               </div>
             </div>
