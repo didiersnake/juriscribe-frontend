@@ -4,7 +4,7 @@ import axios, {
   InternalAxiosRequestConfig,
 } from "axios"
 
-export const API_BASE_URL = "http://localhost:8888"
+export const API_BASE_URL = "https://juriscribebackend.didierdjakoua.site"
 //   process.env.NEXT_PUBLIC_API_BASE_URL ||
 
 // Create axios instance
