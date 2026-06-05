@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react"
 import { motion, AnimatePresence } from "motion/react"
 import { DocumentFileType } from "@/lib/types"
@@ -22,15 +23,13 @@ export default function UploadDialog({
   isOpen: boolean
   onClose: () => void
   onSubmit: (data: object) => void
-  documentTypeList: Array<DocumentFileType>
-  lawDomainList: Array<DocumentFileType>
-  jurisdictionList: Array<DocumentFileType>
+  documentTypeList: Array<any>
+  lawDomainList: Array<any>
+  jurisdictionList: Array<any>
 }) {
-  const [docType, setDocType] = useState(documentTypeList[0]?.name || "")
-  const [jurisdiction, setJurisdiction] = useState(
-    jurisdictionList[1]?.name || ""
-  )
-  const [lawDomain, setLawDomain] = useState(lawDomainList[1]?.name || "")
+  const [docType, setDocType] = useState("")
+  const [jurisdiction, setJurisdiction] = useState("")
+  const [lawDomain, setLawDomain] = useState("")
   const [docTypeId, setDocTypeId] = useState(documentTypeList[0]?.id || 0)
   const [jurisdictionId, setJurisdictionId] = useState(
     jurisdictionList[1]?.id || 0
