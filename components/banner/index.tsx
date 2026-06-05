@@ -17,7 +17,7 @@ export default function JurisAIBanner() {
           animate={{ opacity: 1, y: 0, x: 0 }}
           exit={{ opacity: 0, y: 20, scale: 0.9 }}
           transition={{ type: "spring", damping: 25, stiffness: 200 }}
-          className="fixed bottom-24 left-6 z-50 max-w-[280px] md:bottom-28"
+          className="fixed bottom-6 left-6 z-50 max-w-[280px] md:bottom-12"
         >
           <div className="relative rounded-2xl bg-gradient-to-br from-indigo-900 to-slate-900 p-1 shadow-2xl">
             <div className="absolute inset-0 rounded-2xl bg-blue-500/20 blur-md"></div>

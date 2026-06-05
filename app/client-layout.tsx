@@ -18,14 +18,12 @@ export default function ClientLayout({
 }) {
   const [isSidebarOpen, setIsSidebarOpen] = React.useState(false)
   const route = useRouter()
-  const [locale, setLocale] = React.useState("en")
+  const [locale, setLocale] = React.useState("fr")
 
   React.useEffect(() => {
     getCookie("locale").then((cookieLocale) => {
       if (cookieLocale) {
         setLocale(cookieLocale)
-      } else {
-        setLocale("fr")
       }
     })
   }, [locale])

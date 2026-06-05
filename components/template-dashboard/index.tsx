@@ -20,6 +20,7 @@ import { useRouter } from "next/navigation"
 import EdgeLoader from "../ui/edgeLoader"
 import Toast from "../ui/toast"
 import { useTranslations } from "next-intl"
+import { getCookie } from "@/lib/utils"
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -69,6 +70,8 @@ export default function TemplateDashboard({
   const [toastMessage, setToastMessage] = React.useState("")
   // Create a ref for the hidden input
   const fileInputRef = React.useRef<HTMLInputElement>(null)
+
+  const [locale, setLocale] = React.useState("fr")
 
   const recentTemplates = [
     {
@@ -159,6 +162,14 @@ export default function TemplateDashboard({
     console.log(" Loaded documents", response)
     return response
   }
+
+  React.useEffect(() => {
+    getCookie("locale").then((cookieLocale) => {
+      if (cookieLocale) {
+        setLocale(cookieLocale)
+      }
+    })
+  }, [locale])
 
   React.useEffect(() => {
     // Fetch documents for the selected document type
@@ -296,7 +307,9 @@ export default function TemplateDashboard({
                 }}
                 className="group hidden cursor-pointer items-center gap-1 transition-colors hover:text-slate-900 sm:flex"
               >
-                {selectedDocumentType?.name?.toUpperCase()}
+                {locale === "fr"
+                  ? selectedDocumentType?.frName.toUpperCase()
+                  : selectedDocumentType?.enName.toUpperCase()}
                 <ChevronDown
                   size={14}
                   className={`mt-0.5 transition-transform duration-200 ${isOwnerDropdownOpen ? "rotate-180" : "group-hover:translate-y-0.5"}`}
@@ -328,8 +341,10 @@ export default function TemplateDashboard({
                         }}
                         className="flex w-full items-center justify-between px-4 py-2 text-left text-sm text-slate-700 transition-colors hover:bg-slate-50 hover:text-blue-600"
                       >
-                        {option?.name}
-                        {selectedDocumentType?.name === option?.name && (
+                        {locale === "fr"
+                          ? selectedDocumentType?.frName.toUpperCase()
+                          : selectedDocumentType?.enName.toUpperCase()}
+                        {selectedDocumentType?.id === option?.id && (
                           <Check size={16} className="text-blue-600" />
                         )}
                       </button>
