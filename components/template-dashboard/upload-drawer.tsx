@@ -19,6 +19,7 @@ export default function UploadDialog({
   documentTypeList,
   lawDomainList,
   jurisdictionList,
+  locale,
 }: {
   isOpen: boolean
   onClose: () => void
@@ -26,10 +27,8 @@ export default function UploadDialog({
   documentTypeList: Array<any>
   lawDomainList: Array<any>
   jurisdictionList: Array<any>
+  locale: string
 }) {
-  const [docType, setDocType] = useState("")
-  const [jurisdiction, setJurisdiction] = useState("")
-  const [lawDomain, setLawDomain] = useState("")
   const [docTypeId, setDocTypeId] = useState(documentTypeList[0]?.id || 0)
   const [jurisdictionId, setJurisdictionId] = useState(
     jurisdictionList[1]?.id || 0
@@ -102,12 +101,11 @@ export default function UploadDialog({
                   <div className="flex flex-col gap-3">
                     {documentTypeList.map((type) => {
                       const Icon = FileText
-                      const isSelected = docType === type?.name
+                      const isSelected = docTypeId === type?.id
                       return (
                         <div
                           key={type.id}
                           onClick={() => {
-                            setDocType(type?.name)
                             setDocTypeId(type?.id)
                           }}
                           className="group relative flex cursor-pointer items-center gap-4 rounded-xl border-2 p-4 transition-all duration-200"
@@ -157,16 +155,16 @@ export default function UploadDialog({
                                 color: isSelected ? "#1e3a8a" : "#374151",
                               }}
                             >
-                              {type.name}
+                              {locale === "fr" ? type.frName : type.enName}
                             </h4>
-                            <p
+                            {/* <p
                               className="text-xs leading-snug transition-colors duration-200"
                               style={{
                                 color: isSelected ? "#1d4ed8" : "#6b7280",
                               }}
                             >
                               {type.description}
-                            </p>
+                            </p> */}
                           </div>
                           <div
                             className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2 transition-all duration-200"
@@ -204,12 +202,11 @@ export default function UploadDialog({
                   <div className="flex flex-col gap-3">
                     {jurisdictionList.map((mode) => {
                       const Icon = FileOutput
-                      const isSelected = jurisdiction === mode.name
+                      const isSelected = jurisdictionId === mode.id
                       return (
                         <div
                           key={mode.id}
                           onClick={() => {
-                            setJurisdiction(mode.name)
                             setJurisdictionId(mode.id)
                           }}
                           className="group relative flex cursor-pointer items-center gap-4 rounded-xl border-2 p-4 transition-all duration-200"
@@ -259,16 +256,16 @@ export default function UploadDialog({
                                 color: isSelected ? "#1e1b4b" : "#374151",
                               }}
                             >
-                              {mode.name}
+                              {locale === "fr" ? mode.frName : mode.enName}
                             </h4>
-                            <p
+                            {/* <p
                               className="text-xs leading-snug transition-colors duration-200"
                               style={{
                                 color: isSelected ? "#4338ca" : "#6b7280",
                               }}
                             >
                               {mode.description}
-                            </p>
+                            </p> */}
                           </div>
                           <div
                             className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2 transition-all duration-200"
@@ -306,12 +303,11 @@ export default function UploadDialog({
                   <div className="flex flex-col gap-3">
                     {lawDomainList.map((type) => {
                       const Icon = FileSearch
-                      const isSelected = lawDomain === type?.name
+                      const isSelected = lawDomainId === type?.id
                       return (
                         <div
                           key={type.id}
                           onClick={() => {
-                            setLawDomain(type?.name)
                             setLawDomainId(type?.id)
                           }}
                           className="group relative flex cursor-pointer items-center gap-4 rounded-xl border-2 p-4 transition-all duration-200"
@@ -361,16 +357,16 @@ export default function UploadDialog({
                                 color: isSelected ? "#1e3a8a" : "#374151",
                               }}
                             >
-                              {type.name}
+                              {locale === "fr" ? type.frName : type.enName}
                             </h4>
-                            <p
+                            {/* <p
                               className="text-xs leading-snug transition-colors duration-200"
                               style={{
                                 color: isSelected ? "#1d4ed8" : "#6b7280",
                               }}
                             >
                               {type.description}
-                            </p>
+                            </p> */}
                           </div>
                           <div
                             className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2 transition-all duration-200"

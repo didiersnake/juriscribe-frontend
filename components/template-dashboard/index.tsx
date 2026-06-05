@@ -529,6 +529,7 @@ export default function TemplateDashboard({
         documentTypeList={documentTypes}
         lawDomainList={lawDomains}
         jurisdictionList={jurisdictions}
+        locale={locale}
         isOpen={isUploadDrawerOpen}
         onClose={() => setIsUploadDrawerOpen(false)}
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
