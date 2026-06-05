@@ -9,7 +9,6 @@ import Footer from "@/components/footer"
 import Banner from "@/components/banner"
 import { AuthProvider } from "@/lib/authContext"
 import { getCookie } from "@/lib/utils"
-import { useAuth } from "@/lib/authContext"
 
 export default function ClientLayout({
   children,

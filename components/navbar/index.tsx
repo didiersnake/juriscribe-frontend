@@ -55,7 +55,8 @@ export default function Navbar({
   const t = useTranslations("Navbar")
 
   const handleLogin = () => {
-    window.location.href = "http://localhost:8888/oauth2/authorization/google"
+    window.location.href =
+      "https://juriscribebackend.didierdjakoua.site/oauth2/authorization/google"
   }
 
   const handleLogout = () => {
