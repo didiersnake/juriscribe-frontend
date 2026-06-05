@@ -138,9 +138,9 @@ export default function Navbar({
       {/* FIXED: Added block md:hidden to strictly control visibility on medium screens and up */}
       <button
         onClick={onToggleSidebar}
-        className="block rounded-full p-2 text-slate-600 transition-colors hover:bg-slate-100 active:scale-95 sm:p-3 md:hidden"
+        className="block rounded-full text-slate-600 transition-colors hover:bg-slate-100 active:scale-95 sm:p-3 md:hidden"
       >
-        <Menu size={24} />
+        <Menu size={26} />
       </button>
 
       <div
@@ -202,7 +202,7 @@ export default function Navbar({
     return (
       <div className="flex shrink-0 items-center gap-1 sm:gap-3">
         {/* Language Selector */}
-        <div className="relative hidden sm:block">
+        <div className="relative sm:block">
           <button
             onClick={() => setIsLanguageOpen(!isLanguageOpen)}
             className="flex items-center gap-1 rounded-md p-2 text-slate-600 transition-colors hover:bg-slate-100 active:scale-95"
