@@ -45,7 +45,9 @@ axiosInstance.interceptors.response.use(
   (error: AxiosError) => {
     // Handle 401 Unauthorized - token expired
     if (error.response?.status === 401) {
-      window.location.href = "https://juriscribe.didierdjakoua.site"
+      const returnTo = encodeURIComponent(window.location.pathname)
+      window.location.href = `https://juriscribebackend.didierdjakoua.site/oauth2/authorization/google?returnTo=${returnTo}`
+      // window.location.href = "http://localhost:8888/oauth2/authorization/google"
     }
 
     if (error.response === undefined) {
