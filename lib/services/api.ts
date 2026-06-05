@@ -45,7 +45,7 @@ axiosInstance.interceptors.response.use(
   (error: AxiosError) => {
     // Handle 401 Unauthorized - token expired
     if (error.response?.status === 401) {
-      window.location.href = "https://juriscribebackend.didierdjakoua.site"
+      window.location.href = "https://juriscribe.didierdjakoua.site"
     }
 
     if (error.response === undefined) {
