@@ -52,7 +52,7 @@ import React from "react"
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [isLoggedIn, setIsLoggedIn] = React.useState(false)
-  const [loading, setLoading] = React.useState(false)
+  const [loading, setLoading] = React.useState(true)
   const [user, setUser] = React.useState(null)
   const [lawDomains, setLawDomains] = React.useState<Array<DocumentFileType>>(
     []
