@@ -113,21 +113,23 @@ export default function Navbar({
   }, [isLoggedIn])
 
   useEffect(() => {
-    console.log("Fetching user")
-    apiClient
-      .get("/api/users/user")
-      .then((data: any) => {
-        setUser(data)
-        setLoading(false)
-        setIsLoggedIn(true)
-      })
-      .catch((error) => {
-        setLoading(false)
-        // if (error.response === undefined) {
-        //   onNavigate("/")
-        // }
-        console.error("Failed to fetch user:", error)
-      })
+    if (isLoggedIn) {
+      console.log("Fetching user")
+      apiClient
+        .get("/api/users/user")
+        .then((data: any) => {
+          setUser(data)
+          setLoading(false)
+          setIsLoggedIn(true)
+        })
+        .catch((error) => {
+          setLoading(false)
+          // if (error.response === undefined) {
+          //   onNavigate("/")
+          // }
+          console.error("Failed to fetch user:", error)
+        })
+    }
   }, [isLoggedIn])
 
   const leftNav = (
