@@ -308,8 +308,8 @@ export default function TemplateDashboard({
                 className="group hidden cursor-pointer items-center gap-1 transition-colors hover:text-slate-900 sm:flex"
               >
                 {locale === "fr"
-                  ? selectedDocumentType?.frName.toUpperCase()
-                  : selectedDocumentType?.enName.toUpperCase()}
+                  ? selectedDocumentType?.frName
+                  : selectedDocumentType?.enName}
                 <ChevronDown
                   size={14}
                   className={`mt-0.5 transition-transform duration-200 ${isOwnerDropdownOpen ? "rotate-180" : "group-hover:translate-y-0.5"}`}
@@ -341,9 +341,7 @@ export default function TemplateDashboard({
                         }}
                         className="flex w-full items-center justify-between px-4 py-2 text-left text-sm text-slate-700 transition-colors hover:bg-slate-50 hover:text-blue-600"
                       >
-                        {locale === "fr"
-                          ? selectedDocumentType?.frName.toUpperCase()
-                          : selectedDocumentType?.enName.toUpperCase()}
+                        {locale === "fr" ? option?.frName : option?.enName}
                         {selectedDocumentType?.id === option?.id && (
                           <Check size={16} className="text-blue-600" />
                         )}
