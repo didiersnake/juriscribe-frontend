@@ -46,7 +46,8 @@ export interface DocumentContentResponse {
 
 export interface DocumentFileType {
   id: number
-  name: string
+  enName: string
+  frName: string
   description: string
   createdAt: string
 }

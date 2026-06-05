@@ -74,10 +74,11 @@ export default function Navbar({
   useEffect(() => {
     if (isLoggedIn) {
       if (documentTypes.length === 0) {
-        console.log("Fetching document types")
+        // console.log("Fetching document types")
         apiClient
           .get("/api/document-types")
           .then((data: any) => {
+            console.log(data)
             setDocumentTypes(data)
             setSelectedDocumentType(data[0])
           })
