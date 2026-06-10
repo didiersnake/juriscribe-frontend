@@ -255,7 +255,7 @@ export default function TemplateDashboard({
               type="file"
               ref={fileInputRef}
               onChange={handleFileChange}
-              accept=".docx,.pdf"
+              accept=".docx"
               style={{ display: "none" }}
             />
             <motion.div
@@ -491,7 +491,7 @@ export default function TemplateDashboard({
           variants={containerVariants}
           initial="hidden"
           whileInView="show"
-          viewport={{ once: true, margin: "-50px" }}
+          viewport={{ once: true }}
           className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4"
         >
           {loadedDocuments.map((item, i) => (

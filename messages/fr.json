@@ -68,8 +68,8 @@
           "desc": "Ne perdez plus jamais un brouillon. Suivez les modifications et restaurez les versions antérieures de vos modèles."
         },
         "editablePdfDocx": {
-          "title": "PDF & WORD modifiables",
-          "desc": "Modifiez facilement vos modèles dans notre éditeur intégré ou importez vos propres fichiers WORD et PDF."
+          "title": "Fichiers WORD modifiables",
+          "desc": "Modifiez facilement vos modèles dans notre éditeur intégré ou importez vos propres fichiers WORD."
         }
       }
     }
