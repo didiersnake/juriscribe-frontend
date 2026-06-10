@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // User & Auth
 export interface User {
   id: string
@@ -21,10 +22,11 @@ export interface Template {
 export interface Document {
   id: number
   filePath: string
+  htmlContent: string
   fileName: string
   documentType: number
   lawDomain: number
-  jurisdiction: number
+  jurisdiction: any
   last_opened: string
   user_id: string
   createdAt: string
