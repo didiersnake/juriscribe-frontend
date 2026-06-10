@@ -32,7 +32,7 @@ export default function FileScanner({
             clearInterval(interval)
             return 100
           }
-          return prev + Math.floor(Math.random() * 10) + 5 // progress by 5-20%
+          return prev + Math.floor(Math.random() * 15) + 5 // progress by 5-20%
         })
       }, 300)
 
