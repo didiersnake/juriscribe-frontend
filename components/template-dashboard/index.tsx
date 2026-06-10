@@ -64,6 +64,7 @@ export default function TemplateDashboard({
   const [edgeLoaderOpen, setEdgeLoaderOpen] = React.useState(true)
   const [toastOpen, setToastOpen] = React.useState(false)
   const [isOwnerDropdownOpen, setIsOwnerDropdownOpen] = React.useState(false)
+  const [fileScannerOpen, setFileScannerOpen] = React.useState(false)
 
   const [isUploadDrawerOpen, setIsUploadDrawerOpen] = React.useState(false)
   const [selectedFile, setSelectedFile] = React.useState<File>()
@@ -134,12 +135,15 @@ export default function TemplateDashboard({
         console.log("Document created:", response)
         await reloadDocuments(document.documentTypeId)
         setEdgeLoaderOpen(false)
+        // setFileScannerOpen(false)
+
         displayToast("success", "Document created successfully")
       }
     } catch (error) {
       console.error("Error creating document:", error)
       // Handle the error here, e.g., display an error toast
       setEdgeLoaderOpen(false)
+      // setFileScannerOpen(false)
       displayToast("error", "An error occurred while creating the document")
     }
   }
@@ -410,7 +414,7 @@ export default function TemplateDashboard({
           initial="hidden"
           whileInView="show"
           viewport={{ once: true }}
-          className="grid grid-cols-1 items-start gap-6 md:grid-cols-2 lg:grid-cols-4"
+          className="grid grid-cols-1 items-start gap-4 px-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
         >
           {loadedDocuments.map((item, i) => (
             <motion.div
@@ -478,13 +482,15 @@ export default function TemplateDashboard({
           if (selectedFile && data) {
             setEdgeLoaderOpen(true)
             setIsUploadDrawerOpen(false)
-
-            await saveUploadedFile(
-              selectedFile,
-              docType,
-              lawDomain,
-              jurisdiction
-            )
+            setFileScannerOpen(true)
+            setTimeout(async () => {
+              await saveUploadedFile(
+                selectedFile,
+                docType,
+                lawDomain,
+                jurisdiction
+              )
+            }, 3000)
           }
         }}
       />
@@ -495,7 +501,7 @@ export default function TemplateDashboard({
         message={toastMessage}
         onClose={() => setToastOpen(false)}
       />
-      <FileScanner isScanning={edgeLoaderOpen} onComplete={() => {}} />
+      {/* <FileScanner isScanning={fileScannerOpen} onComplete={() => {}} /> */}
     </div>
   )
 }
