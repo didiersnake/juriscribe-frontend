@@ -501,7 +501,7 @@ export default function TemplateDashboard({
         message={toastMessage}
         onClose={() => setToastOpen(false)}
       />
-      {/* <FileScanner isScanning={fileScannerOpen} onComplete={() => {}} /> */}
+      <FileScanner isScanning={fileScannerOpen} onComplete={() => {}} />
     </div>
   )
 }
