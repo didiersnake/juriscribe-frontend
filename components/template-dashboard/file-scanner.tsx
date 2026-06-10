@@ -7,6 +7,7 @@ import {
   File,
   CheckCircle2,
 } from "lucide-react"
+import { useTranslations } from "next-intl"
 
 export default function FileScanner({
   isScanning,
@@ -19,6 +20,7 @@ export default function FileScanner({
 }) {
   const [scanStatus, setScanStatus] = useState("scanning") // 'scanning', 'safe', 'threat'
   const [progress, setProgress] = useState(0)
+  const t = useTranslations()
 
   useEffect(() => {
     if (isScanning) {
@@ -87,9 +89,10 @@ export default function FileScanner({
                 </div>
                 <div>
                   <h4 className="text-sm font-semibold text-slate-800">
-                    {scanStatus === "scanning" && "Scanning for malware..."}
-                    {scanStatus === "safe" && "File is safe"}
-                    {scanStatus === "threat" && "Threat detected!"}
+                    {scanStatus === "scanning" &&
+                      t("file_scanner.status.scanning")}
+                    {scanStatus === "safe" && t("file_scanner.status.safe")}
+                    {scanStatus === "threat" && t("file_scanner.status.threat")}
                   </h4>
                   <div className="mt-0.5 flex items-center gap-1.5 text-xs text-slate-500">
                     <File size={12} />
@@ -117,13 +120,13 @@ export default function FileScanner({
 
             {scanStatus === "safe" && (
               <div className="rounded border border-emerald-100 bg-emerald-50 px-2 py-1.5 text-xs font-medium text-emerald-600">
-                Secured by Juris AI Defender
+                {t("file_scanner.alert.secured_by")}
               </div>
             )}
 
             {scanStatus === "threat" && (
               <div className="rounded border border-red-100 bg-red-50 px-2 py-1.5 text-xs font-medium text-red-600">
-                Upload blocked. Malicious code detected!
+                {t("file_scanner.alert.upload_blocked")}
               </div>
             )}
           </div>

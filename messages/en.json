@@ -101,6 +101,18 @@
     "description": "Your intelligent legal assistant is in training. Prepare for AI-powered drafting, fast clause search, generation, and intelligent reviewing in our next major release."
   },
 
+  "file_scanner": {
+    "status": {
+      "scanning": "Scanning for malware...",
+      "safe": "File is safe",
+      "threat": "Threat detected!"
+    },
+    "alerts": {
+      "secured_by": "Secured by Juris AI Defender",
+      "upload_blocked": "Upload blocked. Malicious code detected!"
+    }
+  },
+
   "Navbar": {
     "help": "Help",
     "settings": "Settings",

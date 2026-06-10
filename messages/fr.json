@@ -101,6 +101,19 @@
     "description": "Votre assistant juridique intelligent est en cours de formation. Préparez-vous à la rédaction assistée par IA, la recherche rapide de clauses, la génération de documents et la révision intelligente dans notre prochaine mise a jour majeure."
   },
 
+  "file_scanner": {
+    "status": {
+      "scanning": "Analyse de logiciels malveillants...",
+      "safe": "Le fichier est sûr",
+      "threat": "Menace détectée !",
+      "scanning_alt": "Analyse en cours..."
+    },
+    "alerts": {
+      "secured_by": "Sécurisé par Juris AI Defender",
+      "upload_blocked": "Téléchargement bloqué. Code malveillant détecté !"
+    }
+  },
+
   "Navbar": {
     "help": "Aide",
     "settings": "Paramètres",
