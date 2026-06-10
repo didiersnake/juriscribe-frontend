@@ -115,6 +115,7 @@ export default function TemplateDashboard({
       console.error("No file selected")
       return
     }
+    setFileScannerOpen(false)
 
     const document: DocumentRequest = {
       file: selectedFile,
@@ -480,10 +481,11 @@ export default function TemplateDashboard({
           }
 
           if (selectedFile && data) {
-            setEdgeLoaderOpen(true)
             setIsUploadDrawerOpen(false)
             setFileScannerOpen(true)
             setTimeout(async () => {
+              setEdgeLoaderOpen(true)
+
               await saveUploadedFile(
                 selectedFile,
                 docType,
