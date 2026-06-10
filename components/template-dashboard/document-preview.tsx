@@ -3,13 +3,15 @@ import { FileText } from "lucide-react"
 export default function DocumentPreview({
   htmlContent,
   fallbackType = "grid",
+  buttonText,
 }: {
   htmlContent?: string
   fallbackType?: "grid" | "preview" | "guest"
+  buttonText?: string
 }) {
   if (htmlContent) {
     return (
-      <div className="absolute inset-0 overflow-hidden rounded-[inherit] bg-white">
+      <div className="absolute inset-0 overflow-hidden rounded-[inherit] bg-white p-4">
         <iframe
           srcDoc={htmlContent}
           className="pointer-events-none h-[300%] w-[300%] origin-top-left scale-[0.3333] border-none"
@@ -22,7 +24,7 @@ export default function DocumentPreview({
         {fallbackType === "preview" && (
           <div className="absolute inset-0 z-20 flex items-center justify-center bg-slate-900/5 opacity-0 backdrop-blur-[1px] transition-opacity duration-300 group-hover:opacity-100">
             <span className="inline-flex items-center gap-2 rounded-full bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-md">
-              Open Document
+              {buttonText}
             </span>
           </div>
         )}
@@ -30,7 +32,7 @@ export default function DocumentPreview({
           <>
             <div className="pointer-events-none absolute inset-0 z-10 bg-gradient-to-b from-transparent to-white/90"></div>
             <div className="absolute right-4 bottom-4 left-4 z-20 flex items-center justify-center rounded bg-slate-900 p-2 text-xs font-semibold text-white opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-              Sign in to view
+              {buttonText}
             </div>
           </>
         )}

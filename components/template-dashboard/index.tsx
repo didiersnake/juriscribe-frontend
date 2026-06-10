@@ -502,10 +502,11 @@ export default function TemplateDashboard({
               whileHover={{ y: -5 }}
               className="group cursor-pointer"
             >
-              <div className="relative mb-4 flex aspect-[3/4] flex-col justify-between overflow-hidden rounded-lg border border-slate-200 bg-white p-4 shadow-sm transition-all duration-300 group-hover:shadow-xl group-hover:shadow-blue-900/5">
+              <div className="relative mb-4 flex aspect-[3/4] flex-col justify-between overflow-hidden rounded-lg border border-slate-200 bg-white p-4 shadow-sm transition-all duration-300 group-hover:shadow-xl group-hover:shadow-blue-900/5 hover:to-blue-700">
                 <DocumentPreview
                   htmlContent={item.htmlContent}
                   fallbackType="guest"
+                  buttonText={t("recent_templates_section.use_template_btn")}
                 />
               </div>
               <h4 className="line-clamp-1 font-semibold text-slate-800 transition-colors group-hover:text-blue-600">
