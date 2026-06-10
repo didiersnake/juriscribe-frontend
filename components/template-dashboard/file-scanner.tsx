@@ -68,7 +68,7 @@ export default function FileScanner({
           animate={{ opacity: 1, x: 0, y: 0 }}
           exit={{ opacity: 0, x: 50, y: 50, scale: 0.9 }}
           transition={{ type: "spring", stiffness: 400, damping: 30 }}
-          className="fixed right-6 bottom-6 z-[9999] w-80 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-2xl"
+          className="fixed right-6 bottom-6 z-[9999] w-80 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-2xl sm:w-120"
         >
           <div className="flex flex-col gap-3 p-4">
             <div className="flex items-start justify-between">
