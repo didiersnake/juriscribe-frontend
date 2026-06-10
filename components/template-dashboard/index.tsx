@@ -318,7 +318,7 @@ export default function TemplateDashboard({
                 onClick={() => {
                   setIsOwnerDropdownOpen(!isOwnerDropdownOpen)
                 }}
-                className="group hidden cursor-pointer items-center gap-1 transition-colors hover:text-slate-900 sm:flex"
+                className="group cursor-pointer items-center gap-1 transition-colors hover:text-slate-900 sm:flex"
               >
                 {locale === "fr"
                   ? selectedDocumentType?.frName
@@ -367,7 +367,7 @@ export default function TemplateDashboard({
           </div>
 
           <span className="hidden text-slate-300 sm:inline">|</span>
-          <button className="flex cursor-pointer items-center gap-2 rounded p-1.5 transition-colors hover:bg-slate-100">
+          <button className="hidden cursor-pointer items-center gap-2 rounded p-1.5 transition-colors hover:bg-slate-100 sm:flex">
             <Clock size={16} />
             {t("recent_templates_section.last_opened_btn")}
           </button>
