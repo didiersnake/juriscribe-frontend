@@ -13,7 +13,7 @@ export default function DocumentPreview({
 }) {
   if (htmlContent) {
     return (
-      <div className="absolute inset-0 overflow-hidden rounded-[inherit] bg-white p-4">
+      <div className="absolute inset-0 overflow-hidden rounded-[inherit] bg-white p-6">
         <iframe
           srcDoc={htmlContent}
           className="pointer-events-none h-[300%] w-[300%] origin-top-left scale-[0.3333] border-none"

@@ -6,10 +6,12 @@ import React from "react"
 import MenuBar from "./menu-bar"
 import TextAlign from "@tiptap/extension-text-align"
 import Highlight from "@tiptap/extension-highlight"
+import { TextStyle } from "@tiptap/extension-text-style"
 import { ChevronLeft, Download, Save } from "lucide-react"
 import { useAuth } from "@/lib/authContext"
 import { axiosInstance } from "@/lib/services/api"
 import { useTranslations } from "next-intl"
+import { PreserveIndent } from "./preserve-indent"
 export default function TextEditor({
   onBack,
   content,
@@ -32,7 +34,7 @@ export default function TextEditor({
     if (typeof window === "undefined") return "<p>Hello World!</p>" // SSR guard
     const saved = localStorage.getItem(STORAGE_KEY)
     if (documentId !== 0) {
-      return content
+      return sanitizeForTipTap(content)
     }
     setDocumentId(0) // Reset after loading to prevent re-fetching on every editor mount
     return "<p>Hello World!!!!</p>"
@@ -79,6 +81,25 @@ export default function TextEditor({
     URL.revokeObjectURL(url)
   }
 
+  function sanitizeForTipTap(html: string): string {
+    const parser = new DOMParser()
+    const doc = parser.parseFromString(html, "text/html")
+
+    doc.querySelectorAll("p, li").forEach((el) => {
+      const htmlEl = el as HTMLElement
+
+      // Convert leading &nbsp; chains to margin-left
+      const match = htmlEl.innerHTML.match(/^(&nbsp;)+/)
+      if (match) {
+        const count = match[0].split("&nbsp;").length - 1
+        htmlEl.style.marginLeft = `${count * 10}px`
+        htmlEl.innerHTML = htmlEl.innerHTML.replace(/^(&nbsp;)+/, "")
+      }
+    })
+
+    return doc.body.innerHTML
+  }
+
   const editor = useEditor({
     extensions: [
       StarterKit.configure({
@@ -97,6 +118,8 @@ export default function TextEditor({
         types: ["heading", "paragraph"],
       }),
       Highlight,
+      TextStyle,
+      PreserveIndent,
     ],
     content: getSavedContent(content),
     immediatelyRender: false,

@@ -23,6 +23,7 @@ import Toast from "../ui/toast"
 import { useTranslations } from "next-intl"
 import { getCookie } from "@/lib/utils"
 import DocumentPreview from "./document-preview"
+import FileScanner from "./file-scanner"
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -63,6 +64,7 @@ export default function TemplateDashboard({
   const [edgeLoaderOpen, setEdgeLoaderOpen] = React.useState(true)
   const [toastOpen, setToastOpen] = React.useState(false)
   const [isOwnerDropdownOpen, setIsOwnerDropdownOpen] = React.useState(false)
+  const [fileScannerOpen, setFileScannerOpen] = React.useState(false)
 
   const [isUploadDrawerOpen, setIsUploadDrawerOpen] = React.useState(false)
   const [selectedFile, setSelectedFile] = React.useState<File>()
@@ -113,6 +115,7 @@ export default function TemplateDashboard({
       console.error("No file selected")
       return
     }
+    setFileScannerOpen(false)
 
     const document: DocumentRequest = {
       file: selectedFile,
@@ -127,17 +130,26 @@ export default function TemplateDashboard({
     formData.append("lawDomainId", document.lawDomainId.toString())
     formData.append("jurisdictionId", document.jurisdictionId.toString())
 
-    console.log("Document request:", document)
-    const response = await documentService.create(formData)
-    if (response) {
-      console.log("Document created:", response)
-      await relaodDocuments(document.documentTypeId)
+    try {
+      const response = await documentService.create(formData)
+      if (response) {
+        console.log("Document created:", response)
+        await reloadDocuments(document.documentTypeId)
+        setEdgeLoaderOpen(false)
+        // setFileScannerOpen(false)
+
+        displayToast("success", "Document created successfully")
+      }
+    } catch (error) {
+      console.error("Error creating document:", error)
+      // Handle the error here, e.g., display an error toast
       setEdgeLoaderOpen(false)
-      displayToast("success", "Document created successfully")
+      // setFileScannerOpen(false)
+      displayToast("error", "An error occurred while creating the document")
     }
   }
 
-  const relaodDocuments = async (id: number) => {
+  const reloadDocuments = async (id: number) => {
     if (selectedDocumentType.id !== id) {
       return
     }
@@ -255,7 +267,7 @@ export default function TemplateDashboard({
               type="file"
               ref={fileInputRef}
               onChange={handleFileChange}
-              accept=".docx,.pdf"
+              accept=".docx"
               style={{ display: "none" }}
             />
             <motion.div
@@ -271,7 +283,7 @@ export default function TemplateDashboard({
                 <span className="px-4 text-center text-xs font-medium text-slate-500">
                   {t("new_document_section.upload_file_subtext")}
                   <br />
-                  (.docx, .pdf)
+                  (.docx)
                 </span>
               </div>
               <span className="text-center text-sm font-medium text-slate-800 transition-colors group-hover:text-blue-600">
@@ -398,123 +410,34 @@ export default function TemplateDashboard({
           ))}
         </motion.div>
       ) : (
-        // <motion.div
-        //   variants={containerVariants}
-        //   initial="hidden"
-        //   animate="show"
-        //   className="relative grid grid-cols-2 gap-6 px-2"
-        // >
-        //   {loadedDocuments.map((file, i) => (
-        //     <motion.div
-        //       variants={itemVariants}
-        //       key={i}
-        //       className="group relative flex flex-col gap-2 overflow-hidden rounded-xl border border-slate-200 bg-white p-2 transition-all duration-300 hover:border-blue-300 hover:shadow-xl sm:p-1 md:flex-row"
-        //     >
-        //       {/* Large Document Preview */}
-        //       <div
-        //         // onClick={onOpenEditor}
-        //         className="relative flex aspect-[1/1.4] w-full shrink-0 cursor-pointer flex-col gap-3 overflow-hidden rounded-lg border border-slate-200 bg-[#F8FAFC] p-5 shadow-sm transition-all group-hover:border-blue-400 sm:p-6 md:w-56"
-        //       >
-        //         {/* Simulated docx content styling */}
-        //         <div className="mb-2 flex h-10 w-10 items-center justify-center rounded border border-slate-200 bg-white shadow-sm">
-        //           <FileText size={20} className="text-blue-600" />
-        //         </div>
-        //         <div className="mb-2 h-3 w-3/4 rounded bg-slate-300"></div>
-        //         <div className="h-1.5 w-full rounded bg-slate-200"></div>
-        //         <div className="h-1.5 w-full rounded bg-slate-200"></div>
-        //         <div className="h-1.5 w-5/6 rounded bg-slate-200"></div>
-        //         <div className="mt-3 h-1.5 w-full rounded bg-slate-200"></div>
-        //         <div className="h-1.5 w-full rounded bg-slate-200"></div>
-        //         <div className="h-1.5 w-4/6 rounded bg-slate-200"></div>
-
-        //         {/* Overlay Action */}
-        //         <div className="absolute inset-0 flex items-center justify-center bg-slate-900/5 opacity-0 backdrop-blur-[1px] transition-opacity duration-300 group-hover:opacity-100">
-        //           <span
-        //             onClick={() => {
-        //               setDocumentId(file.id)
-        //               setLoading(true)
-        //               router.push("/editor")
-        //             }}
-        //             className="inline-flex items-center gap-2 rounded-full bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-md"
-        //           >
-        //             {t("recent_templates_section.open_document_overlay")}
-        //           </span>
-        //         </div>
-        //       </div>
-
-        //       {/* Info section next to preview */}
-        //       <div className="mt-4 flex flex-1 flex-col justify-center">
-        //         <div className="mb-2 flex items-start justify-between">
-        //           <h3
-        //             className="cursor-pointer text-lg font-bold text-slate-800 transition-colors group-hover:text-blue-600"
-        //             // onClick={onOpenEditor}
-        //           >
-        //             {file.fileName}
-        //           </h3>
-        //           <button className="shrink-0 rounded-full p-1 text-slate-400 transition-all hover:bg-slate-100">
-        //             <MoreVertical size={16} />
-        //           </button>
-        //         </div>
-
-        //         <div className="mb-4 flex flex-col items-start gap-4 text-sm text-slate-500 sm:mb-6">
-        //           <span className="flex items-center gap-1.5">
-        //             <Clock size={14} />
-        //             {t("recent_templates_section.opened_prefix")}{" "}
-        //             {file.last_opened
-        //               ? new Date(file?.last_opened).toDateString()
-        //               : new Date(file.createdAt).toDateString()}
-        //           </span>
-        //           <span className="flex items-center gap-1.5">
-        //             <div className="flex h-5 w-5 items-center justify-center rounded-full bg-indigo-600 text-[10px] font-bold text-white">
-        //               <User size={12} />
-        //             </div>
-        //             {t("recent_templates_section.owner_me")}
-        //           </span>
-        //         </div>
-        //         <div className="mt-auto mb-3.5">
-        //           <button
-        //             onClick={() => {
-        //               setDocumentId(file.id)
-        //               setLoading(true)
-        //               router.push("/editor")
-        //             }}
-        //             className="w-max rounded-lg bg-blue-50 px-4 py-2 text-sm font-medium text-blue-600 transition-colors hover:bg-blue-100 hover:text-blue-700"
-        //           >
-        //             {t("recent_templates_section.use_template_btn")}
-        //           </button>
-        //         </div>
-        //       </div>
-        //     </motion.div>
-        //   ))}
-        // </motion.div>
         <motion.div
           variants={containerVariants}
           initial="hidden"
           whileInView="show"
-          viewport={{ once: true, margin: "-50px" }}
-          className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4"
+          viewport={{ once: true }}
+          className="grid grid-cols-1 items-start gap-4 px-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
         >
           {loadedDocuments.map((item, i) => (
             <motion.div
               key={i}
               variants={itemVariants}
               whileHover={{ y: -5 }}
-              className="group cursor-pointer"
+              className="group flex cursor-pointer flex-col"
             >
-              <div className="relative mb-4 flex aspect-[3/4] flex-col justify-between overflow-hidden rounded-lg border border-slate-200 bg-white p-4 shadow-sm transition-all duration-300 group-hover:shadow-xl group-hover:shadow-blue-900/5 hover:border-blue-400">
+              <div className="relative mb-4 flex h-[280px] flex-col justify-between overflow-hidden rounded-lg border border-slate-200 bg-white p-4 shadow-sm transition-all duration-300 group-hover:shadow-xl group-hover:shadow-blue-900/5 hover:border-blue-400">
                 <DocumentPreview
                   htmlContent={item.htmlContent}
                   fallbackType="guest"
                   buttonText={t("recent_templates_section.use_template_btn")}
                   onButtonClick={() => {
-                    setDocumentId(item.id)
                     setLoading(true)
+                    setDocumentId(item.id)
                     router.push("/editor")
                   }}
                 />
               </div>
               <h4 className="line-clamp-1 font-semibold text-slate-800 transition-colors group-hover:text-blue-600">
-                {item.fileName}
+                {item.fileName.split(".")[0]}
               </h4>
               <p className="mt-1 flex items-center gap-1 text-sm text-slate-500">
                 <BookOpen size={14} />{" "}
@@ -558,15 +481,18 @@ export default function TemplateDashboard({
           }
 
           if (selectedFile && data) {
-            setEdgeLoaderOpen(true)
             setIsUploadDrawerOpen(false)
+            setFileScannerOpen(true)
+            setTimeout(async () => {
+              setEdgeLoaderOpen(true)
 
-            await saveUploadedFile(
-              selectedFile,
-              docType,
-              lawDomain,
-              jurisdiction
-            )
+              await saveUploadedFile(
+                selectedFile,
+                docType,
+                lawDomain,
+                jurisdiction
+              )
+            }, 3000)
           }
         }}
       />
@@ -577,6 +503,7 @@ export default function TemplateDashboard({
         message={toastMessage}
         onClose={() => setToastOpen(false)}
       />
+      <FileScanner isScanning={fileScannerOpen} onComplete={() => {}} />
     </div>
   )
 }
