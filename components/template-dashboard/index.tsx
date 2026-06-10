@@ -184,7 +184,6 @@ export default function TemplateDashboard({
             error
           )
           setIsLoggedIn(false)
-          onNavigate("/")
         })
     }
   }, [selectedDocumentType])
@@ -502,7 +501,7 @@ export default function TemplateDashboard({
               whileHover={{ y: -5 }}
               className="group cursor-pointer"
             >
-              <div className="relative mb-4 flex aspect-[3/4] flex-col justify-between overflow-hidden rounded-lg border border-slate-200 bg-white p-4 shadow-sm transition-all duration-300 group-hover:shadow-xl group-hover:shadow-blue-900/5 hover:to-blue-700">
+              <div className="relative mb-4 flex aspect-[3/4] flex-col justify-between overflow-hidden rounded-lg border border-slate-200 bg-white p-4 shadow-sm transition-all duration-300 group-hover:shadow-xl group-hover:shadow-blue-900/5 hover:border-blue-400">
                 <DocumentPreview
                   htmlContent={item.htmlContent}
                   fallbackType="guest"
