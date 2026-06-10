@@ -442,8 +442,8 @@ export default function TemplateDashboard({
               <p className="mt-1 flex items-center gap-1 text-sm text-slate-500">
                 <BookOpen size={14} />{" "}
                 {locale === "fr"
-                  ? item?.jurisdiction?.frName
-                  : item?.jurisdiction?.enName}
+                  ? item?.lawDomain?.frName
+                  : item?.lawDomain?.enName}
               </p>
             </motion.div>
           ))}

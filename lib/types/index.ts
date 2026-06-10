@@ -25,7 +25,7 @@ export interface Document {
   htmlContent: string
   fileName: string
   documentType: number
-  lawDomain: number
+  lawDomain: any
   jurisdiction: any
   last_opened: string
   user_id: string
