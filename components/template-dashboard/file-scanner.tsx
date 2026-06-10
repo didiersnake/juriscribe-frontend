@@ -120,13 +120,13 @@ export default function FileScanner({
 
             {scanStatus === "safe" && (
               <div className="rounded border border-emerald-100 bg-emerald-50 px-2 py-1.5 text-xs font-medium text-emerald-600">
-                {t("file_scanner.alert.secured_by")}
+                {t("file_scanner.alerts.secured_by")}
               </div>
             )}
 
             {scanStatus === "threat" && (
               <div className="rounded border border-red-100 bg-red-50 px-2 py-1.5 text-xs font-medium text-red-600">
-                {t("file_scanner.alert.upload_blocked")}
+                {t("file_scanner.alerts.upload_blocked")}
               </div>
             )}
           </div>

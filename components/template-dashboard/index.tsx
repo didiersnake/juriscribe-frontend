@@ -492,7 +492,7 @@ export default function TemplateDashboard({
                 lawDomain,
                 jurisdiction
               )
-            }, 3000)
+            }, 3500)
           }
         }}
       />
