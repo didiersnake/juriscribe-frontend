@@ -4,10 +4,12 @@ export default function DocumentPreview({
   htmlContent,
   fallbackType = "grid",
   buttonText,
+  onButtonClick,
 }: {
   htmlContent?: string
   fallbackType?: "grid" | "preview" | "guest"
   buttonText?: string
+  onButtonClick?: () => void
 }) {
   if (htmlContent) {
     return (
@@ -31,7 +33,10 @@ export default function DocumentPreview({
         {fallbackType === "guest" && (
           <>
             <div className="pointer-events-none absolute inset-0 z-10 bg-gradient-to-b from-transparent to-white/90"></div>
-            <div className="absolute right-4 bottom-4 left-4 z-20 flex items-center justify-center rounded bg-slate-900 p-2 text-xs font-semibold text-white opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+            <div
+              className="absolute right-4 bottom-4 left-4 z-20 flex items-center justify-center rounded bg-slate-900 p-2 text-xs font-semibold text-white opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+              onClick={onButtonClick}
+            >
               {buttonText}
             </div>
           </>

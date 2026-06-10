@@ -507,6 +507,11 @@ export default function TemplateDashboard({
                   htmlContent={item.htmlContent}
                   fallbackType="guest"
                   buttonText={t("recent_templates_section.use_template_btn")}
+                  onButtonClick={() => {
+                    setDocumentId(item.id)
+                    setLoading(true)
+                    router.push("/editor")
+                  }}
                 />
               </div>
               <h4 className="line-clamp-1 font-semibold text-slate-800 transition-colors group-hover:text-blue-600">
