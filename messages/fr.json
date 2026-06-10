@@ -1,10 +1,10 @@
 {
   "Homepage": {
     "hero": {
-      "badge": "La nouvelle référence pour vos modèles d'actes juridiques",
+      "badge": "La nouvelle référence pour vos templates d'actes juridiques",
       "title": "Rédigez vos documents juridiques en toute",
       "titleHighlight": "confiance et rapidité",
-      "description": "JuriScribe met un moteur de modèles puissant et robuste au service des professionnels du droit. Connectez-vous pour accéder à nos modèles premium, importez vos propres trames et générez des PDF impeccables en quelques secondes.",
+      "description": "JuriScribe met un moteur de templates puissant et robuste au service des professionnels du droit. Connectez-vous pour accéder à nos modèles premium, importez vos propres trames et générez des PDF impeccables en quelques secondes.",
       "cta": {
         "exploreLibrary": "Explorer la bibliothèque de modèles",
         "signIn": "Se connecter",
@@ -18,16 +18,16 @@
       },
       "bankPrivacy": {
         "title": "Confidentialité de niveau bancaire",
-        "description": "Vos modèles et les données de vos clients vous appartiennent. Nous utilisons des protocoles de chiffrement rigoureux pour garantir la sécurité de vos documents confidentiels."
+        "description": "Vos fichiers et les données de vos clients vous appartiennent. Nous utilisons des protocoles de chiffrement rigoureux pour garantir la sécurité de vos documents confidentiels."
       },
       "customTemplates": {
-        "title": "Modèles personnalisés",
-        "description": "Importez vos propres modèles de contrats types. Partagez-les avec l'ensemble de votre cabinet ou gardez-les privés sur votre compte."
+        "title": "Templates personnalisés",
+        "description": "Importez vos propres fichiers. Partagez-les avec l'ensemble de votre cabinet ou gardez-les privés sur votre compte."
       }
     },
     "howItWorks": {
       "heading": "Comment fonctionne JuriScribe",
-      "subheading": "Passez du modèle au document finalisé en trois étapes simples.",
+      "subheading": "Passez du template au document finalisé en trois étapes simples.",
       "steps": [
         {
           "step": "01",
@@ -47,7 +47,7 @@
       ]
     },
     "templates": {
-      "title": "Modèles publics à la une",
+      "title": "Templates publics à la une",
       "desc": "Un simple aperçu de ce qui vous attend sur JuriScribe.",
       "viewAll": "Tout afficher"
     },
@@ -57,7 +57,7 @@
       "items": {
         "cloudSynchronization": {
           "title": "Synchronisation cloud",
-          "desc": "Accédez aux modèles de votre cabinet en toute sécurité, depuis n'importe quel appareil et où que vous soyez."
+          "desc": "Accédez aux fichiers de votre cabinet en toute sécurité, depuis n'importe quel appareil et où que vous soyez."
         },
         "oneClickExport": {
           "title": "Export en un clic",
@@ -65,32 +65,32 @@
         },
         "versionControl": {
           "title": "Suivi des versions",
-          "desc": "Ne perdez plus jamais un brouillon. Suivez les modifications et restaurez les versions antérieures de vos modèles."
+          "desc": "Ne perdez plus jamais un brouillon. Suivez les modifications et restaurez les versions antérieures de vos documents."
         },
         "editablePdfDocx": {
           "title": "Fichiers WORD modifiables",
-          "desc": "Modifiez facilement vos modèles dans notre éditeur intégré ou importez vos propres fichiers WORD."
+          "desc": "Modifiez facilement vos fichiers dans notre éditeur intégré ou importez vos propres fichiers WORD."
         }
       }
     }
   },
 
   "TemplateDashboard": {
-    "placeholder": "Rechercher des modèles...",
+    "placeholder": "Rechercher des template...",
     "new_document_section": {
       "heading": "Créer un nouveau document",
-      "template_gallery_btn": "Galerie de modèles",
+      "template_gallery_btn": "Galerie de templates",
       "blank_template_label": "Nouveau document",
       "upload_file_subtext": "Importer un fichier",
-      "upload_template_label": "Importer un modèle"
+      "upload_template_label": "Importer un template"
     },
     "recent_templates_section": {
-      "heading": "Vos modèles",
+      "heading": "Vos Templates",
       "last_opened_btn": "Recentement ouverts",
       "open_document_overlay": "Ouvrir le document",
       "opened_prefix": "Ouvert le ",
       "owner_me": "Moi",
-      "use_template_btn": "Utiliser le modèle"
+      "use_template_btn": "Utiliser le template"
     },
     "select_category": "Veuillez remplir les détails de la catégorie de document"
   },
