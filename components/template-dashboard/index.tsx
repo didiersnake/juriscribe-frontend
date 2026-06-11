@@ -59,6 +59,7 @@ export default function TemplateDashboard({
     setDocumentId,
     selectedDocumentType,
     setSelectedDocumentType,
+    setUseDraft,
   } = useAuth()
 
   const [edgeLoaderOpen, setEdgeLoaderOpen] = React.useState(true)

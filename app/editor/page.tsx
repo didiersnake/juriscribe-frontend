@@ -28,7 +28,7 @@ const itemVariants = {
 }
 
 export default function EditorPage() {
-  const { documentId, loading, setLoading } = useAuth()
+  const { documentId, loading, setLoading, useDraft } = useAuth()
   const t = useTranslations("text_editor")
   const [content, setContent] = React.useState<string>("Hello World!!!")
   const [name, setName] = React.useState<string>(t("new"))
@@ -72,7 +72,13 @@ export default function EditorPage() {
       className="mx-auto bg-slate-100 py-5"
     >
       <motion.div variants={itemVariants}>
-        <TextEditor onBack={onBack} content={content} name={name} id={id} />
+        <TextEditor
+          onBack={onBack}
+          content={content}
+          name={name}
+          id={id}
+          useDraft={useDraft}
+        />
       </motion.div>
     </motion.div>
   )

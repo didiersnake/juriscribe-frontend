@@ -21,11 +21,13 @@ export default function TextEditor({
   content,
   name,
   id,
+  useDraft,
 }: {
   onBack: () => void
   content: string
   name: string
   id: number
+  useDraft?: boolean
 }) {
   const [fileName, setFileName] = React.useState(name.split(".")[0])
   const { documentId, setDocumentId } = useAuth()
@@ -36,22 +38,28 @@ export default function TextEditor({
   const STORAGE_KEY = "editor_draft"
   const DEBOUNCE_DELAY = 1000 // ms — waits 1s after user stops typing
 
-  function getSavedContent(content: string): string {
+  async function getSavedContent(content: string) {
     if (typeof window === "undefined") return "<p>Hello World!</p>" // SSR guard
-    // const saved = localStorage.getItem(STORAGE_KEY)
-    const saved = getDocumentFromDraft(id)
+    if (useDraft) {
+      const saved = await getDocumentFromDraft(id)
+      if (saved) return sanitizeForTipTap(saved.content)
+    }
     if (documentId !== 0) {
+      setDocumentId(0) // Reset after loading to prevent re-fetching on every editor mount
       return sanitizeForTipTap(content)
     }
-    setDocumentId(0) // Reset after loading to prevent re-fetching on every editor mount
     return "<p>Hello World!!!!</p>"
   }
 
   // Stable save function — doesn't change between renders
-  const saveToStorage = React.useCallback((html: string) => {
+  const saveToStorage = React.useCallback(async (html: string) => {
     isSaving.current = true
     // localStorage.setItem(STORAGE_KEY, html)
-    addDocumentChangesToDraft({ id: id, fileName: fileName, content: html })
+    await addDocumentChangesToDraft({
+      id: id,
+      fileName: fileName,
+      content: html,
+    })
     isSaving.current = false
   }, [])
 
