@@ -7,7 +7,8 @@ import React from "react"
 import { useAuth } from "../../lib/authContext"
 import { documentService } from "../../lib/services/documentService"
 import { useTranslations } from "next-intl"
-
+import { getDocumentFromDraft } from "@/lib/services/indexedDBService"
+import { DocumentContentResponse } from "@/lib/types"
 const containerVariants = {
   hidden: { opacity: 0 },
   show: {
@@ -39,7 +40,18 @@ export default function EditorPage() {
   }
 
   React.useEffect(() => {
-    if (documentId !== 0) {
+    if (useDraft && documentId !== 0) {
+      getDocumentFromDraft(documentId)
+        .then((response) => {
+          setContent((response as DocumentContentResponse)?.content)
+          setName((response as DocumentContentResponse).fileName)
+          setId((response as DocumentContentResponse).id)
+        })
+        .catch((error) =>
+          console.error("Error loading document content:", error)
+        )
+    }
+    if (documentId !== 0 && !useDraft) {
       documentService
         .getById(documentId)
         .then((response) => {
@@ -72,13 +84,7 @@ export default function EditorPage() {
       className="mx-auto bg-slate-100 py-5"
     >
       <motion.div variants={itemVariants}>
-        <TextEditor
-          onBack={onBack}
-          content={content}
-          name={name}
-          id={id}
-          useDraft={useDraft}
-        />
+        <TextEditor onBack={onBack} content={content} name={name} id={id} />
       </motion.div>
     </motion.div>
   )

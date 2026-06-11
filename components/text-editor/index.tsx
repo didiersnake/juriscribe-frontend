@@ -12,22 +12,17 @@ import { useAuth } from "@/lib/authContext"
 import { axiosInstance } from "@/lib/services/api"
 import { useTranslations } from "next-intl"
 import { PreserveIndent } from "./preserve-indent"
-import {
-  addDocumentChangesToDraft,
-  getDocumentFromDraft,
-} from "@/lib/services/indexedDBService"
+import { addDocumentChangesToDraft } from "@/lib/services/indexedDBService"
 export default function TextEditor({
   onBack,
   content,
   name,
   id,
-  useDraft,
 }: {
   onBack: () => void
   content: string
   name: string
   id: number
-  useDraft?: boolean
 }) {
   const [fileName, setFileName] = React.useState(name.split(".")[0])
   const { documentId, setDocumentId } = useAuth()
@@ -38,14 +33,9 @@ export default function TextEditor({
   const STORAGE_KEY = "editor_draft"
   const DEBOUNCE_DELAY = 1000 // ms — waits 1s after user stops typing
 
-  async function getSavedContent(content: string) {
+  function getSavedContent(content: string) {
     if (typeof window === "undefined") return "<p>Hello World!</p>" // SSR guard
-    if (useDraft) {
-      console.log("Using draft content", useDraft)
-      const saved = await getDocumentFromDraft(id)
-      console.log("get content:", saved)
-      if (saved) return sanitizeForTipTap(saved.content)
-    }
+
     if (documentId !== 0) {
       setDocumentId(0) // Reset after loading to prevent re-fetching on every editor mount
       return sanitizeForTipTap(content)
