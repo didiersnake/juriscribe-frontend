@@ -32,6 +32,7 @@ export default function EditorPage() {
   const t = useTranslations("text_editor")
   const [content, setContent] = React.useState<string>("Hello World!!!")
   const [name, setName] = React.useState<string>(t("new"))
+  const [id, setId] = React.useState<number>(0)
   const router = useRouter()
   const onBack = () => {
     router.push("/documents")
@@ -46,6 +47,7 @@ export default function EditorPage() {
             // console.log("Loaded document content:", response)
             setContent(response?.content)
             setName(response?.fileName)
+            setId(response?.id)
             // editor?.commands.setContent(response)
           }
         })
@@ -70,7 +72,7 @@ export default function EditorPage() {
       className="mx-auto bg-slate-100 py-5"
     >
       <motion.div variants={itemVariants}>
-        <TextEditor onBack={onBack} content={content} name={name} />
+        <TextEditor onBack={onBack} content={content} name={name} id={id} />
       </motion.div>
     </motion.div>
   )

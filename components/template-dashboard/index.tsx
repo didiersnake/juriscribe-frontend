@@ -318,7 +318,7 @@ export default function TemplateDashboard({
                 onClick={() => {
                   setIsOwnerDropdownOpen(!isOwnerDropdownOpen)
                 }}
-                className="group cursor-pointer items-center gap-1 transition-colors hover:text-slate-900 sm:flex"
+                className="group flex cursor-pointer items-center gap-1 transition-colors hover:text-slate-900"
               >
                 {locale === "fr"
                   ? selectedDocumentType?.frName

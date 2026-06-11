@@ -12,14 +12,20 @@ import { useAuth } from "@/lib/authContext"
 import { axiosInstance } from "@/lib/services/api"
 import { useTranslations } from "next-intl"
 import { PreserveIndent } from "./preserve-indent"
+import {
+  addDocumentChangesToDraft,
+  getDocumentFromDraft,
+} from "@/lib/services/indexedDBService"
 export default function TextEditor({
   onBack,
   content,
   name,
+  id,
 }: {
   onBack: () => void
   content: string
   name: string
+  id: number
 }) {
   const [fileName, setFileName] = React.useState(name.split(".")[0])
   const { documentId, setDocumentId } = useAuth()
@@ -32,7 +38,8 @@ export default function TextEditor({
 
   function getSavedContent(content: string): string {
     if (typeof window === "undefined") return "<p>Hello World!</p>" // SSR guard
-    const saved = localStorage.getItem(STORAGE_KEY)
+    // const saved = localStorage.getItem(STORAGE_KEY)
+    const saved = getDocumentFromDraft(id)
     if (documentId !== 0) {
       return sanitizeForTipTap(content)
     }
@@ -43,7 +50,8 @@ export default function TextEditor({
   // Stable save function — doesn't change between renders
   const saveToStorage = React.useCallback((html: string) => {
     isSaving.current = true
-    localStorage.setItem(STORAGE_KEY, html)
+    // localStorage.setItem(STORAGE_KEY, html)
+    addDocumentChangesToDraft({ id: id, fileName: fileName, content: html })
     isSaving.current = false
   }, [])
 
@@ -217,7 +225,7 @@ export default function TextEditor({
 
   const Editor = (
     <div className="flex flex-1 justify-center overflow-y-auto p-3 sm:p-8">
-      <div className="mb-16 h-fit w-full max-w-[650px] shrink-0 rounded-sm border border-slate-200 bg-white px-12 py-16 shadow-sm sm:px-20 md:px-24">
+      <div className="mb-16 h-fit w-full max-w-[760px] shrink-0 rounded-sm border border-slate-200 bg-white px-12 py-16 shadow-sm sm:px-20 md:px-16">
         <EditorContent editor={editor} />
       </div>
     </div>
