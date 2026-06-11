@@ -1,85 +1,90 @@
 import { DocumentContentResponse } from "../types"
 
-const db_name = "juriscribe_drafts"
+const DB_NAME = "juriscribe_drafts"
+const DB_VERSION = 1
+const STORE_NAME = "drafts"
 
-let db: IDBDatabase
-let readonly_transaction: IDBTransaction
-let readwrite_transaction: IDBTransaction
-const request = window.indexedDB.open(db_name, 1)
+// Returns a ready db instance (opens it if needed)
+const openDB = (): Promise<IDBDatabase> => {
+  return new Promise((resolve, reject) => {
+    const request = window.indexedDB.open(DB_NAME, DB_VERSION)
 
-request.onerror = (event) => {
-  console.error(
-    "IndexedDB error on open database:",
-    (event.target as IDBOpenDBRequest).error?.message
-  )
-}
+    request.onerror = () => {
+      reject(new Error(`IndexedDB open error: ${request.error?.message}`))
+    }
 
-request.onupgradeneeded = (event) => {
-  db = (event.target as IDBOpenDBRequest).result
-  const objectStore = db.createObjectStore("drafts", { keyPath: "id" })
+    request.onsuccess = () => {
+      resolve(request.result)
+    }
 
-  objectStore.createIndex("id", "id", { unique: true })
-
-  objectStore.transaction.oncomplete = () => {
-    console.log("Object store created")
-    readonly_transaction = db.transaction("drafts", "readonly")
-    readwrite_transaction = db.transaction("drafts", "readwrite")
-  }
-
-  db.onerror = (event) => {
-    console.error(
-      "IndexedDB error:",
-      (event.target as IDBRequest).error?.message
-    )
-  }
-}
-
-export const addDocumentChangesToDraft = (object: DocumentContentResponse) => {
-  const objectStore = readwrite_transaction.objectStore("drafts")
-  const request = objectStore.put({
-    ...object,
+    // Only runs on first open or version bump
+    request.onupgradeneeded = (event) => {
+      const db = (event.target as IDBOpenDBRequest).result
+      //create store if not existing yet
+      if (!db.objectStoreNames.contains(STORE_NAME)) {
+        db.createObjectStore(STORE_NAME, { keyPath: "id" })
+      }
+    }
   })
-  request.onsuccess = (event) => {
-    console.log("Document added to draft", (event.target as IDBRequest).result)
-  }
-  request.onerror = (event) => {
-    console.error(
-      "IndexedDB error when adding document:",
-      (event.target as IDBRequest).error?.message
-    )
-  }
 }
 
-export const getDocumentFromDraft = (id: number) => {
-  const objectStore = readonly_transaction.objectStore("drafts")
-  const request = objectStore.get(id)
-  request.onsuccess = (event) => {
-    console.log(
-      "Document retrieved from draft",
-      (event.target as IDBRequest).result
-    )
-  }
-  request.onerror = (event) => {
-    console.error(
-      "IndexedDB error when retrieving document:",
-      (event.target as IDBRequest).error?.message
-    )
-  }
+export const addDocumentChangesToDraft = async (
+  object: DocumentContentResponse
+): Promise<void> => {
+  const db = await openDB()
+
+  return new Promise((resolve, reject) => {
+    const transaction = db.transaction(STORE_NAME, "readwrite")
+    const store = transaction.objectStore(STORE_NAME)
+    const request = store.put({ ...object })
+
+    request.onsuccess = () => {
+      console.log("Document saved to draft:", request.result)
+      resolve()
+    }
+
+    request.onerror = () => {
+      reject(new Error(`Add error: ${request.error?.message}`))
+    }
+  })
 }
 
-export const removeDocumentFromDraft = (id: number) => {
-  const objectStore = readwrite_transaction.objectStore("drafts")
-  const request = objectStore.delete(id)
-  request.onsuccess = (event) => {
-    console.log(
-      "Document removed from draft",
-      (event.target as IDBRequest).result
-    )
-  }
-  request.onerror = (event) => {
-    console.error(
-      "IndexedDB error when removing document:",
-      (event.target as IDBRequest).error?.message
-    )
-  }
+export const getDocumentFromDraft = async (
+  id: number
+): Promise<DocumentContentResponse | undefined> => {
+  const db = await openDB()
+
+  return new Promise((resolve, reject) => {
+    const transaction = db.transaction(STORE_NAME, "readonly")
+    const store = transaction.objectStore(STORE_NAME)
+    const request = store.get(id)
+    // Return undefined if not found else return the document
+    request.onsuccess = () => {
+      console.log("Document retrieved from draft:", request.result)
+      resolve(request.result as DocumentContentResponse | undefined)
+    }
+
+    request.onerror = () => {
+      reject(new Error(`Get error: ${request.error?.message}`))
+    }
+  })
+}
+
+export const removeDocumentFromDraft = async (id: number): Promise<void> => {
+  const db = await openDB()
+
+  return new Promise((resolve, reject) => {
+    const transaction = db.transaction(STORE_NAME, "readwrite")
+    const store = transaction.objectStore(STORE_NAME)
+    const request = store.delete(id)
+
+    request.onsuccess = () => {
+      console.log("Document removed from draft, id:", id)
+      resolve()
+    }
+
+    request.onerror = () => {
+      reject(new Error(`Delete error: ${request.error?.message}`))
+    }
+  })
 }

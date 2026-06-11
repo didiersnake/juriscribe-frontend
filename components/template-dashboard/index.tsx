@@ -221,8 +221,8 @@ export default function TemplateDashboard({
   )
 
   const newDocument = (
-    <section className="bg-slate-100/50 px-4 pt-8 pb-10">
-      <div className="mx-auto max-w-5xl">
+    <section className="bg-slate-100/50 px-2 pt-8 pb-10 lg:px-8">
+      <div className="mx-auto max-w-7xl">
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -246,7 +246,7 @@ export default function TemplateDashboard({
           <motion.div
             variants={itemVariants}
             whileHover={{ y: -4 }}
-            className="group flex w-32 cursor-pointer flex-col gap-2 sm:w-40"
+            className="group flex w-36 cursor-pointer flex-col gap-2 text-center sm:w-48"
             onClick={() => onNavigate("/editor")}
           >
             <div className="flex aspect-[3/4] items-center justify-center rounded border border-slate-200 bg-white transition-all duration-300 hover:border-blue-500 hover:shadow-lg">
@@ -273,7 +273,7 @@ export default function TemplateDashboard({
             <motion.div
               variants={itemVariants}
               whileHover={{ y: -4 }}
-              className="group flex w-32 cursor-pointer flex-col gap-2 sm:w-40"
+              className="group flex w-36 cursor-pointer flex-col gap-2 sm:w-48"
               onClick={handleUpload}
             >
               <div className="flex aspect-[3/4] flex-col items-center justify-center gap-3 rounded border border-slate-200 bg-white transition-all duration-300 hover:border-blue-500 hover:shadow-lg">
@@ -297,7 +297,7 @@ export default function TemplateDashboard({
   )
 
   const recentTemplatesSection = (
-    <section className="mx-auto w-full max-w-5xl flex-1 px-4 py-8">
+    <section className="mx-auto w-full max-w-7xl flex-1 px-2 py-8 lg:px-8">
       {searchBar}
       <motion.div
         initial={{ opacity: 0 }}
@@ -381,7 +381,7 @@ export default function TemplateDashboard({
           variants={containerVariants}
           initial="hidden"
           animate="show"
-          className="grid grid-cols-1 gap-4 px-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
+          className="grid grid-cols-1 gap-6 px-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
         >
           {recentTemplates.map((file, i) => (
             <motion.div
