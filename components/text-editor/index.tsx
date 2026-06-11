@@ -41,7 +41,9 @@ export default function TextEditor({
   async function getSavedContent(content: string) {
     if (typeof window === "undefined") return "<p>Hello World!</p>" // SSR guard
     if (useDraft) {
+      console.log("Using draft content", useDraft)
       const saved = await getDocumentFromDraft(id)
+      console.log("get content:", saved)
       if (saved) return sanitizeForTipTap(saved.content)
     }
     if (documentId !== 0) {
