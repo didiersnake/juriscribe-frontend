@@ -12,17 +12,22 @@ import { useAuth } from "@/lib/authContext"
 import { axiosInstance } from "@/lib/services/api"
 import { useTranslations } from "next-intl"
 import { PreserveIndent } from "./preserve-indent"
+import { addDocumentChangesToDraft } from "@/lib/services/indexedDBService"
 export default function TextEditor({
   onBack,
   content,
   name,
+  id,
+  userId,
 }: {
   onBack: () => void
   content: string
   name: string
+  id: number
+  userId: number
 }) {
   const [fileName, setFileName] = React.useState(name.split(".")[0])
-  const { documentId, setDocumentId } = useAuth()
+  const { documentId, setDocumentId, setUseDraft } = useAuth()
   const debounceTimer = React.useRef<ReturnType<typeof setTimeout> | null>(null)
   const isSaving = React.useRef(false)
 
@@ -30,20 +35,27 @@ export default function TextEditor({
   const STORAGE_KEY = "editor_draft"
   const DEBOUNCE_DELAY = 1000 // ms — waits 1s after user stops typing
 
-  function getSavedContent(content: string): string {
+  function getSavedContent(content: string) {
     if (typeof window === "undefined") return "<p>Hello World!</p>" // SSR guard
-    const saved = localStorage.getItem(STORAGE_KEY)
+
     if (documentId !== 0) {
+      setDocumentId(0) // Reset after loading to prevent re-fetching on every editor mount
+      setUseDraft(false)
       return sanitizeForTipTap(content)
     }
-    setDocumentId(0) // Reset after loading to prevent re-fetching on every editor mount
     return "<p>Hello World!!!!</p>"
   }
 
   // Stable save function — doesn't change between renders
-  const saveToStorage = React.useCallback((html: string) => {
+  const saveToStorage = React.useCallback(async (html: string) => {
     isSaving.current = true
-    localStorage.setItem(STORAGE_KEY, html)
+    await addDocumentChangesToDraft({
+      id: id,
+      fileName: fileName,
+      content: html,
+      userId: userId,
+      lastOpened: new Date(),
+    })
     isSaving.current = false
   }, [])
 
@@ -217,7 +229,7 @@ export default function TextEditor({
 
   const Editor = (
     <div className="flex flex-1 justify-center overflow-y-auto p-3 sm:p-8">
-      <div className="mb-16 h-fit w-full max-w-[650px] shrink-0 rounded-sm border border-slate-200 bg-white px-12 py-16 shadow-sm sm:px-20 md:px-24">
+      <div className="mb-16 h-fit w-full max-w-[760px] shrink-0 rounded-sm border border-slate-200 bg-white px-12 py-16 shadow-sm sm:px-20 md:px-16">
         <EditorContent editor={editor} />
       </div>
     </div>

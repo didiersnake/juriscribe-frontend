@@ -20,6 +20,8 @@ const AuthContext = React.createContext<{
   changeLocale: (locale: string) => void
   loading: boolean
   documentId: number
+  useDraft: boolean
+  setUseDraft: (value: boolean) => void
   selectedDocumentType: DocumentFileType
   setDocumentId: (id: number) => void
   setLoading: (value: boolean) => void
@@ -33,10 +35,12 @@ const AuthContext = React.createContext<{
   setUser: () => {},
   loading: false,
   setLoading: () => {},
+  setUseDraft: () => {},
   documentTypes: [],
   lawDomains: [],
   jurisdictions: [],
   setJurisdictions: () => {},
+  useDraft: false,
   setLawDomains: () => {},
   setDocumentTypes: () => {},
   documentId: 0,
@@ -63,6 +67,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [documentTypes, setDocumentTypes] = React.useState<
     Array<DocumentFileType>
   >([])
+  const [useDraft, setUseDraft] = React.useState(false)
 
   const [bannerVisible, setBannerVisible] = React.useState(true)
   const [documentId, setDocumentId] = React.useState(0)
@@ -79,6 +84,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   return (
     <AuthContext.Provider
       value={{
+        useDraft,
+        setUseDraft,
         bannerVisible,
         setBannerVisible,
         documentId,

@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // User & Auth
 export interface User {
-  id: string
+  id: number
   email: string
   name: string
   createdAt: string
@@ -25,7 +25,7 @@ export interface Document {
   htmlContent: string
   fileName: string
   documentType: number
-  lawDomain: number
+  lawDomain: any
   jurisdiction: any
   last_opened: string
   user_id: string
@@ -44,6 +44,8 @@ export interface DocumentContentResponse {
   fileName: string
   id: number
   content: string
+  lastOpened: Date // for use in drafts view
+  userId: number // for use in drafts view ( indexedDB )
 }
 
 export interface DocumentFileType {

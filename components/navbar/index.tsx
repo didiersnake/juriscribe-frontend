@@ -195,6 +195,18 @@ export default function Navbar({
       >
         {t("links.library")}
       </a>
+
+      {isLoggedIn && (
+        <a
+          onClick={() => {
+            route.push("/draft")
+            // setLoading(true)
+          }}
+          className="text-sm font-medium text-slate-600 transition-colors hover:cursor-pointer hover:text-blue-600"
+        >
+          {t("links.drafts")}
+        </a>
+      )}
     </div>
   )
 

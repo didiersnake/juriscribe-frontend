@@ -75,6 +75,24 @@
     }
   },
 
+  "drafts_page": {
+    "header": {
+      "title": "Drafts",
+      "subtitle": "Continue working on your saved documents"
+    },
+    "search": {
+      "placeholder": "Search drafts..."
+    },
+    "actions": {
+      "delete_title": "Delete draft",
+      "select": "Select"
+    },
+    "empty_state": {
+      "title": "No drafts found",
+      "description": "We could not find any drafts matching your search."
+    }
+  },
+
   "TemplateDashboard": {
     "placeholder": "Search documentst emplates...",
     "new_document_section": {
@@ -121,7 +139,8 @@
     "links": {
       "features": "Features",
       "howItWorks": "How it works",
-      "library": "Library"
+      "library": "Library",
+      "drafts": "Drafts"
     }
   },
 

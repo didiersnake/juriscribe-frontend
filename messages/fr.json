@@ -6,9 +6,9 @@
       "titleHighlight": "confiance et rapidité",
       "description": "JuriScribe met un moteur de templates puissant et robuste au service des professionnels du droit. Connectez-vous pour accéder à nos modèles premium, importez vos propres trames et générez des PDF impeccables en quelques secondes.",
       "cta": {
-        "exploreLibrary": "Explorer la bibliothèque de modèles",
+        "exploreLibrary": "Explorer ma Bibliothèque",
         "signIn": "Se connecter",
-        "explorePublicLibrary": "Explorer la bibliothèque publique"
+        "explorePublicLibrary": "Explorer la Bibliothèque Publique"
       }
     },
     "insights": {
@@ -75,6 +75,24 @@
     }
   },
 
+  "drafts_page": {
+    "header": {
+      "title": "Brouillons",
+      "subtitle": "Continuez à travailler sur vos documents enregistrés"
+    },
+    "search": {
+      "placeholder": "Rechercher des brouillons..."
+    },
+    "actions": {
+      "delete_title": "Supprimer le brouillon",
+      "select": "Selectionner"
+    },
+    "empty_state": {
+      "title": "Aucun brouillon trouvé",
+      "description": "Nous n'avons trouvé aucun brouillon correspondant à votre recherche."
+    }
+  },
+
   "TemplateDashboard": {
     "placeholder": "Rechercher des template...",
     "new_document_section": {
@@ -122,7 +140,8 @@
     "links": {
       "features": "Fonctionnalités",
       "howItWorks": "Comment ça marche",
-      "library": "Modèles"
+      "library": "Modèles",
+      "drafts": "Brouillons"
     }
   },
 
