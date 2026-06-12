@@ -27,7 +27,7 @@ export default function TextEditor({
   userId: number
 }) {
   const [fileName, setFileName] = React.useState(name.split(".")[0])
-  const { documentId, setDocumentId } = useAuth()
+  const { documentId, setDocumentId, setUseDraft } = useAuth()
   const debounceTimer = React.useRef<ReturnType<typeof setTimeout> | null>(null)
   const isSaving = React.useRef(false)
 
@@ -40,6 +40,7 @@ export default function TextEditor({
 
     if (documentId !== 0) {
       setDocumentId(0) // Reset after loading to prevent re-fetching on every editor mount
+      setUseDraft(false)
       return sanitizeForTipTap(content)
     }
     return "<p>Hello World!!!!</p>"
