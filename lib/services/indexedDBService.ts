@@ -102,8 +102,10 @@ export const getAllUserDocumentsFromDraft = async (
       const documents: DocumentContentResponse[] = []
       if (cursor) {
         const document = cursor.value
+        console.log("Document from draft:", document)
         if (document.userId === id) {
           documents.push(document)
+          console.log("DocumentList from draft:", documents)
         }
         cursor.continue()
       } else {

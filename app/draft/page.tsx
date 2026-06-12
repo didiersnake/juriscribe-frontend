@@ -7,7 +7,7 @@ import { DocumentContentResponse } from "@/lib/types"
 import { getCookie } from "@/lib/utils"
 
 export default function DraftPage() {
-  const { user, loading, setLoading, changeLocale } = useAuth()
+  const { user, loading, setLoading } = useAuth()
   const [drafts, setDrafts] = React.useState([] as DocumentContentResponse[])
   const [locale, setLocale] = React.useState("fr")
 
