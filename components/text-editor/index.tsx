@@ -18,11 +18,13 @@ export default function TextEditor({
   content,
   name,
   id,
+  userId,
 }: {
   onBack: () => void
   content: string
   name: string
   id: number
+  userId: number
 }) {
   const [fileName, setFileName] = React.useState(name.split(".")[0])
   const { documentId, setDocumentId } = useAuth()
@@ -51,6 +53,7 @@ export default function TextEditor({
       id: id,
       fileName: fileName,
       content: html,
+      userId: userId,
     })
     isSaving.current = false
   }, [])

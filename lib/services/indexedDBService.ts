@@ -70,6 +70,27 @@ export const getDocumentFromDraft = async (
   })
 }
 
+export const getAllUserDocumentsFromDraft = async (
+  id: number
+): Promise<DocumentContentResponse[]> => {
+  const db = await openDB()
+
+  return new Promise((resolve, reject) => {
+    const transaction = db.transaction(STORE_NAME, "readonly")
+    const store = transaction.objectStore(STORE_NAME)
+    store.openCursor().onsuccess = (event) => {
+      const cursor = (event.target as IDBRequest<IDBCursorWithValue>).result
+      if (cursor) {
+        const document = cursor.value
+        if (document.userId === id) {
+          resolve(document)
+        }
+        cursor.continue()
+      }
+    }
+  })
+}
+
 export const removeDocumentFromDraft = async (id: number): Promise<void> => {
   const db = await openDB()
 

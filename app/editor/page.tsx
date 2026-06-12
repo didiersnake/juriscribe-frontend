@@ -29,7 +29,7 @@ const itemVariants = {
 }
 
 export default function EditorPage() {
-  const { documentId, loading, setLoading, useDraft } = useAuth()
+  const { documentId, loading, setLoading, useDraft, user } = useAuth()
   const t = useTranslations("text_editor")
   const [content, setContent] = React.useState<string>("Hello World!!!")
   const [name, setName] = React.useState<string>(t("new"))
@@ -40,6 +40,7 @@ export default function EditorPage() {
   }
 
   React.useEffect(() => {
+    //Selected from draft
     if (useDraft && documentId !== 0) {
       getDocumentFromDraft(documentId)
         .then((response) => {
@@ -51,6 +52,7 @@ export default function EditorPage() {
           console.error("Error loading document content:", error)
         )
     }
+    //Selected from document list
     if (documentId !== 0 && !useDraft) {
       documentService
         .getById(documentId)
@@ -60,7 +62,6 @@ export default function EditorPage() {
             setContent(response?.content)
             setName(response?.fileName)
             setId(response?.id)
-            // editor?.commands.setContent(response)
           }
         })
         .catch((error) => {
@@ -84,7 +85,13 @@ export default function EditorPage() {
       className="mx-auto bg-slate-100 py-5"
     >
       <motion.div variants={itemVariants}>
-        <TextEditor onBack={onBack} content={content} name={name} id={id} />
+        <TextEditor
+          onBack={onBack}
+          content={content}
+          name={name}
+          id={id}
+          userId={user?.id as number}
+        />
       </motion.div>
     </motion.div>
   )

@@ -75,6 +75,24 @@
     }
   },
 
+  "drafts_page": {
+    "header": {
+      "title": "Brouillons",
+      "subtitle": "Continuez à travailler sur vos documents enregistrés"
+    },
+    "search": {
+      "placeholder": "Rechercher des brouillons..."
+    },
+    "actions": {
+      "delete_title": "Supprimer le brouillon",
+      "select": "Selectionner"
+    },
+    "empty_state": {
+      "title": "Aucun brouillon trouvé",
+      "description": "Nous n'avons trouvé aucun brouillon correspondant à votre recherche."
+    }
+  },
+
   "TemplateDashboard": {
     "placeholder": "Rechercher des template...",
     "new_document_section": {
@@ -122,7 +140,8 @@
     "links": {
       "features": "Fonctionnalités",
       "howItWorks": "Comment ça marche",
-      "library": "Modèles"
+      "library": "Modèles",
+      "drafts": "Brouillons"
     }
   },
 
