@@ -102,12 +102,12 @@ export const getAllUserDocumentsFromDraft = async (
       const documents: DocumentContentResponse[] = []
       if (cursor) {
         const document = cursor.value
-        console.log("Document from draft:", document)
         documents.push(document)
+        console.log("DocumentList from draft:", documents)
+        resolve(documents)
         cursor.continue()
       } else {
         console.log("No more documents found")
-        resolve(documents)
       }
     }
     store.openCursor().onerror = () => {
