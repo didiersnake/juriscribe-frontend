@@ -32,10 +32,10 @@ export function formatDate(date: Date, locale: string) {
         ? "Sunday"
         : `${dayOfWeek}, ${date.toLocaleString("en-US", { month: "short", day: "numeric", year: "numeric" })}`
 
-    return diffInHours < 24
-      ? hoursAgo
-      : diffInMinutes < 60
-        ? minutesAgo
+    return diffInMinutes < 60
+      ? minutesAgo
+      : diffInHours < 24
+        ? hoursAgo
         : formattedDate
   }
   if (locale === "fr") {
@@ -45,10 +45,10 @@ export function formatDate(date: Date, locale: string) {
         ? "Sunday"
         : `${dayOfWeek}, ${date.toLocaleString("fr-FR", { month: "short", day: "numeric", year: "numeric" })}`
 
-    return diffInHours < 24
-      ? hoursAgo
-      : diffInMinutes < 60
-        ? minutesAgo
+    return diffInMinutes < 60
+      ? minutesAgo
+      : diffInHours < 24
+        ? hoursAgo
         : formattedDate
   }
 }
