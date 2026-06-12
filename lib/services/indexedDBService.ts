@@ -75,6 +75,8 @@ export const getAllUserDocumentsFromDraft = async (
 ): Promise<DocumentContentResponse[]> => {
   const db = await openDB()
 
+  console.log("Getting all user documents from draft...", id)
+
   return new Promise((resolve, reject) => {
     const transaction = db.transaction(STORE_NAME, "readonly")
     const store = transaction.objectStore(STORE_NAME)
@@ -82,11 +84,17 @@ export const getAllUserDocumentsFromDraft = async (
       const cursor = (event.target as IDBRequest<IDBCursorWithValue>).result
       if (cursor) {
         const document = cursor.value
+        console.log("Document retrieved from draft for user :", id, document)
         if (document.userId === id) {
           resolve(document)
         }
         cursor.continue()
       }
+    }
+    store.openCursor().onerror = () => {
+      console.log("Error fetching drafts")
+
+      reject(new Error(`Get error: `))
     }
   })
 }

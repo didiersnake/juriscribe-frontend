@@ -12,6 +12,7 @@ export default function DraftPage() {
   React.useEffect(() => {
     getAllUserDocumentsFromDraft(user?.id as number)
       .then((documents) => {
+        console.log("Documents:", documents)
         setDrafts(documents)
         setLoading(false)
       })
