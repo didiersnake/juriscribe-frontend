@@ -17,7 +17,7 @@ export default function DraftPage() {
         setLoading(false)
       })
       .catch((error) => console.error("Error loading document content:", error))
-  })
+  }, [])
 
   return loading ? (
     <div className="flex h-[calc(100vh-64px)] items-center justify-center">
