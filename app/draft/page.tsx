@@ -4,10 +4,12 @@ import DraftsView from "@/components/draft-view"
 import { getAllUserDocumentsFromDraft } from "@/lib/services/indexedDBService"
 import { useAuth } from "@/lib/authContext"
 import { DocumentContentResponse } from "@/lib/types"
+import { getCookie } from "@/lib/utils"
 
 export default function DraftPage() {
   const { user, loading, setLoading } = useAuth()
   const [drafts, setDrafts] = React.useState([] as DocumentContentResponse[])
+  const [locale, setLocale] = React.useState("fr")
 
   React.useEffect(() => {
     getAllUserDocumentsFromDraft(user?.id as number)
@@ -18,6 +20,14 @@ export default function DraftPage() {
       })
       .catch((error) => console.error("Error loading document content:", error))
   }, [])
+
+  React.useEffect(() => {
+    getCookie("locale").then((cookieLocale) => {
+      if (cookieLocale) {
+        setLocale(cookieLocale)
+      }
+    })
+  }, [locale])
 
   return loading ? (
     <div className="flex h-[calc(100vh-64px)] items-center justify-center">
