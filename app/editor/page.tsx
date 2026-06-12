@@ -41,7 +41,7 @@ export default function EditorPage() {
 
   React.useEffect(() => {
     //Selected from draft
-    if (useDraft && documentId !== 0) {
+    if (useDraft) {
       getDocumentFromDraft(documentId)
         .then((response) => {
           setContent((response as DocumentContentResponse)?.content)

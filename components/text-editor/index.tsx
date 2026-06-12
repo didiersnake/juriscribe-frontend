@@ -49,7 +49,6 @@ export default function TextEditor({
   // Stable save function — doesn't change between renders
   const saveToStorage = React.useCallback(async (html: string) => {
     isSaving.current = true
-    // localStorage.setItem(STORAGE_KEY, html)
     await addDocumentChangesToDraft({
       id: id,
       fileName: fileName,
