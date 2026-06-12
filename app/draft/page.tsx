@@ -13,6 +13,7 @@ export default function DraftPage() {
 
   const setLoad = () => setLoading(true)
   React.useEffect(() => {
+    console.log("User ID:", user?.id)
     setLoad()
     getAllUserDocumentsFromDraft(user?.id as number)
       .then((documents) => {

@@ -103,10 +103,7 @@ export const getAllUserDocumentsFromDraft = async (
       if (cursor) {
         const document = cursor.value
         console.log("Document from draft:", document)
-        if (document.userId === id) {
-          documents.push(document)
-          console.log("DocumentList from draft:", documents)
-        }
+        documents.push(document)
         cursor.continue()
       } else {
         console.log("No more documents found")
