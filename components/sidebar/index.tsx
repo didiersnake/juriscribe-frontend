@@ -12,6 +12,7 @@ import {
 import { motion, AnimatePresence } from "motion/react"
 import { useTranslations } from "next-intl"
 import { useRouter } from "next/navigation"
+import { useAuth } from "@/lib/authContext"
 
 export default function Sidebar({
   isOpen,
@@ -22,6 +23,7 @@ export default function Sidebar({
 }) {
   const t = useTranslations("Navbar")
   const route = useRouter()
+  const { isLoggedIn } = useAuth()
   return (
     <AnimatePresence>
       {isOpen && (
@@ -114,6 +116,17 @@ export default function Sidebar({
                 >
                   {t("links.library")}
                 </a>
+                {isLoggedIn && (
+                  <a
+                    onClick={() => {
+                      onClose()
+                      route.push("/draft")
+                    }}
+                    className="text-sm font-bold text-slate-600 transition-colors hover:cursor-pointer hover:text-blue-600"
+                  >
+                    {t("links.drafts")}
+                  </a>
+                )}
               </nav>
             </div>
           </motion.div>
