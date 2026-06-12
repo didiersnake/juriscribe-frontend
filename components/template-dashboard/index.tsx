@@ -452,6 +452,34 @@ export default function TemplateDashboard({
     </section>
   )
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const submit = async (data: any) => {
+    // console.log("upload config ", data)
+    const { docType, jurisdiction, lawDomain } = data
+
+    if (
+      !docType ||
+      !jurisdiction ||
+      !lawDomain ||
+      docType === 0 ||
+      jurisdiction === 0 ||
+      lawDomain === 0
+    ) {
+      displayToast("error", `${t("select_category")}`)
+      return
+    }
+
+    if (selectedFile && data) {
+      setIsUploadDrawerOpen(false)
+      setFileScannerOpen(true)
+      setTimeout(async () => {
+        setEdgeLoaderOpen(true)
+
+        await saveUploadedFile(selectedFile, docType, lawDomain, jurisdiction)
+      }, 3500)
+    }
+  }
+
   return (
     <div className="flex min-h-[calc(100vh-64px)] flex-col overflow-x-hidden bg-white pb-20">
       {newDocument}
@@ -464,37 +492,7 @@ export default function TemplateDashboard({
         isOpen={isUploadDrawerOpen}
         onClose={() => setIsUploadDrawerOpen(false)}
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        onSubmit={async (data: any) => {
-          // console.log("upload config ", data)
-          const { docType, jurisdiction, lawDomain } = data
-
-          if (
-            !docType ||
-            !jurisdiction ||
-            !lawDomain ||
-            docType === 0 ||
-            jurisdiction === 0 ||
-            lawDomain === 0
-          ) {
-            displayToast("error", `${t("select_category")}`)
-            return
-          }
-
-          if (selectedFile && data) {
-            setIsUploadDrawerOpen(false)
-            setFileScannerOpen(true)
-            setTimeout(async () => {
-              setEdgeLoaderOpen(true)
-
-              await saveUploadedFile(
-                selectedFile,
-                docType,
-                lawDomain,
-                jurisdiction
-              )
-            }, 3500)
-          }
-        }}
+        onSubmit={async (data: any) => await submit(data)}
       />
       <EdgeLoader isLoading={edgeLoaderOpen} />
       <Toast

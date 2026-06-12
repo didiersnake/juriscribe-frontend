@@ -200,7 +200,7 @@ export default function Navbar({
         <a
           onClick={() => {
             route.push("/draft")
-            setLoading(true)
+            // setLoading(true)
           }}
           className="text-sm font-medium text-slate-600 transition-colors hover:cursor-pointer hover:text-blue-600"
         >

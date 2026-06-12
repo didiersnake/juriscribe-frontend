@@ -98,7 +98,7 @@ export const getAllUserDocumentsFromDraft = async (
   })
 }
 
-export const removeDocumentFromDraft = async (id: number): Promise<void> => {
+export const removeDocumentFromDraft = async (id: number): Promise<boolean> => {
   const db = await openDB()
 
   return new Promise((resolve, reject) => {
@@ -108,7 +108,7 @@ export const removeDocumentFromDraft = async (id: number): Promise<void> => {
 
     request.onsuccess = () => {
       console.log("Document removed from draft, id:", id)
-      resolve()
+      resolve(true)
     }
 
     request.onerror = () => {

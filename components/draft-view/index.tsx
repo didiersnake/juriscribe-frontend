@@ -46,7 +46,7 @@ export default function DraftsView({
 
   const handleDelete = async (id: number) => {
     const result = await removeDocumentFromDraft(id)
-    if (result !== undefined) {
+    if (result) {
       setDrafts(drafts.filter((d) => d.id !== id))
     }
   }

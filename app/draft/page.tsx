@@ -11,7 +11,9 @@ export default function DraftPage() {
   const [drafts, setDrafts] = React.useState([] as DocumentContentResponse[])
   const [locale, setLocale] = React.useState("fr")
 
+  const setLoad = () => setLoading(true)
   React.useEffect(() => {
+    setLoad()
     getAllUserDocumentsFromDraft(user?.id as number)
       .then((documents) => {
         console.log("Documents:", documents)
@@ -19,7 +21,7 @@ export default function DraftPage() {
         setLoading(false)
       })
       .catch((error) => console.error("Error loading document content:", error))
-  }, [locale])
+  }, [loading])
 
   React.useEffect(() => {
     getCookie("locale").then((cookieLocale) => {
