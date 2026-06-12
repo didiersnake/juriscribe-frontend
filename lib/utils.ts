@@ -15,10 +15,15 @@ export const getCookie = async (name: string) => {
 export function formatDate(date: Date, locale: string) {
   const now = new Date()
   const diffInHours = (now.getTime() - date.getTime()) / (1000 * 60 * 60)
+  const diffInMinutes = (now.getTime() - date.getTime()) / (1000 * 60)
+  const minutesAgo =
+    locale === "en"
+      ? `${Math.floor(diffInMinutes)} minutes ago`
+      : `il y a ${Math.floor(diffInMinutes)} minutes`
   const hoursAgo =
     locale === "en"
       ? `${Math.floor(diffInHours)} hours ago`
-      : `${Math.floor(diffInHours)} heures`
+      : ` il y a ${Math.floor(diffInHours)} heures`
 
   if (locale === "en") {
     const dayOfWeek = date.toLocaleString("en-US", { weekday: "short" })
@@ -27,7 +32,11 @@ export function formatDate(date: Date, locale: string) {
         ? "Sunday"
         : `${dayOfWeek}, ${date.toLocaleString("en-US", { month: "short", day: "numeric", year: "numeric" })}`
 
-    return diffInHours < 24 ? hoursAgo : formattedDate
+    return diffInHours < 24
+      ? hoursAgo
+      : diffInMinutes < 60
+        ? minutesAgo
+        : formattedDate
   }
   if (locale === "fr") {
     const dayOfWeek = date.toLocaleString("fr-FR", { weekday: "short" })
@@ -36,6 +45,10 @@ export function formatDate(date: Date, locale: string) {
         ? "Sunday"
         : `${dayOfWeek}, ${date.toLocaleString("fr-FR", { month: "short", day: "numeric", year: "numeric" })}`
 
-    return diffInHours < 24 ? hoursAgo : formattedDate
+    return diffInHours < 24
+      ? hoursAgo
+      : diffInMinutes < 60
+        ? minutesAgo
+        : formattedDate
   }
 }

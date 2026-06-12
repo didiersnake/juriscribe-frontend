@@ -36,15 +36,34 @@ export const addDocumentChangesToDraft = async (
   return new Promise((resolve, reject) => {
     const transaction = db.transaction(STORE_NAME, "readwrite")
     const store = transaction.objectStore(STORE_NAME)
-    const request = store.put({ ...object })
+    const doc = store.get(object.id)
+    doc.onsuccess = () => {
+      let request: IDBRequest
+      if (doc.result !== undefined) {
+        request = store.put({ ...object })
+        request.onsuccess = () => {
+          console.log("Document updated to draft:", request.result)
+          resolve()
+        }
 
-    request.onsuccess = () => {
-      console.log("Document saved to draft:", request.result)
-      resolve()
+        request.onerror = () => {
+          reject(new Error(`update error: ${request.error?.message}`))
+        }
+      } else {
+        request = store.add({ ...object })
+        request.onsuccess = () => {
+          console.log("Document saved to draft:", request.result)
+          resolve()
+        }
+
+        request.onerror = () => {
+          reject(new Error(`Add error: ${request.error?.message}`))
+        }
+      }
     }
 
-    request.onerror = () => {
-      reject(new Error(`Add error: ${request.error?.message}`))
+    doc.onerror = () => {
+      reject(new Error(`Get error: ${doc.error?.message}`))
     }
   })
 }
