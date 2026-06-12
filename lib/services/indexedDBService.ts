@@ -86,9 +86,9 @@ export const getAllUserDocumentsFromDraft = async (
         if (document.userId === id) {
           documents.push(document)
         }
-        resolve(documents)
         cursor.continue()
       }
+      resolve(documents)
     }
     store.openCursor().onerror = () => {
       console.log("Error fetching drafts")
