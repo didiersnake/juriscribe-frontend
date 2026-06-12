@@ -44,6 +44,7 @@ export interface DocumentContentResponse {
   fileName: string
   id: number
   content: string
+  lastOpened: Date // for use in drafts view
   userId: number // for use in drafts view ( indexedDB )
 }
 

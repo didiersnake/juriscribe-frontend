@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation"
 import { useAuth } from "@/lib/authContext"
 import { DocumentContentResponse } from "@/lib/types"
 import React from "react"
+import { formatDate } from "@/lib/utils"
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -29,9 +30,11 @@ const itemVariants: Variants = {
 export default function DraftsView({
   drafts,
   setDrafts,
+  locale,
 }: {
   drafts: DocumentContentResponse[]
   setDrafts: React.Dispatch<React.SetStateAction<DocumentContentResponse[]>>
+  locale: string
 }) {
   const [searchQuery, setSearchQuery] = useState("")
   const t = useTranslations()
@@ -122,14 +125,14 @@ export default function DraftsView({
                     <span className="line-clamp-2 text-sm leading-tight font-semibold text-slate-800 transition-colors group-hover:text-blue-600">
                       {draft.fileName}
                     </span>
-                    {/* <div className="flex items-center gap-2 text-xs font-medium text-slate-500">
+                    <div className="flex items-center gap-2 text-xs font-medium text-slate-500">
                       <Clock size={12} />
-                      <span>{draft.lastEdited}</span>
-                    </div> */}
+                      <span>{formatDate(draft.lastOpened, locale)}</span>
+                    </div>
                   </div>
-                  <button className="shrink-0 rounded p-1.5 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-700">
+                  {/* <button className="shrink-0 rounded p-1.5 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-700">
                     <MoreVertical size={16} />
-                  </button>
+                  </button> */}
                 </div>
               </motion.div>
             ))}

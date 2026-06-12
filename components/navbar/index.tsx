@@ -199,8 +199,8 @@ export default function Navbar({
       {isLoggedIn && (
         <a
           onClick={() => {
-            setLoading(true)
             route.push("/draft")
+            setLoading(true)
           }}
           className="text-sm font-medium text-slate-600 transition-colors hover:cursor-pointer hover:text-blue-600"
         >

@@ -19,7 +19,7 @@ export default function DraftPage() {
         setLoading(false)
       })
       .catch((error) => console.error("Error loading document content:", error))
-  }, [])
+  }, [locale])
 
   React.useEffect(() => {
     getCookie("locale").then((cookieLocale) => {
@@ -35,7 +35,7 @@ export default function DraftPage() {
     </div>
   ) : (
     <div>
-      <DraftsView drafts={drafts} setDrafts={setDrafts} />
+      <DraftsView drafts={drafts} setDrafts={setDrafts} locale={locale} />
     </div>
   )
 }

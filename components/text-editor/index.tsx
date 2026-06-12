@@ -54,6 +54,7 @@ export default function TextEditor({
       fileName: fileName,
       content: html,
       userId: userId,
+      lastOpened: new Date(),
     })
     isSaving.current = false
   }, [])
