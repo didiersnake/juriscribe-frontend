@@ -97,9 +97,10 @@ export const getAllUserDocumentsFromDraft = async (
   return new Promise((resolve, reject) => {
     const transaction = db.transaction(STORE_NAME, "readonly")
     const store = transaction.objectStore(STORE_NAME)
+    const documents: DocumentContentResponse[] = []
+
     store.openCursor().onsuccess = (event) => {
       const cursor = (event.target as IDBRequest<IDBCursorWithValue>).result
-      const documents: DocumentContentResponse[] = []
       if (cursor) {
         const document = cursor.value
         documents.push(document)
@@ -107,8 +108,8 @@ export const getAllUserDocumentsFromDraft = async (
         cursor.continue()
       } else {
         console.log("No more documents found")
+        resolve(documents)
       }
-      resolve(documents)
     }
     store.openCursor().onerror = () => {
       console.log("Error fetching drafts")
