@@ -51,6 +51,9 @@ export default function EditorPage() {
         .catch((error) =>
           console.error("Error loading document content:", error)
         )
+        .finally(() => {
+          setLoading(false)
+        })
     }
     //Selected from document list
     if (documentId !== 0 && !useDraft) {
