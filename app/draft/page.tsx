@@ -21,7 +21,7 @@ export default function DraftPage() {
         setLoading(false)
       })
       .catch((error) => console.error("Error loading document content:", error))
-  }, [loading])
+  }, [])
 
   React.useEffect(() => {
     getCookie("locale").then((cookieLocale) => {
