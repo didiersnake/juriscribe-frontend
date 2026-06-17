@@ -48,6 +48,7 @@ export default function Navbar({
   const route = useRouter()
 
   const [isLanguageOpen, setIsLanguageOpen] = React.useState(false)
+  const [isLogoutOpen, setIsLogoutOpen] = React.useState(false)
   const languages = [
     { code: "en", label: "English" },
     { code: "fr", label: "Français" },
@@ -268,14 +269,21 @@ export default function Navbar({
         <div className="pl-2">
           {isLoggedIn ? (
             <div className="group relative">
-              <button className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-indigo-600 text-sm font-medium text-white shadow-sm transition-all active:scale-95 sm:h-10 sm:w-10 sm:text-base">
+              <button
+                className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-indigo-600 text-sm font-medium text-white shadow-sm transition-all active:scale-95 sm:h-10 sm:w-10 sm:text-base"
+                onClick={() => {
+                  setIsLogoutOpen(!isLogoutOpen)
+                }}
+              >
                 {user?.name ? (
                   user.name.charAt(0).toUpperCase()
                 ) : (
                   <User size={18} />
                 )}
               </button>
-              <div className="invisible absolute top-full right-0 z-50 origin-top-right translate-y-1 transform pt-2 opacity-0 transition-all duration-200 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100">
+              <div
+                className={`${isLogoutOpen ? "visible translate-y-0 opacity-100" : ""} invisible absolute top-full right-0 z-50 origin-top-right translate-y-1 transform pt-2 opacity-0 transition-all duration-200 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100`}
+              >
                 <div className="w-48 rounded-lg border border-slate-200 bg-white py-1 shadow-lg">
                   <div className="mb-1 border-b border-slate-100 px-4 py-2">
                     <p className="text-sm font-medium text-slate-800">
