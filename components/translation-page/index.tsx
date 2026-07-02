@@ -314,7 +314,7 @@ export default function TranslationView() {
                       className="h-full rounded-full bg-blue-500"
                       initial={{ width: "0%" }}
                       animate={{ width: "100%" }}
-                      transition={{ duration: 3, ease: "easeInOut" }}
+                      transition={{ duration: 8, ease: "easeInOut" }}
                     />
                   </div>
                 </div>
