@@ -14,6 +14,7 @@ import FileScanner from "./file-scanner"
 import Toast from "../ui/toast"
 import { useTranslations } from "next-intl"
 import { documentService } from "@/lib/services/documentService"
+import { downloadBlobFile } from "@/lib/utils"
 
 export default function TranslationView() {
   const [targetLanguage, setTargetLanguage] = useState("fr")
@@ -74,6 +75,14 @@ export default function TranslationView() {
     })
   }
 
+  const handleExportPDF = async () => {
+    const response = await documentService.exportPDF(translatedFile as string)
+    if (response) {
+      console.log("Export response:", response)
+    }
+    downloadBlobFile(response, file?.name || "translated_document")
+  }
+
   const handleFileSelect = (e: any) => {
     const selectedFile = e.target.files[0]
     if (selectedFile) {
@@ -123,7 +132,7 @@ export default function TranslationView() {
     setIsScanning(true)
   }
 
-  const onScanComplete = (isSafe: any) => {
+  const onScanComplete = async (isSafe: any) => {
     setIsScanning(false)
 
     if (!isSafe) {
@@ -137,17 +146,7 @@ export default function TranslationView() {
     }
 
     setIsTranslating(true)
-    // Simulate translation process
-    setTimeout(() => {
-      //   setIsTranslating(false)
-      //   setTranslationComplete(true)
-      //   setToast({
-      //     isOpen: true,
-      //     type: "success",
-      //     message: "Document translated successfully!",
-      //   })
-      handleLanguageChangeRequest()
-    }, 0)
+    await handleLanguageChangeRequest()
   }
 
   const handleReset = () => {
@@ -340,11 +339,14 @@ export default function TranslationView() {
                     </p> */}
 
                     <div className="flex w-full flex-col items-center gap-3">
-                      <button className="flex w-full max-w-xs items-center justify-center gap-2 rounded-xl bg-blue-600 px-6 py-3 font-medium text-white shadow-md transition-all hover:bg-blue-700 active:scale-95">
+                      {/* <button className="flex w-full max-w-xs items-center justify-center gap-2 rounded-xl bg-blue-600 px-6 py-3 font-medium text-white shadow-md transition-all hover:bg-blue-700 active:scale-95">
                         <Download size={18} />
                         {t("status.complete.downloadDocx")}
-                      </button>
-                      <button className="flex w-full max-w-xs items-center justify-center gap-2 rounded-xl bg-indigo-600 px-6 py-3 font-medium text-white shadow-md transition-all hover:bg-indigo-700 active:scale-95">
+                      </button> */}
+                      <button
+                        onClick={handleExportPDF}
+                        className="flex w-full max-w-xs items-center justify-center gap-2 rounded-xl bg-indigo-600 px-6 py-3 font-medium text-white shadow-md transition-all hover:bg-indigo-700 active:scale-95"
+                      >
                         <Download size={18} />
                         {t("status.complete.downloadPdf")}
                       </button>
