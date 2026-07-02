@@ -12,6 +12,14 @@ export const getCookie = async (name: string) => {
     ?.split("=")[1]
 }
 
+export const downloadBlobFile = (blob: Blob, fileName: string) => {
+  const url = URL.createObjectURL(blob)
+  const a = document.createElement("a")
+  a.href = url
+  a.download = `${fileName}.pdf`
+  a.click()
+  URL.revokeObjectURL(url)
+}
 export function formatDate(date: Date, locale: string) {
   const now = new Date()
   const diffInHours = (now.getTime() - date.getTime()) / (1000 * 60 * 60)

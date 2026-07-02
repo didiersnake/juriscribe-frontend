@@ -12,8 +12,8 @@ import {
 } from "lucide-react"
 import FileScanner from "./file-scanner"
 import Toast from "../ui/toast"
-import { axiosInstance } from "@/lib/services/api"
 import { useTranslations } from "next-intl"
+import { documentService } from "@/lib/services/documentService"
 
 export default function TranslationView() {
   const [targetLanguage, setTargetLanguage] = useState("fr")
@@ -21,6 +21,7 @@ export default function TranslationView() {
   const [isScanning, setIsScanning] = useState(false)
   const [isTranslating, setIsTranslating] = useState(false)
   const [translationComplete, setTranslationComplete] = useState(false)
+  const [translatedFile, setTranslatedFile] = useState<string | null>(null)
   const [toast, setToast] = useState<{
     isOpen: boolean
     type?: "success" | "error"
@@ -51,23 +52,26 @@ export default function TranslationView() {
     formData.append("file", file as File)
     formData.append("targetLanguage", targetLanguage)
 
-    const response: any = await axiosInstance.post(
-      "/api/documents/translate",
-      formData,
-      {
-        responseType: "blob", // Important for handling binary data
-      }
-    )
-    if (response) {
-      console.log("Export response:", response)
+    const response = await documentService.translateDocument(formData)
+    if (response.length < 10) {
+      setToast({
+        isOpen: true,
+        type: "error",
+        message: "File translation failed. Please try again.",
+      })
+      setIsTranslating(false)
+      setTranslationComplete(true)
+      return
     }
-    const blob = response.data
-    const url = URL.createObjectURL(blob)
-    const a = document.createElement("a")
-    a.href = url
-    a.download = file?.name || "document.pdf"
-    a.click()
-    URL.revokeObjectURL(url)
+    console.log("Export response:", response)
+    setTranslatedFile(response)
+    setIsTranslating(false)
+    setTranslationComplete(true)
+    setToast({
+      isOpen: true,
+      type: "success",
+      message: "Document translated successfully!",
+    })
   }
 
   const handleFileSelect = (e: any) => {
@@ -135,14 +139,15 @@ export default function TranslationView() {
     setIsTranslating(true)
     // Simulate translation process
     setTimeout(() => {
-      setIsTranslating(false)
-      setTranslationComplete(true)
-      setToast({
-        isOpen: true,
-        type: "success",
-        message: "Document translated successfully!",
-      })
-    }, 3000)
+      //   setIsTranslating(false)
+      //   setTranslationComplete(true)
+      //   setToast({
+      //     isOpen: true,
+      //     type: "success",
+      //     message: "Document translated successfully!",
+      //   })
+      handleLanguageChangeRequest()
+    }, 0)
   }
 
   const handleReset = () => {
@@ -299,10 +304,10 @@ export default function TranslationView() {
                     className="mx-auto mb-6 animate-spin text-blue-500"
                   />
                   <h3 className="mb-2 text-lg font-bold text-slate-800">
-                    {t("status.readyToTranslate.title")}
+                    {t("status.processing.title")}
                   </h3>
                   <p className="mx-auto max-w-[250px] text-sm text-slate-500">
-                    {t("status.readyToTranslate.description")}
+                    {t("status.processing.description")}
                   </p>
 
                   <div className="mt-8 h-1.5 w-full max-w-[200px] overflow-hidden rounded-full bg-slate-200">

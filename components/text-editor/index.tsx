@@ -13,6 +13,8 @@ import { axiosInstance } from "@/lib/services/api"
 import { useTranslations } from "next-intl"
 import { PreserveIndent } from "./preserve-indent"
 import { addDocumentChangesToDraft } from "@/lib/services/indexedDBService"
+import { documentService } from "@/lib/services/documentService"
+import { downloadBlobFile } from "@/lib/utils"
 export default function TextEditor({
   onBack,
   content,
@@ -73,24 +75,11 @@ export default function TextEditor({
   )
 
   const handleExportPDF = async () => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const response: any = await axiosInstance.post(
-      "/api/documents/export-pdf",
-      JSON.stringify(editor?.getHTML()),
-      {
-        responseType: "blob", // Important for handling binary data
-      }
-    )
+    const response = await documentService.exportPDF(content)
     if (response) {
       console.log("Export response:", response)
     }
-    const blob = response.data
-    const url = URL.createObjectURL(blob)
-    const a = document.createElement("a")
-    a.href = url
-    a.download = `${fileName}.pdf`
-    a.click()
-    URL.revokeObjectURL(url)
+    downloadBlobFile(response, fileName)
   }
 
   function sanitizeForTipTap(html: string): string {

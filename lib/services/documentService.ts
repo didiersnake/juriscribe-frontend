@@ -40,9 +40,24 @@ export const documentService = {
     }
   },
 
+  // Export document as PDF (SECURED)
+  async exportPDF(data: string): Promise<Blob> {
+    try {
+      const response = await apiClient.post<Blob>(
+        `/api/documents/export-pdf`,
+        data,
+        "blob"
+      )
+      return response
+    } catch (error) {
+      console.error(`Failed to export document as PDF:`, error)
+      throw error
+    }
+  },
+
   // Translate document (SECURED)
   //TODO: Update the return type to match the actual response structure
-  async translateDocument(data: FormData): Promise<Blob> {
+  async translateDocument(data: FormData): Promise<string> {
     try {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const response = await apiClient.post<any>(
@@ -51,7 +66,7 @@ export const documentService = {
       )
       return response
     } catch (error) {
-      console.error("Failed to create document:", error)
+      console.error("Failed to translate document:", error)
       throw error
     }
   },
@@ -86,17 +101,6 @@ export const documentService = {
   //     await apiClient.delete(`/documents/${id}`)
   //   } catch (error) {
   //     console.error(`Failed to delete document ${id}:`, error)
-  //     throw error
-  //   }
-  // },
-
-  // // Export document as PDF (SECURED)
-  // async exportPDF(id: string): Promise<Blob> {
-  //   try {
-  //     const response = await apiClient.get<Blob>(`/documents/${id}/export/pdf`)
-  //     return response
-  //   } catch (error) {
-  //     console.error(`Failed to export document ${id}:`, error)
   //     throw error
   //   }
   // },

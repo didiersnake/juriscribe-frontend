@@ -152,7 +152,7 @@
       "description": "Importez vos documents juridiques au format .docx et traduisez-les instantanément avec une grande précision."
     },
     "config": {
-      "targetLanguage": "Langue cible",
+      "targetLanguage": "Selectionnez la langue de traduction",
       "uploadTitle": "Importer un document (.docx)",
       "dragDropActive": "Cliquez pour importer ou glissez-déposez le fichier",
       "allowedFormats": "Documents Word (.docx) uniquement",

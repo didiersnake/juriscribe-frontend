@@ -76,9 +76,15 @@ export const apiClient = {
   },
 
   // POST request
-  async post<T>(endpoint: string, data: unknown) {
+  async post<T>(
+    endpoint: string,
+    data: unknown,
+    responseType?: "json" | "blob"
+  ) {
     try {
-      const response = await axiosInstance.post<T>(endpoint, data)
+      const response = await axiosInstance.post<T>(endpoint, data, {
+        responseType,
+      })
       return response.data
     } catch (error) {
       console.error(`POST ${endpoint} failed:`, error)
