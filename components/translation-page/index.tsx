@@ -12,8 +12,10 @@ import {
 } from "lucide-react"
 import FileScanner from "./file-scanner"
 import Toast from "../ui/toast"
+import { axiosInstance } from "@/lib/services/api"
+import { useTranslations } from "next-intl"
 
-export default function TranslationView({}) {
+export default function TranslationView() {
   const [targetLanguage, setTargetLanguage] = useState("fr")
   const [file, setFile] = useState<File | null>(null)
   const [isScanning, setIsScanning] = useState(false)
@@ -33,6 +35,8 @@ export default function TranslationView({}) {
   const languages = [
     { code: "fr", name: "French (Français)" },
     { code: "es", name: "Spanish (Español)" },
+    { code: "en", name: "English (English)" },
+
     // { code: "de", name: "German (Deutsch)" },
     // { code: "it", name: "Italian (Italiano)" },
     // { code: "pt", name: "Portuguese (Português)" },
@@ -40,6 +44,31 @@ export default function TranslationView({}) {
     // { code: "ja", name: "Japanese (日本語)" },
     // { code: "ar", name: "Arabic (العربية)" },
   ]
+  const t = useTranslations("DocumentTranslation")
+
+  const handleLanguageChangeRequest = async () => {
+    const formData = new FormData()
+    formData.append("file", file as File)
+    formData.append("targetLanguage", targetLanguage)
+
+    const response: any = await axiosInstance.post(
+      "/api/documents/translate",
+      formData,
+      {
+        responseType: "blob", // Important for handling binary data
+      }
+    )
+    if (response) {
+      console.log("Export response:", response)
+    }
+    const blob = response.data
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement("a")
+    a.href = url
+    a.download = file?.name || "document.pdf"
+    a.click()
+    URL.revokeObjectURL(url)
+  }
 
   const handleFileSelect = (e: any) => {
     const selectedFile = e.target.files[0]
@@ -145,11 +174,10 @@ export default function TranslationView({}) {
             <Languages size={32} />
           </div>
           <h1 className="mb-3 text-3xl font-bold text-slate-800">
-            Document Translation
+            {t("header.title")}
           </h1>
           <p className="mx-auto max-w-lg text-slate-500">
-            Upload your legal documents in .docx format and translate them
-            instantly with high accuracy.
+            {t("header.description")}
           </p>
         </div>
 
@@ -159,7 +187,7 @@ export default function TranslationView({}) {
             <div className="rounded-xl border border-slate-200 bg-slate-50 p-6 shadow-sm">
               <h2 className="mb-4 flex items-center gap-2 font-semibold text-slate-800">
                 <Globe size={18} className="text-blue-500" />
-                Target Language
+                {t("config.targetLanguage")}
               </h2>
               <select
                 value={targetLanguage}
@@ -178,7 +206,7 @@ export default function TranslationView({}) {
             <div className="flex flex-1 flex-col rounded-xl border border-slate-200 bg-slate-50 p-6 shadow-sm">
               <h2 className="mb-4 flex items-center gap-2 font-semibold text-slate-800">
                 <FileText size={18} className="text-blue-500" />
-                Upload Document (.docx)
+                {t("config.uploadTitle")}
               </h2>
 
               {!file ? (
@@ -192,10 +220,10 @@ export default function TranslationView({}) {
                     <Upload size={28} />
                   </div>
                   <p className="mb-1 text-center text-sm font-medium text-slate-700">
-                    Click to upload or drag and drop
+                    {t("config.dragDropActive")}
                   </p>
                   <p className="text-center text-xs text-slate-500">
-                    Word Documents (.docx) only
+                    {t("config.allowedFormats")}
                   </p>
                   <input
                     type="file"
@@ -223,7 +251,7 @@ export default function TranslationView({}) {
                       className="text-sm font-medium text-slate-500 transition-colors hover:text-red-500"
                       disabled={isScanning}
                     >
-                      Remove file
+                      {t("config.removeFile")}
                     </button>
                   )}
                 </div>
@@ -241,7 +269,7 @@ export default function TranslationView({}) {
                     className="mx-auto mb-4 text-slate-400"
                   />
                   <p className="text-sm text-slate-500">
-                    Upload a document to start translation
+                    {t("status.emptyState")}
                   </p>
                 </div>
               )}
@@ -258,7 +286,7 @@ export default function TranslationView({}) {
                     disabled={isScanning}
                     className="flex w-full items-center justify-center gap-2 rounded-xl bg-blue-600 px-8 py-3.5 font-medium text-white shadow-md shadow-blue-900/10 transition-all hover:bg-blue-700 active:scale-95 disabled:cursor-not-allowed disabled:opacity-70 sm:w-auto"
                   >
-                    Translate Document
+                    {t("status.readyToTranslate")}
                     <ArrowRight size={18} />
                   </button>
                 </div>
@@ -271,11 +299,10 @@ export default function TranslationView({}) {
                     className="mx-auto mb-6 animate-spin text-blue-500"
                   />
                   <h3 className="mb-2 text-lg font-bold text-slate-800">
-                    Translating your document...
+                    {t("status.readyToTranslate.title")}
                   </h3>
                   <p className="mx-auto max-w-[250px] text-sm text-slate-500">
-                    Applying AI legal translation models. This may take a few
-                    moments.
+                    {t("status.readyToTranslate.description")}
                   </p>
 
                   <div className="mt-8 h-1.5 w-full max-w-[200px] overflow-hidden rounded-full bg-slate-200">
@@ -300,23 +327,27 @@ export default function TranslationView({}) {
                       <Download size={28} />
                     </div>
                     <h3 className="mb-2 text-xl font-bold text-slate-800">
-                      Translation Ready
+                      {t("status.complete.title")}
                     </h3>
-                    <p className="mb-8 text-sm text-slate-500">
+                    {/* <p className="mb-8 text-sm text-slate-500">
                       Your document has been translated to{" "}
                       {languages.find((l) => l.code === targetLanguage)?.name}.
-                    </p>
+                    </p> */}
 
-                    <div className="flex w-full flex-col justify-center gap-3 sm:flex-row">
-                      <button className="flex items-center justify-center gap-2 rounded-xl bg-blue-600 px-6 py-3 font-medium text-white shadow-md transition-all hover:bg-blue-700 active:scale-95">
+                    <div className="flex w-full flex-col items-center gap-3">
+                      <button className="flex w-full max-w-xs items-center justify-center gap-2 rounded-xl bg-blue-600 px-6 py-3 font-medium text-white shadow-md transition-all hover:bg-blue-700 active:scale-95">
                         <Download size={18} />
-                        Download .docx
+                        {t("status.complete.downloadDocx")}
+                      </button>
+                      <button className="flex w-full max-w-xs items-center justify-center gap-2 rounded-xl bg-indigo-600 px-6 py-3 font-medium text-white shadow-md transition-all hover:bg-indigo-700 active:scale-95">
+                        <Download size={18} />
+                        {t("status.complete.downloadPdf")}
                       </button>
                       <button
                         onClick={handleReset}
-                        className="rounded-xl border border-slate-200 bg-white px-6 py-3 font-medium text-slate-700 shadow-sm transition-all hover:bg-slate-50 active:scale-95"
+                        className="w-full max-w-xs rounded-xl border border-slate-200 bg-white px-6 py-3 font-medium text-slate-700 shadow-sm transition-all hover:bg-slate-50 active:scale-95"
                       >
-                        Translate Another
+                        {t("status.complete.translateAnother")}
                       </button>
                     </div>
                   </motion.div>
