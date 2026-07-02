@@ -201,9 +201,7 @@ export default function TextEditor({
             {t("share")}
           </button>
           <button
-            onClick={() => {
-              handleExportPDF()
-            }}
+            onClick={handleExportPDF}
             className="flex items-center justify-center gap-2 rounded-md bg-blue-600 px-4 py-2.5 text-sm font-medium text-white shadow-sm transition-all hover:bg-blue-700 hover:shadow-md active:scale-95"
           >
             <Download size={16} />{" "}
