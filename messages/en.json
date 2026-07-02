@@ -136,11 +136,41 @@
     "settings": "Settings",
     "logout": "Log out",
     "signIn": "Sign In",
+    "translation": "Translation",
     "links": {
       "features": "Features",
       "howItWorks": "How it works",
       "library": "Library",
       "drafts": "Drafts"
+    }
+  },
+
+  "DocumentTranslation": {
+    "header": {
+      "title": "Document Translation",
+      "description": "Upload your legal documents in .docx format and translate them instantly with high accuracy."
+    },
+    "config": {
+      "targetLanguage": "Target Language",
+      "uploadTitle": "Upload Document (.docx)",
+      "dragDropActive": "Click to upload or drag and drop",
+      "allowedFormats": "Word Documents (.docx) only",
+      "removeFile": "Remove file"
+    },
+    "status": {
+      "emptyState": "Upload a document to start translation",
+      "readyToTranslate": "Translate Document",
+      "processing": {
+        "title": "Translating your document...",
+        "description": "Applying AI legal translation models. This may take a few moments."
+      },
+      "complete": {
+        "title": "Translation Ready",
+        "description": "Your document has been translated to {{language}}.",
+        "downloadDocx": "Download .docx",
+        "downloadPdf": "Download .pdf",
+        "translateAnother": "Translate Another"
+      }
     }
   },
 

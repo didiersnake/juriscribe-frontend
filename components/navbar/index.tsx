@@ -196,6 +196,12 @@ export default function Navbar({
       >
         {t("links.library")}
       </a>
+      <a
+        onClick={() => route.push("/translations")}
+        className="text-sm font-medium text-slate-600 transition-colors hover:cursor-pointer hover:text-blue-600"
+      >
+        {t("translation")}
+      </a>
 
       {isLoggedIn && (
         <a

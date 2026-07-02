@@ -137,11 +137,41 @@
     "settings": "Paramètres",
     "logout": "Se déconnecter",
     "signIn": "Se connecter",
+    "translation": "Traduction",
     "links": {
       "features": "Fonctionnalités",
       "howItWorks": "Comment ça marche",
       "library": "Modèles",
       "drafts": "Brouillons"
+    }
+  },
+
+  "DocumentTranslation": {
+    "header": {
+      "title": "Traduction de documents",
+      "description": "Importez vos documents juridiques au format .docx et traduisez-les instantanément avec une grande précision."
+    },
+    "config": {
+      "targetLanguage": "Langue cible",
+      "uploadTitle": "Importer un document (.docx)",
+      "dragDropActive": "Cliquez pour importer ou glissez-déposez le fichier",
+      "allowedFormats": "Documents Word (.docx) uniquement",
+      "removeFile": "Retirer le fichier"
+    },
+    "status": {
+      "emptyState": "Importez un document pour commencer la traduction",
+      "readyToTranslate": "Traduire le document",
+      "processing": {
+        "title": "Traduction de votre document en cours...",
+        "description": "Application d'IA dédiés à la traduction juridique. Cela peut prendre quelques instants."
+      },
+      "complete": {
+        "title": "Traduction prête",
+        "description": "Votre document a été traduit en {{language}}.",
+        "downloadDocx": "Télécharger le .docx",
+        "downloadPdf": "Télécharger le .pdf",
+        "translateAnother": "Traduire un autre document"
+      }
     }
   },
 
