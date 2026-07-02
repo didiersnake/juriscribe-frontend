@@ -61,7 +61,7 @@ export default function TranslationView() {
         message: "File translation failed. Please try again.",
       })
       setIsTranslating(false)
-      setTranslationComplete(true)
+      setTranslationComplete(false)
       return
     }
     console.log("Export response:", response)
