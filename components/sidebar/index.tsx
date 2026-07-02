@@ -127,6 +127,15 @@ export default function Sidebar({
                     {t("links.drafts")}
                   </a>
                 )}
+                <a
+                  onClick={() => {
+                    onClose()
+                    route.push("/translations")
+                  }}
+                  className="text-sm font-bold text-slate-600 transition-colors hover:cursor-pointer hover:text-blue-600"
+                >
+                  {t("translation")}
+                </a>
               </nav>
             </div>
           </motion.div>
