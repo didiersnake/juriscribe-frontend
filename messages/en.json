@@ -147,8 +147,8 @@
 
   "DocumentTranslation": {
     "header": {
-      "title": "Document Translation",
-      "description": "Upload your legal documents in .docx format and translate them instantly with high accuracy."
+      "title": "Translation",
+      "description": "Upload your legal documents in .docx format and let Juris AI translate them instantly with high accuracy."
     },
     "config": {
       "targetLanguage": "Target Language",

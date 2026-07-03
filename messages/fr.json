@@ -148,8 +148,8 @@
 
   "DocumentTranslation": {
     "header": {
-      "title": "Traduction de documents",
-      "description": "Importez vos documents juridiques au format .docx et traduisez-les instantanément avec une grande précision."
+      "title": "Traduction",
+      "description": "Importez vos documents juridiques au format .docx et Juris AI les traduira instantanément avec une grande précision."
     },
     "config": {
       "targetLanguage": "Selectionnez la langue de traduction",
